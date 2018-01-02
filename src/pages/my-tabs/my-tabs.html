@@ -1,0 +1,22 @@
+<!-- <ion-tabs [color]="isAndroid ? 'royal' : 'primary'"> -->
+    <!-- <ion-tabs selectedIndex="1"> -->
+<ion-tabs selectedIndex="0" [ngClass]="{hideBloc: className == true}" >
+    <ion-tab tabIcon="bulb" tabTitle="skills" [root]="tabsSkill"></ion-tab>
+    <ion-tab tabIcon="compass" tabTitle="location" [root]="tabsLocation"></ion-tab>
+    <ion-tab tabIcon="analytics" tabTitle="available" [root]="tabsAvailable"></ion-tab>
+    <ion-tab tabIcon="settings" tabTitle="settings" [root]=""></ion-tab>
+</ion-tabs>
+
+<!-- <ion-header>
+tabBadge="14"
+  <ion-navbar>
+    <ion-title>myTabsPage</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+</ion-content>
+ -->

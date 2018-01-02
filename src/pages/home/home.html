@@ -1,18 +1,44 @@
-<ion-header>
+<!--
   <ion-navbar>
+    
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Home</ion-title>
+    <ion-title>Accueil</ion-title>
   </ion-navbar>
+-->
+<ion-header>
+  <!--<ion-navbar> -->
+     <ion-title>Accueil</ion-title>      
+ <!-- </ion-navbar> -->
 </ion-header>
 
-<ion-content padding>
-  <h3>Ionic Menu Starter</h3>
+<ion-content padding class="backgrd">
+  <h1 class="AccTitleTop">Trouvez le meilleur freelance 
+    pour votre besoin en externalisation</h1>
 
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will show you the way.
-  </p>
-
-  <button ion-button secondary menuToggle>Toggle Menu</button>
+  <!-- <div class="parent" style="border:1px rgb(223, 210, 210) solid"> -->
+    <div class="Ycenter">
+      <button ion-button color="danger" outline full large icon-right (click)="doClick($event, 0)">
+        FREELANCE  
+        <!-- Advanced: explicity set the icon for each platform -->
+        <ion-icon ios="ios-arrow-dropright" md="md-arrow-dropright"></ion-icon>      
+      </button>      
+  
+    <button ion-button color="light" outline full large icon-right (click)="doClick($event, 1)">
+        ENTREPRISE
+        <!-- Advanced: explicity set the icon for each platform -->
+        <ion-icon ios="ios-arrow-dropright" md="md-arrow-dropright"></ion-icon>
+    </button>  
+  </div>    
+  <!--</div>-->
+<!--
+  <h2 lass="AccTitleBottom">Flexibilité, adaptabilité et performance 
+    pour renforcer vos équipes.
+    </h2>
+  -->
 </ion-content>
+
+<ion-footer class="Xcenter">
+  <ion-label>© findeur</ion-label>
+</ion-footer>

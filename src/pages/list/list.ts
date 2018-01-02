@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
+//import { ModalController } from 'ionic-angular';
+//import { ModalPage } from './modal-page';
 
 @Component({
   selector: 'page-list',
