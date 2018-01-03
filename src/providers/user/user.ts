@@ -2,6 +2,7 @@ import { Config } from './../../app/app.module';
 //import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
+import { ToastController } from 'ionic-angular';
 /*
   Generated class for the UserProvider provider.
 
@@ -17,12 +18,22 @@ export class UserProvider {
   //Infos sur l'utilisateur
   private user:any = {};
 
-  constructor(public http: Http) {
-    console.log('Hello UserProvider Provider');
+  constructor(public http: Http, public toastCtrl: ToastController) {
+   // console.log('Hello UserProvider Provider');
+  }
+
+  presentToast(mess: any) {
+    let toast = this.toastCtrl.create({
+      message: mess,
+      duration: 3000
+    });
+    toast.present();
   }
 
   signIn(credentials) {
     var url = Config.URL + '/user/find';
+    // this.presentToast(url);
+    // this.presentToast(JSON.stringify(credentials));
     //Promesse retournée à loginPage
     return new Promise(
       (resolve, reject)=> {
@@ -32,7 +43,8 @@ export class UserProvider {
           (response)=> {
             //tranformation de la réponse texte en objet json
             var data = response.json();
-            console.log(data);
+            // console.log(data);
+            // this.presentToast('reponse success');
             //hydratation de UserProvider en fonction des données de la requête
              if('success' in data) {
               this.authenticated = data.success;
@@ -44,7 +56,8 @@ export class UserProvider {
           },
           //callback d'erreur http
           (error)=>{
-            console.log(error);
+            // this.presentToast('reponse KO');
+            // console.log(error);
             reject(error);
           }
         );
@@ -53,8 +66,15 @@ export class UserProvider {
 
   }
 
-  signOUt() {
-
+  signOut() {
+    return new Promise(
+      (resolve, reject) => {
+        this.authenticated = false;
+        this.token = null;
+        this.user = {};
+        resolve(true);    
+      }
+    );
   }
 
   register() {

@@ -6,12 +6,12 @@
 -->
 <ion-header>
 
- <!--  <ion-navbar>
+  <!--  <ion-navbar>
     <ion-title>profilPage</ion-title>
   </ion-navbar> -->
   <ion-toolbar>
     <ion-title>
-      Profil utilisateur
+      Mon compte
     </ion-title>
     <ion-buttons start>
       <button ion-button (click)="dismiss()">
@@ -25,5 +25,67 @@
 
 
 <ion-content padding>
+
+  <ion-list no-border>
+
+    <ion-list-header>
+      Contact name
+    </ion-list-header>
+
+    <ion-item>
+      <ion-icon name='body' item-start></ion-icon>
+      <ion-label floating>Prenom</ion-label>
+      <ion-input type="text" value="{{ monUser.first_name }}"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-icon name='body' item-start></ion-icon>
+      <ion-label floating>Nom</ion-label>
+      <ion-input type="text" [(ngModel)]=monUser.name></ion-input>
+    </ion-item>
+  </ion-list>
+
+  <ion-list>
+    <ion-list-header>
+      Contact address
+    </ion-list-header>
+
+    <ion-item>
+      <ion-icon name='call' item-start></ion-icon>
+      <ion-input type="tel" [(ngModel)]=monUser.phone></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-icon name='mail' item-start></ion-icon>
+      <ion-label>{{ monUser.email }}</ion-label>
+    </ion-item>
+
+  </ion-list>
+
+
+  <ion-list>
+
+    <ion-list-header>
+      Activities
+    </ion-list-header>
+
+    <ion-item>
+      <ion-avatar item-start>
+        <img src="./assets/img/office-block.png">
+      </ion-avatar>
+
+      <h2>{{ monUser.RealName }}</h2>
+      <h3>I'm a big deal Développer</h3>
+      <p>Freelancer pendant ses heures perdues</p>
+    </ion-item>
+
+  </ion-list>
+
+  <button ion-button color="light" outline>
+    <span style="color:rgb(70, 85, 85)">Modifier profil</span>
+  </button>
+  <button ion-button color="light" outline (click)="disconnect();">
+    <span style="color:rgb(70, 85, 85)">Déconnexion</span>
+  </button>
 
 </ion-content>

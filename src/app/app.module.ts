@@ -15,6 +15,7 @@ import { IonicStorageModule } from '@ionic/storage';
 import { DataClassProvider } from '../providers/data-class/data-class';
 import { UserProvider } from '../providers/user/user';
 import { FreelanceProvider } from '../providers/freelance/freelance';
+import { UserStorageInfosProvider } from '../providers/user-storage-infos/user-storage-infos';
 
 // My app's pages and component
 import { MyApp } from './app.component';
@@ -33,7 +34,8 @@ import { RegisterPage } from '../pages/register/register';
 // import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 //Définition de la configuration globale de l'application
 export const Config = {
-  URL: 'http://localhost:8000'
+  URL: 'http://10.1.34.1/slimsrv/public'
+  // URL: 'http://localhost:8000'
 };
 
 @NgModule({
@@ -80,7 +82,8 @@ export const Config = {
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     DataClassProvider,
     UserProvider,
-    FreelanceProvider
+    FreelanceProvider,
+    UserStorageInfosProvider
   ]
 })
 export class AppModule {}
