@@ -7,7 +7,9 @@ ion-content {
 }
 */
 .backgrd {
-    background-image: url('../assets/img/background_img.jpg');
+    // background-image: url('../assets/img/background_img.jpg');
+    background-image: url('../assets/img/back_img.png');
+    
     background-repeat: no-repeat;
     background-size: cover;
     background-position:center;
@@ -25,12 +27,12 @@ h1.AccTitleTop, h2.AccTitleBottom {
 }
 
 .Ycenter {
-    margin-top: 30vh; /* poussé de la moitié de hauteur de viewport */
+    margin-top: 76vh; /* poussé de la moitié de hauteur de viewport */
     transform: translateY(-60%); /* tiré de la moitié de sa propre hauteur */
   }
 
   .Xcenter {
-    margin-left: 50vh; /* poussé de la moitié de hauteur de viewport */
+    margin-left: 30vh; /* poussé de la moitié de hauteur de viewport */
     transform: translateX(-50%); /* tiré de la moitié de sa propre hauteur */
   }
 

@@ -27,6 +27,14 @@ import { ProfilPage } from './../profil/profil';
 export class FindFreelancersBySkillPage {
   public userColor = '';
 
+  public freelancesData = [{
+    Image: '',
+    Section: '',
+    Title: '',
+    Excerpt: ''
+  }];
+
+
   freelances: any;
   // freelances: Array<object> = [];
   dataUser: any;
@@ -47,6 +55,11 @@ export class FindFreelancersBySkillPage {
     public events: Events) {
     //this.isAndroid = platform.is('android');
     this.initializeItems();
+
+/*     // Récupération des données
+    freelanceProvider.getPersonalBusiness().then((data) => console.log(data));
+ */
+
     // Souscription à l'évènement de connexion ustilisateur
     events.subscribe('user.connection', (data) => {
       this.userColor = (data) ? 'primary' : '';
@@ -58,12 +71,13 @@ export class FindFreelancersBySkillPage {
   }
 
   initializeItems() {
-    this.freelanceProvider.getFreelances().then(
+
+/*     this.freelanceProvider.getFreelances().then(
       (data) => {
         this.freelances = data;
       }
     );
-
+ */
   }
 
   /**
@@ -109,7 +123,14 @@ export class FindFreelancersBySkillPage {
   notificationSelect() {
 
   }
+
   ionViewDidLoad() {
+        // Récupération des données
+        this.freelanceProvider.getPersonalBusiness(10).then((data) => {
+          this.freelancesData = data;
+          console.log(data)
+        });
+
     //console.log('ionViewDidLoad FindFreelancersBySkillPage');
     /*     this.freelances.forEach(element => {
         this.presentToast(element.image);      

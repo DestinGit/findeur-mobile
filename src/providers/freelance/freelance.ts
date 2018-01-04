@@ -1,4 +1,5 @@
-//import { HttpClient } from '@angular/common/http';
+import { Config } from './../../app/app.module';
+import { Http } from '@angular/http';
 import { Injectable } from '@angular/core';
 // 
 import { Storage } from '@ionic/storage';
@@ -13,7 +14,7 @@ import { Storage } from '@ionic/storage';
 export class FreelanceProvider {
   private freelances: Array<object> = [];
 
-  constructor(private storage: Storage) {}
+  constructor(private storage: Storage, public http: Http) {}
 
   getFreelances() {
     return new Promise((resolve) => {
@@ -39,4 +40,27 @@ export class FreelanceProvider {
     this.freelances.push(freelance);
     this.storage.set('freelances', JSON.stringify(this.freelances));
   }
+
+
+
+
+  getPersonalBusiness(numberParams) {
+    let numberOfResults = (isNaN(numberParams)) ? 5 : numberParams;
+    var url = Config.URL + '/freelance-list?results=' + numberOfResults;
+    return new Promise(
+      (resolve, reject) => {
+        // Appel Asynchrone à l'API Slim
+        this.http.get(url).subscribe(
+          (response) => {
+            //var data = response.json();
+            //console.log(response.toString());
+            resolve(response.json());
+          },
+          (error) => reject(error)
+        );
+      }
+    );
+  }
+
+
 }

@@ -64,14 +64,14 @@
         </ion-item>
     </ion-list> -->
            
-    <ion-card *ngFor="let item of freelances">
-        <img src="{{item.image}}">
+    <ion-card *ngFor="let item of freelancesData">
+        <!-- <img src="{{item.Image}}"> -->
         <ion-card-content>
             <ion-card-title>
-              {{item.title}}
+              {{item.Title}}
             </ion-card-title>
             <p>
-              {{item.description}}
+              {{item.Excerpt}}
             </p>
         </ion-card-content>
     </ion-card>
