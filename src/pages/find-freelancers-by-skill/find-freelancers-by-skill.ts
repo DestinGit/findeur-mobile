@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { Storage } from '@ionic/storage';
-import { IonicPage, NavController, NavParams, Platform, Modal, ModalOptions, Events } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Platform, 
+  Modal, ModalOptions, Events, ModalController, ToastController,
+   Loading, LoadingController } from 'ionic-angular';
 import { FreelanceProvider } from '../../providers/freelance/freelance';
 import { UserProvider } from '../../providers/user/user';
 // import { UserStorageInfosProvider } from '../../providers/user-storage-infos/user-storage-infos';
 
-import { ToastController, ModalController } from 'ionic-angular';
 import { LoginPage } from '../login/login';
 import { ProfilPage } from './../profil/profil';
 // import { Events } from 'ionic-angular/util/events';
@@ -26,14 +27,17 @@ import { ProfilPage } from './../profil/profil';
 })
 export class FindFreelancersBySkillPage {
   public userColor = '';
-
-  public freelancesData = [{
-    Image: '',
-    Section: '',
-    Title: '',
-    Excerpt: ''
-  }];
-
+  public freelancesData: any;
+  public isThereNoData = false;
+  public message: string;
+  private loading: Loading;
+  /*   public freelancesData = [{
+      Image: '',
+      Section: '',
+      Title: '',
+      Excerpt: ''
+    }];
+   */
 
   freelances: any;
   // freelances: Array<object> = [];
@@ -41,12 +45,13 @@ export class FindFreelancersBySkillPage {
 
   isAndroid: boolean = false;
   toppings: any;
-  notifications: any;
-  gaming: any;
-  musicAlertOpts: any;
-
+  /*  notifications: any;
+    gaming: any;
+    musicAlertOpts: any;
+   */
   constructor(public navCtrl: NavController, public navParams: NavParams, platform: Platform,
     public storage: Storage,
+    public loadingCtrl: LoadingController,
     public modalCtrl: ModalController,
     public toastCtrl: ToastController,
     public freelanceProvider: FreelanceProvider,
@@ -56,28 +61,33 @@ export class FindFreelancersBySkillPage {
     //this.isAndroid = platform.is('android');
     this.initializeItems();
 
-/*     // Récupération des données
-    freelanceProvider.getPersonalBusiness().then((data) => console.log(data));
- */
+    /*     // Récupération des données
+        freelanceProvider.getPersonalBusiness().then((data) => console.log(data));
+     */
 
     // Souscription à l'évènement de connexion ustilisateur
-    events.subscribe('user.connection', (data) => {
+
+    /* events.subscribe('user.connection', (data) => {
       this.userColor = (data) ? 'primary' : '';
     });
-
+ */
+    events.subscribe('user.connection', () => this.whatClassIsIt());
     //this.storage.get('name').then((value) => console.log(value));
+    // userInfosStorage.setUserStorageInfos({'nom': 'jambon', 'prenom': 'fromage'});
+  }
 
-      // userInfosStorage.setUserStorageInfos({'nom': 'jambon', 'prenom': 'fromage'});
+  whatClassIsIt() {
+    return (this.userProvider.isAuthenticated()) ? 'userColor-idendifer' : 'userColor-noconnect';
   }
 
   initializeItems() {
 
-/*     this.freelanceProvider.getFreelances().then(
-      (data) => {
-        this.freelances = data;
-      }
-    );
- */
+    /*     this.freelanceProvider.getFreelances().then(
+          (data) => {
+            this.freelances = data;
+          }
+        );
+     */
   }
 
   /**
@@ -124,18 +134,38 @@ export class FindFreelancersBySkillPage {
 
   }
 
-  ionViewDidLoad() {
-        // Récupération des données
-        this.freelanceProvider.getPersonalBusiness(10).then((data) => {
-          this.freelancesData = data;
-          console.log(data)
-        });
+  entierAleatoire(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
 
-    //console.log('ionViewDidLoad FindFreelancersBySkillPage');
-    /*     this.freelances.forEach(element => {
-        this.presentToast(element.image);      
-        }); */
-    //console.log(this.freelances);
+  ionViewDidLoad() {
+    let nb = this.entierAleatoire(0, 250);
+    this.presentLoadingDefault();
+
+    // Récupération des données
+    this.freelanceProvider.getPersonalBusiness(nb)
+    .then((data) => {
+      this.freelancesData = data;
+      this.isThereNoData = !this.freelancesData.length;
+      this.message = 'Désolé, aucun résultat ne correspond à vos critères de recherche.';
+
+      this.loading.dismiss();
+    })
+    .catch((err) => {
+      this.isThereNoData = true;
+      this.message = 'Échec de la connexion. Vérifier vos paramètres de réseau';
+
+      this.loading.dismiss();
+    });
+  }
+
+  presentLoadingDefault() {
+    this.loading = this.loadingCtrl.create({
+      spinner: 'bubbles',
+      content: 'Patientez svp ...'
+    });
+
+    this.loading.present();
   }
 
 }

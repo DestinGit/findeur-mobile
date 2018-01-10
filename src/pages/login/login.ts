@@ -21,7 +21,7 @@ import { Events } from 'ionic-angular/util/events';
 })
 export class LoginPage {
   private loading: Loading;
-
+  public messageClassName: string = 'infosColor';
   credentials = {
     username: '',
     password: ''
@@ -33,6 +33,7 @@ export class LoginPage {
     public modalCtrl: ModalController, public loadingCtrl: LoadingController,
     public userProvider: UserProvider,
     public events: Events) {
+      this.message = 'Merci de renseigner vos identifiants de connexion.';
   }
 
   signIn() {
@@ -51,7 +52,9 @@ export class LoginPage {
       })
       .catch((err) => {
         this.loading.dismiss();
-        this.message = 'Une erreur : le système empêche l\'authentification';
+        this.messageClassName = 'errorColor';
+        this.message = `Erreur : le système empêche l'authentification.
+        Vérifier vos paramètres réseau ou vos infos de connexion.`;
       });
   }
 
@@ -73,9 +76,7 @@ export class LoginPage {
     let myModal: Modal = this.modalCtrl.create(RegisterPage, {}, myModalOptions);
     myModal.present();
 
-    myModal.onDidDismiss((data) => {
-    });
-
+    myModal.onDidDismiss((data) => {});
   }
 
   presentLoadingDefault() {
@@ -90,13 +91,12 @@ export class LoginPage {
 
     this.loading.present();
   }
+  
   ionViewWillLoad() {
     // let data = this.navParams.get('data');
     // console.log(data);
   }
 
-  ionViewDidLoad() {
-    // console.log('ionViewDidLoad LoginPage');
-  }
+  ionViewDidLoad() {}
 
 }

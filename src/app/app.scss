@@ -15,3 +15,22 @@
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
 //@import "../theme/icons";
+.userColor-idendifer {
+    color: #488aff;
+}
+
+.userColor-noconnect {
+    color: #9d9d9e;
+}
+
+.YcenterMessageBox {
+    margin-top: 30vh; /* poussé de la moitié de hauteur de viewport */
+    //transform: translateX(25%); /* tiré de la moitié de sa propre hauteur */
+  }  
+
+.messageBox {
+    font-weight: bold;
+    color: #f27c36;
+    font-size: 1.6em;
+    text-align: center;
+}

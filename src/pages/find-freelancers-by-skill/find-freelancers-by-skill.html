@@ -17,7 +17,8 @@
   
       <ion-buttons end>
           <button ion-button icon-only (click)="openLogOrProfilPage()">
-            <ion-icon name="contact" color="{{userColor}}"></ion-icon>
+            <!-- <ion-icon name="contact" color="{{ userColor }}"></ion-icon> -->
+            <ion-icon name="contact" [ngClass]="whatClassIsIt()"></ion-icon>
           </button>
       </ion-buttons>
         
@@ -46,26 +47,12 @@
 
 <ion-content padding>
  
-<!--     <ion-list>
-        <ion-item>
-          <ion-label>Toppings</ion-label>
-          <ion-select [(ngModel)]="toppings" multiple="true" cancelText="Nah" okText="Okay!">
-            <ion-option value="bacon" selected="true">Bacon</ion-option>
-            <ion-option value="olives">Black Olives</ion-option>
-            <ion-option value="xcheese" selected="true">Extra Cheese</ion-option>
-            <ion-option value="peppers">Green Peppers</ion-option>
-            <ion-option value="mushrooms">Mushrooms</ion-option>
-            <ion-option value="onions">Onions</ion-option>
-            <ion-option value="pepperoni">Pepperoni</ion-option>
-            <ion-option value="pineapple">Pineapple</ion-option>
-            <ion-option value="sausage">Sausage</ion-option>
-            <ion-option value="Spinach">Spinach</ion-option>
-          </ion-select>
-        </ion-item>
-    </ion-list> -->
+    <p class="YcenterMessageBox messageBox" *ngIf="isThereNoData">
+      {{ message }}
+    </p>
            
     <ion-card *ngFor="let item of freelancesData">
-        <!-- <img src="{{item.Image}}"> -->
+        <img src="http://findeur2017.findeur.fr/images/{{item.Image}}t.jpg">
         <ion-card-content>
             <ion-card-title>
               {{item.Title}}

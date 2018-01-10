@@ -34,8 +34,8 @@ import { RegisterPage } from '../pages/register/register';
 // import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 //Définition de la configuration globale de l'application
 export const Config = {
-  URL: 'http://10.1.34.1/slimsrv/public'
-  // URL: 'http://localhost:8000'
+   URL: 'http://10.1.34.106/slimsrv/public'
+  //URL: 'http://localhost:8000'
 };
 
 @NgModule({

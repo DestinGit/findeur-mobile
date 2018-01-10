@@ -18,9 +18,7 @@ export class UserProvider {
   //Infos sur l'utilisateur
   private user:any = {};
 
-  constructor(public http: Http, public toastCtrl: ToastController) {
-   // console.log('Hello UserProvider Provider');
-  }
+  constructor(public http: Http, public toastCtrl: ToastController) {}
 
   presentToast(mess: any) {
     let toast = this.toastCtrl.create({
@@ -32,19 +30,15 @@ export class UserProvider {
 
   signIn(credentials) {
     var url = Config.URL + '/user/find';
-    // this.presentToast(url);
-    // this.presentToast(JSON.stringify(credentials));
     //Promesse retournée à loginPage
     return new Promise(
       (resolve, reject)=> {
         //Appel asynchrone au backend
         this.http.post(url, credentials).subscribe(
-          //callback de la requête http (succès)
+          // callback de la requête http (succès)
           (response)=> {
             //tranformation de la réponse texte en objet json
             var data = response.json();
-            // console.log(data);
-            // this.presentToast('reponse success');
             //hydratation de UserProvider en fonction des données de la requête
              if('success' in data) {
               this.authenticated = data.success;
@@ -56,9 +50,10 @@ export class UserProvider {
           },
           //callback d'erreur http
           (error)=>{
-            // this.presentToast('reponse KO');
-            // console.log(error);
-            reject(error);
+            reject({
+              err: error,
+              link: url
+            });
           }
         );
       }

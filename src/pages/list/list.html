@@ -6,11 +6,11 @@
     <ion-title> Liste des offres de mission</ion-title>
 
     <ion-buttons end>
-        <button ion-button icon-only>
-          <ion-icon name="contact"></ion-icon>
-        </button>
+      <button ion-button icon-only (click)="openLogOrProfilPage()">
+        <ion-icon name="contact" [ngClass]="whatClassIsIt()"></ion-icon>
+      </button>
     </ion-buttons>
-    
+
   </ion-navbar>
 </ion-header>
 <!--
@@ -30,29 +30,29 @@
 </ion-content>
 -->
 <ion-content class="card-background-page">
-    
-      <ion-card>
-        <img src="./assets/img/card-saopaolo.jpg"/>
-        <div class="card-title">Findeur</div>
-        <div class="card-subtitle">41 Listings</div>
-      </ion-card>
-    
-      <ion-card>
-        <img src="./assets/img/card-amsterdam.jpg"/>
-        <div class="card-title">Engie</div>
-        <div class="card-subtitle">64 Listings</div>
-      </ion-card>
-    
-      <ion-card>
-        <img src="./assets/img/card-sf.jpg"/>
-        <div class="card-title">SNCF</div>
-        <div class="card-subtitle">72 Listings</div>
-      </ion-card>
-    
-      <ion-card>
-        <img src="./assets/img/card-madison.jpg"/>
-        <div class="card-title">RATP</div>
-        <div class="card-subtitle">28 Listings</div>
-      </ion-card>
-    
-    </ion-content>
+
+  <ion-card>
+    <img src="./assets/img/card-saopaolo.jpg" />
+    <div class="card-title">Findeur</div>
+    <div class="card-subtitle">41 Listings</div>
+  </ion-card>
+
+  <ion-card>
+    <img src="./assets/img/card-amsterdam.jpg" />
+    <div class="card-title">Engie</div>
+    <div class="card-subtitle">64 Listings</div>
+  </ion-card>
+
+  <ion-card>
+    <img src="./assets/img/card-sf.jpg" />
+    <div class="card-title">SNCF</div>
+    <div class="card-subtitle">72 Listings</div>
+  </ion-card>
+
+  <ion-card>
+    <img src="./assets/img/card-madison.jpg" />
+    <div class="card-title">RATP</div>
+    <div class="card-subtitle">28 Listings</div>
+  </ion-card>
+
+</ion-content>

@@ -1,3 +1,29 @@
 page-login {
+    .Ycenter {
+        margin-top: 47vh; /* poussé de la moitié de hauteur de viewport */
+        //transform: translateX(25%); /* tiré de la moitié de sa propre hauteur */
+      }  
 
+    .messageBox {
+        font-weight: bold;
+        // color: #f27c36;
+        font-size: 1.2em;
+        text-align: center;
+    }
+
+    .errorColor {
+        color: red;
+    }
+
+    .warningColor {
+        color: #f27c36;
+    }
+
+    .successColor {
+        color: green;
+    }
+
+    .infosColor {
+        color: rgb(110, 108, 104);
+    }
 }

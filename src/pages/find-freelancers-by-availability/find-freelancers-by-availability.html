@@ -16,8 +16,8 @@
     <ion-title>Trouvez par disponibilité</ion-title>
 
     <ion-buttons end>
-        <button ion-button icon-only>
-          <ion-icon name="contact"></ion-icon>
+        <button ion-button icon-only (click)="openLogOrProfilPage()">
+          <ion-icon name="contact" [ngClass]="whatClassIsIt()"></ion-icon>
         </button>
     </ion-buttons>
 
@@ -39,7 +39,24 @@
 
 
 <ion-content padding>
-    <ion-card *ngFor="let item of freelances">
+
+    <p class="YcenterMessageBox messageBox" *ngIf="isThereNoData">
+        {{ message }}
+      </p>
+             
+      <ion-card *ngFor="let item of freelancesData">
+          <img src="http://findeur2017.findeur.fr/images/{{item.Image}}t.jpg" alt="">
+          <ion-card-content>
+              <ion-card-title>
+                {{item.Title}}
+              </ion-card-title>
+              <p>
+                {{item.Excerpt}}
+              </p>
+          </ion-card-content>
+      </ion-card>
+  
+<!--     <ion-card *ngFor="let item of freelances">
         <img src={{item.image}}>
         <ion-card-content>
             <ion-card-title>
@@ -50,4 +67,5 @@
             </p>
         </ion-card-content>
     </ion-card>
+ -->    
 </ion-content>

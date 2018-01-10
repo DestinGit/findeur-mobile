@@ -20,10 +20,12 @@
 
 
 <ion-content padding>
-<p>{{ message }}</p>
+<p class="messageBox" [ngClass]="messageClassName" style="position:absolute">{{ message }}</p>
+
+<div class="Ycenter">
+  
   <ion-list>
     <ion-item>
-      <!-- <ion-label floating>Username</ion-label> -->
       <ion-label>login</ion-label>
       <ion-input type="text" [(ngModel)]="credentials.username"></ion-input>
     </ion-item>
@@ -33,9 +35,10 @@
       <ion-input type="password" [(ngModel)]="credentials.password"></ion-input>
     </ion-item>
   </ion-list>
-
+  
   <div padding>
     <button ion-button color="primary" block (click)="signIn();">Connexion</button>
     <button ion-button color="secondary" block (click)="openRegisterPage();">Inscription</button>
   </div>
+</div>  
 </ion-content>
