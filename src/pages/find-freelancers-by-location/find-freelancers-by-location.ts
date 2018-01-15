@@ -41,11 +41,15 @@ export class FindFreelancersByLocationPage {
     // this.isAndroid = platform.is('android');
     this.initializeItems();
 
-    events.subscribe('user.connection', () => {
-      this.whatClassIsIt('events : ');
-    });
+    events.subscribe('user.connection', () => this.whatClassIsIt('events : '));
+
+    this.presentLoadingDefault();
   }
 
+  itemSelected(item: any) {
+    console.log(item);
+  }
+  
   whatClassIsIt(msg: any) {
     console.log(msg + this.userProvider.isAuthenticated());
     return (this.userProvider.isAuthenticated()) ? 'userColor-idendifer' : 'userColor-noconnect';
@@ -61,21 +65,18 @@ export class FindFreelancersByLocationPage {
     };
     const data = { 'toto': true, 'titi': 'tata' };
     // User est authentifié ?
-    // console.log(this.userProvider.isAuthenticated());
     let myPageView = (!this.userProvider.isAuthenticated()) ? LoginPage : ProfilPage;
 
     // Lancement de la fenêtre modal
     let myModal: Modal = this.modalCtrl.create(myPageView, { 'data': data }, myModalOptions);
     myModal.present();
 
-    // console.log('Loginddfsdfd page');
     // Handler de l'évènement fermeture de la modal
     myModal.onDidDismiss((data) => {
       //console.log(data)
     }
     );
 
-    // this.userInfosStorage.getUserStorageInfos().then((data) => console.log(data));
   }
 
   initializeItems() {
@@ -109,7 +110,7 @@ export class FindFreelancersByLocationPage {
 
   ionViewDidLoad() {
     let nb = this.entierAleatoire(0, 250);
-    this.presentLoadingDefault();
+    // this.presentLoadingDefault();
     // Récupération des données
     this.freelanceProvider.getPersonalBusiness(nb).then((data) => {
       this.freelancesData = data;

@@ -56,39 +56,25 @@ export class FindFreelancersBySkillPage {
     public toastCtrl: ToastController,
     public freelanceProvider: FreelanceProvider,
     public userProvider: UserProvider,
-    // public userInfosStorage: UserStorageInfosProvider,
     public events: Events) {
     //this.isAndroid = platform.is('android');
     this.initializeItems();
 
-    /*     // Récupération des données
-        freelanceProvider.getPersonalBusiness().then((data) => console.log(data));
-     */
-
-    // Souscription à l'évènement de connexion ustilisateur
-
-    /* events.subscribe('user.connection', (data) => {
-      this.userColor = (data) ? 'primary' : '';
-    });
- */
     events.subscribe('user.connection', () => this.whatClassIsIt());
-    //this.storage.get('name').then((value) => console.log(value));
-    // userInfosStorage.setUserStorageInfos({'nom': 'jambon', 'prenom': 'fromage'});
+
+    this.presentLoadingDefault();    
   }
 
   whatClassIsIt() {
     return (this.userProvider.isAuthenticated()) ? 'userColor-idendifer' : 'userColor-noconnect';
   }
 
-  initializeItems() {
-
-    /*     this.freelanceProvider.getFreelances().then(
-          (data) => {
-            this.freelances = data;
-          }
-        );
-     */
+  itemSelected(item: any) {
+    console.log(item);
   }
+
+  
+  initializeItems() { }
 
   /**
    * Ouverture de la page Login ou Profil
@@ -100,21 +86,17 @@ export class FindFreelancersBySkillPage {
     };
     const data = { 'toto': true, 'titi': 'tata' };
     // User est authentifié ?
-    // console.log(this.userProvider.isAuthenticated());
     let myPageView = (!this.userProvider.isAuthenticated()) ? LoginPage : ProfilPage;
 
     // Lancement de la fenêtre modal
     let myModal: Modal = this.modalCtrl.create(myPageView, { 'data': data }, myModalOptions);
     myModal.present();
 
-    // console.log('Loginddfsdfd page');
     // Handler de l'évènement fermeture de la modal
     myModal.onDidDismiss((data) => {
-      //console.log(data)
     }
     );
 
-    // this.userInfosStorage.getUserStorageInfos().then((data) => console.log(data));
   }
 
   presentToast(viewTxt: string) {
@@ -138,9 +120,10 @@ export class FindFreelancersBySkillPage {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
+
   ionViewDidLoad() {
     let nb = this.entierAleatoire(0, 250);
-    this.presentLoadingDefault();
+    // this.presentLoadingDefault();
 
     // Récupération des données
     this.freelanceProvider.getPersonalBusiness(nb)

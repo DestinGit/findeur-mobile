@@ -7,60 +7,73 @@
 <ion-header>
 
   <ion-navbar>
-     <ion-buttons start>
-        <button ion-button icon-only menuToggle>
-          <ion-icon name="menu"></ion-icon>
-        </button>
-      </ion-buttons>
+    <ion-buttons start>
+      <button ion-button icon-only menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+    </ion-buttons>
 
-      <ion-title>Par compétence</ion-title>
-  
-      <ion-buttons end>
-          <button ion-button icon-only (click)="openLogOrProfilPage()">
-            <!-- <ion-icon name="contact" color="{{ userColor }}"></ion-icon> -->
-            <ion-icon name="contact" [ngClass]="whatClassIsIt()"></ion-icon>
-          </button>
-      </ion-buttons>
-        
+    <ion-title>Par compétence</ion-title>
+
+    <ion-buttons end>
+      <button ion-button icon-only (click)="openLogOrProfilPage()">
+        <!-- <ion-icon name="contact" color="{{ userColor }}"></ion-icon> -->
+        <ion-icon name="contact" [ngClass]="whatClassIsIt()"></ion-icon>
+      </button>
+    </ion-buttons>
+
   </ion-navbar>
 
   <ion-list>
-      <ion-item>
-        <ion-label>Compétences :</ion-label>
-        <ion-select [(ngModel)]="toppings" multiple="true" cancelText="Annuler" okText="Valider">
-          <ion-option value="bacon" selected="true">Développeur PHP</ion-option>
-          <ion-option value="olives">Plombier</ion-option>
-          <ion-option value="xcheese" selected="true">Chauffeur</ion-option>
-          <ion-option value="peppers">Développeur JS</ion-option>
-          <ion-option value="mushrooms">Graphiste</ion-option>
-          <ion-option value="onions">Fleuriste</ion-option>
-          <ion-option value="pepperoni">Cuisinier</ion-option>
-          <ion-option value="pineapple">Organisateur(rice) de mariage</ion-option>
-          <ion-option value="sausage">horticulteur(rice)</ion-option>
-          <ion-option value="Spinach">Livreur(euse)</ion-option>
-        </ion-select>
-      </ion-item>
-  </ion-list>  
-  
+    <ion-item>
+      <ion-label>Compétences :</ion-label>
+      <ion-select [(ngModel)]="toppings" multiple="true" cancelText="Annuler" okText="Valider">
+        <ion-option value="bacon" selected="true">Développeur PHP</ion-option>
+        <ion-option value="olives">Plombier</ion-option>
+        <ion-option value="xcheese" selected="true">Chauffeur</ion-option>
+        <ion-option value="peppers">Développeur JS</ion-option>
+        <ion-option value="mushrooms">Graphiste</ion-option>
+        <ion-option value="onions">Fleuriste</ion-option>
+        <ion-option value="pepperoni">Cuisinier</ion-option>
+        <ion-option value="pineapple">Organisateur(rice) de mariage</ion-option>
+        <ion-option value="sausage">horticulteur(rice)</ion-option>
+        <ion-option value="Spinach">Livreur(euse)</ion-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
+
 </ion-header>
 
 
-<ion-content padding>
- 
-    <p class="YcenterMessageBox messageBox" *ngIf="isThereNoData">
-      {{ message }}
-    </p>
-           
-    <ion-card *ngFor="let item of freelancesData">
-        <img src="http://findeur2017.findeur.fr/images/{{item.Image}}t.jpg">
-        <ion-card-content>
-            <ion-card-title>
-              {{item.Title}}
-            </ion-card-title>
-            <p>
-              {{item.Excerpt}}
-            </p>
-        </ion-card-content>
-    </ion-card>
+<ion-content>
 
+  <p class="YcenterMessageBox messageBox" *ngIf="isThereNoData">
+    {{ message }}
+  </p>
+
+  <!--   <ion-card *ngFor="let item of freelancesData">
+    <img src="http://findeur2017.findeur.fr/images/{{item.Image}}t.jpg">
+    <ion-card-content>
+      <ion-card-title>
+        {{item.Title}}
+      </ion-card-title>
+      <p>
+        {{item.Excerpt}}
+      </p>
+    </ion-card-content>
+  </ion-card>
+ -->
+
+
+
+  <ion-list no-lines>
+    <button ion-item *ngFor="let item of freelancesData" (click)="itemSelected(item)">
+      <ion-thumbnail item-start>
+        <img src="http://findeur2017.findeur.fr/images/{{item.Image}}t.jpg">
+      </ion-thumbnail>
+      <h2>{{item.Title}}</h2>
+      <p>{{item.Excerpt}}</p>
+    </button>
+  </ion-list>
+  
 </ion-content>
