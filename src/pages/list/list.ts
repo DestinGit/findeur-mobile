@@ -1,5 +1,7 @@
+// import { Component, ViewChild, ElementRef } from '@angular/core';
 import { Component } from '@angular/core';
-import { NavController, NavParams, ModalController, Modal, ModalOptions, Events } from 'ionic-angular';
+import { NavController, NavParams, ModalController, Modal, 
+  ModalOptions, Events, AlertController } from 'ionic-angular';
 import { LoginPage } from '../login/login';
 import { ProfilPage } from './../profil/profil';
 import { UserProvider } from '../../providers/user/user';
@@ -15,7 +17,10 @@ export class ListPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public modalCtrl: ModalController, public userProvider: UserProvider,
+    private alertCtrl: AlertController,
     public events: Events) {
+
+      // @ViewChild('testid') myCard: ElementRef;
 
     events.subscribe('user.connection', () => this.whatClassIsIt());
 
@@ -33,6 +38,14 @@ export class ListPage {
         note: 'This is item #' + i,
         icon: this.icons[Math.floor(Math.random() * this.icons.length)]
       });
+    }
+  }
+
+  coolSS() {
+    if(!this.userProvider.isAuthenticated()) {
+      this.presentPrompt();
+    } else {
+      console.info('On peut vir la suite pour postuler');
     }
   }
 
@@ -69,4 +82,55 @@ export class ListPage {
 
   }
 
+
+
+
+  presentPrompt() {
+    let alert = this.alertCtrl.create({
+      title: 'Connexion',
+      enableBackdropDismiss: false,
+      inputs: [
+        {
+          name: 'username',
+          placeholder: 'Votre identifiant findeur'
+        },
+        {
+          name: 'password',
+          placeholder: 'Votre mot de passe',
+          type: 'password'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Annuler',
+          role: 'cancel',
+          handler: data => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Valider',
+          handler: data => {
+          console.log(data);
+            this.userProvider.signIn(data)
+            .then((res: any) => {
+              console.log(res);
+              if (res.success) {
+                this.events.publish('user.connection', res.success);
+                console.log('kolelelalalalallal');
+              } else {
+                console.log('Bololellllle mistik');
+                this.coolSS();
+              }
+            })
+            .catch((err) => {
+              return false;
+            });
+
+          }
+        }
+      ]
+    });
+    alert.present();
+  }  
 }
