@@ -1,67 +1,66 @@
 // import { Component, ViewChild, ElementRef } from '@angular/core';
 import { Component } from '@angular/core';
-import { NavController, NavParams, ModalController, Modal, 
-  ModalOptions, Events, AlertController } from 'ionic-angular';
+import {
+  NavController, NavParams, ModalController, Modal,
+  ModalOptions, Events, AlertController, Loading, LoadingController, Toast, ToastController
+} from 'ionic-angular';
 import { LoginPage } from '../login/login';
 import { ProfilPage } from './../profil/profil';
 import { UserProvider } from '../../providers/user/user';
+import { FreelanceProvider } from '../../providers/freelance/freelance';
 
 @Component({
   selector: 'page-list',
   templateUrl: 'list.html'
 })
 export class ListPage {
-  selectedItem: any;
-  icons: string[];
-  items: Array<{ title: string, note: string, icon: string }>;
+  businessMissions: any;
+  isThereNoData = false;
+  message: string;
+  private loading: Loading;
+  private toast: Toast;
+
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public modalCtrl: ModalController, public userProvider: UserProvider,
-    private alertCtrl: AlertController,
-    public events: Events) {
+    private alertCtrl: AlertController, public events: Events,
+    private freelanceProvider: FreelanceProvider, public loadingCtrl: LoadingController,
+    public toastCtrl: ToastController) {
 
-      // @ViewChild('testid') myCard: ElementRef;
-
+    // Show loading
+    this.presentLoadingDefault();
+    
+    // register for the event 'user.connection'
     events.subscribe('user.connection', () => this.whatClassIsIt());
-
-    // If we navigated to this page, we will have an item available as a nav param
-    this.selectedItem = navParams.get('item');
-
-    // Let's populate this page with some filler content for funzies
-    this.icons = ['flask', 'wifi', 'beer', 'football', 'basketball', 'paper-plane',
-      'american-football', 'boat', 'bluetooth', 'build'];
-
-    this.items = [];
-    for (let i = 1; i < 11; i++) {
-      this.items.push({
-        title: 'Item ' + i,
-        note: 'This is item #' + i,
-        icon: this.icons[Math.floor(Math.random() * this.icons.length)]
-      });
-    }
   }
 
-  coolSS() {
-    if(!this.userProvider.isAuthenticated()) {
-      this.presentPrompt();
+  ionViewDidLoad() {
+    this.loadDatas();
+  }
+
+
+
+  coolSS(item: any) {
+    // console.log(item);
+    if (!this.userProvider.isAuthenticated()) {
+      this.presentPrompt(item);
     } else {
-      console.info('On peut vir la suite pour postuler');
+      this.presentToast('Votre candidature pour la mission ' + item.Title + ' a bien été enregistrée');
+      this.applyToMission(item);
     }
   }
 
-  itemTapped(event, item) {
-    // That's right, we're pushing to ourselves!
-    this.navCtrl.push(ListPage, {
-      item: item
-    });
-  }
-
+  /**
+   * Returns the name of the class for the ion-icon tag in order to assign the correct color 
+   * for the user icon
+   * @returns {string}
+   */
   whatClassIsIt() {
     return (this.userProvider.isAuthenticated()) ? 'userColor-idendifer' : 'userColor-noconnect';
   }
+
   /**
-    * Ouverture de la page Login ou Profil
-    * suivant que l'utilisateur est authentifié ou pas
+    * Opening the Login or Profile page depending on whether the user is authenticated or not
     */
   openLogOrProfilPage() {
     const myModalOptions: ModalOptions = {
@@ -83,11 +82,50 @@ export class ListPage {
   }
 
 
+  /**
+   * Show a Toast notification
+   * A Toast is a subtle notification commonly used in modern applications. 
+   * @param viewTxt 
+   */
+  presentToast(viewTxt: string) {
+    this.toast = this.toastCtrl.create({
+      message: viewTxt,
+      duration: 3000
+    });
+    this.toast.present();
+  }
 
 
-  presentPrompt() {
+  presentAlertBox(messageData:object, buttonsArray:any, inputsArray:any) {
+    
+    let myTitle = (typeof messageData != 'undefined' && messageData !== null && messageData.hasOwnProperty('title'))
+     ? messageData['title'] : null;
+
     let alert = this.alertCtrl.create({
-      title: 'Connexion',
+      title: myTitle,
+      message: (typeof messageData != 'undefined' && messageData !== null && messageData.hasOwnProperty('message')) 
+      ? messageData['message'] : null,
+
+      enableBackdropDismiss: false,
+      inputs: (typeof inputsArray != 'undefined' && inputsArray !== null) 
+      ? inputsArray : null,
+      buttons: (typeof buttonsArray != 'undefined' && buttonsArray !== null) 
+      ? buttonsArray : [{text: 'Ok'}]
+    });
+    alert.present();
+
+  }
+
+  /**
+   * Show Alert dialog box
+   * An Alert is a dialog that presents users with information or 
+   * collects information from the user using inputs.
+   * @param item 
+   */
+  presentPrompt(item: any) {
+    let alert = this.alertCtrl.create({
+      title: '<h2>Connexion</h2>',
+      message: 'Veuillez vous identifier pour pouvoir postuler à la mission : <h5>' + item.Title + '</h5>',
       enableBackdropDismiss: false,
       inputs: [
         {
@@ -110,27 +148,81 @@ export class ListPage {
         },
         {
           text: 'Valider',
-          handler: data => {
-          console.log(data);
-            this.userProvider.signIn(data)
-            .then((res: any) => {
-              console.log(res);
-              if (res.success) {
-                this.events.publish('user.connection', res.success);
-                console.log('kolelelalalalallal');
-              } else {
-                console.log('Bololellllle mistik');
-                this.coolSS();
-              }
-            })
-            .catch((err) => {
-              return false;
-            });
-
+          handler: (data) => {            
+            this.validateButtonHandler(data, item);
           }
         }
       ]
     });
     alert.present();
-  }  
+  }
+
+  validateButtonHandler(data:any, item:any) { 
+    this.userProvider.signIn(data)
+      .then((res: any) => {
+        console.log(res);
+        if (res.success) {
+          this.events.publish('user.connection', res.success);
+          this.applyToMission(item);                 
+        } else {
+          this.coolSS(item);   
+        }
+      })
+      .catch((err) => {
+        return false;
+      });
+  }
+
+  applyToMission(item: any) {
+    item['user'] = this.userProvider.getUser()['name'];
+    this.freelanceProvider.applyToMission(item)
+        .then((res)=>console.log(res))
+        .catch((err) => console.log(err));
+  }
+
+  /**
+   * Return a random number
+   * @param {number} min
+   * @param {number} max 
+   * @returns {number}
+   */
+  entierAleatoire(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  /**
+   * Recovering data from the database
+   */
+  loadDatas() {
+    this.freelanceProvider.getListOfMissionsToApply(this.entierAleatoire(50, 70))
+      .then((data) => {
+        this.businessMissions = data;
+        console.log(data);
+        this.isThereNoData = !this.businessMissions.length;
+        this.message = 'Désolé, aucun résultat ne correspond à vos critères de recherche.';
+
+        this.loading.dismiss();
+      })
+      .catch(() => {
+        this.isThereNoData = true;
+        this.message = 'Échec de la connexion. Vérifier vos paramètres de réseau';
+
+        this.loading.dismiss();
+      });
+  }
+
+
+  /**
+   * Show Loading
+   * An overlay that can be used to indicate activity while blocking user interaction. 
+   */
+  presentLoadingDefault() {
+    this.loading = this.loadingCtrl.create({
+      spinner: 'bubbles',
+      content: 'Patientez svp ...'
+    });
+
+    this.loading.present();
+  }
+
 }

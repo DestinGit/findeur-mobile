@@ -9,10 +9,6 @@ import { UserProvider } from '../../providers/user/user';
 
 import { LoginPage } from '../login/login';
 import { ProfilPage } from './../profil/profil';
-// import { Events } from 'ionic-angular/util/events';
-// import { Modal } from 'ionic-angular/components/modal/modal';
-// import { HomePage } from '../home/home';
-// import { MyTabsPage } from './../my-tabs/my-tabs';
 /**
  * Generated class for the FindFreelancersBySkillPage page.
  *

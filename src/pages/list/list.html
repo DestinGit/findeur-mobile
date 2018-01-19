@@ -29,9 +29,72 @@
   </div>
 </ion-content>
 -->
-<ion-content class="card-background-page">
+<ion-content>
+  <!-- <ion-content class="card-background-page"> -->
+  <p class="YcenterMessageBox messageBox" *ngIf="isThereNoData">
+    {{ message }}
+  </p>
 
-  <ion-card (click)="coolSS()">
+
+  <ion-card *ngFor="let item of businessMissions">
+    <ion-row>
+      <ion-col col-4 offset-4>
+        <img src="http://findeur2017.findeur.fr/images/{{item.Image}}t.jpg" style="max-width: 100%;
+    height: auto;" />
+      </ion-col>
+    </ion-row>
+    <ion-card-content>
+      <ion-card-title>
+        {{ item.Title }}
+      </ion-card-title>
+      <p>
+        {{ item.Body }}
+      </p>
+    </ion-card-content>
+
+    <ion-row no-padding>
+      <ion-col col-4>
+        <button ion-button clear small color="danger" icon-start (click)="presentAlertBox()">
+          <ion-icon name='star'></ion-icon>
+          Favories
+        </button>
+      </ion-col>
+      <ion-col col-4>
+        <!-- <ion-col text-center> -->
+        <button ion-button clear small color="danger" icon-start (click)="coolSS(item)">
+          <ion-icon name='arrow-dropright-circle'></ion-icon>
+          Postuler
+        </button>
+      </ion-col>
+      <ion-col col-4>
+        <!-- <ion-col text-right> -->
+        <button ion-button clear small color="danger" icon-start>
+          <ion-icon name='share-alt'></ion-icon>
+          Partager
+        </button>
+      </ion-col>
+    </ion-row>
+    <!--     <ion-item>
+      <ion-icon name='musical-notes' item-start style="color: #d03e84"></ion-icon>
+      Albums
+      <ion-badge item-end>9</ion-badge>
+    </ion-item>
+
+    <ion-item>
+      <ion-icon name='logo-twitter' item-start style="color: #55acee"></ion-icon>
+      Followers
+      <ion-badge item-end>260k</ion-badge>
+    </ion-item>
+ -->
+  </ion-card>
+
+  <!--   <ion-card *ngFor="let item of businessMissions" (click)="coolSS()">
+    <img src="http://findeur2017.findeur.fr/images/{{item.Image}}t.jpg" />
+    <div class="card-title">{{ item.Title }}</div>
+    <div class="card-subtitle">{{item.Body}}</div>
+  </ion-card>
+ -->
+  <!--   <ion-card (click)="coolSS()">
     <img src="./assets/img/card-saopaolo.jpg" />
     <div class="card-title">Findeur</div>
     <div class="card-subtitle">41 Listings</div>
@@ -54,5 +117,5 @@
     <div class="card-title">RATP</div>
     <div class="card-subtitle">28 Listings</div>
   </ion-card>
-
+ -->
 </ion-content>

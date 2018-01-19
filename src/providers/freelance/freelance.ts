@@ -62,5 +62,39 @@ export class FreelanceProvider {
     );
   }
 
+/**
+ * 
+ * @param numberParams 
+ */
+  getListOfMissionsToApply(numberParams) {
+    let numberOfResults = (isNaN(numberParams)) ? 5 : numberParams;
+    var url = Config.URL + '/missions-list?results=' + numberOfResults;
+    return new Promise(
+      (resolve, reject) => {
+        // Appel Asynchrone à l'API Slim
+        this.http.get(url).subscribe(
+          (response) => {
+            resolve(response.json());
+          },
+          (error) => reject(error)
+        );
+      }
+    );
+  }
 
+  applyToMission(postData:any) {
+    var url = 'http://localhost:8000/ar/add';
+    return new Promise(
+      (resolve, reject) => {
+        this.http.post(url, postData).subscribe(
+          (response) => {
+            resolve(response.json());
+          },
+          (error) => {
+            reject(error);
+          }
+        );
+      }
+    );
+  }
 }
