@@ -59,7 +59,7 @@
       <ion-list no-lines>
           <button ion-item *ngFor="let item of freelancesData" (click)="itemSelected(item)">
             <ion-thumbnail item-start>
-              <img src="http://findeur2017.findeur.fr/images/{{item.Image}}t.jpg">
+              <img src="{{ item.Image | pipelinkimg }}">
             </ion-thumbnail>
             <!-- <div class="card-title">Findeur</div> -->
             <!-- <div class="card-subtitle">41 Listings</div> -->
@@ -69,3 +69,7 @@
         </ion-list>
          
 </ion-content>
+
+<ion-footer>
+  <button ion-button color="grey2" full outline>Nouvelle annonce</button>
+</ion-footer>

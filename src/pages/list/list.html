@@ -3,119 +3,78 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title> Liste des offres de mission</ion-title>
+    <!-- <ion-title> Liste des offres de mission</ion-title> -->
 
     <ion-buttons end>
       <button ion-button icon-only (click)="openLogOrProfilPage()">
+        <!-- <button ion-button icon-only (click)="openRegisterWebpage()"> -->
         <ion-icon name="contact" [ngClass]="whatClassIsIt()"></ion-icon>
       </button>
     </ion-buttons>
 
   </ion-navbar>
+
+  <ion-segment [(ngModel)]="filter">
+    <ion-segment-button value="all">Tous</ion-segment-button>
+    <ion-segment-button value="done">Mes candidatures</ion-segment-button>
+    <ion-segment-button value="not done">Mes favoris</ion-segment-button>
+  </ion-segment>
+
 </ion-header>
-<!--
+
 <ion-content>
-  <ion-list>
-    <button ion-item *ngFor="let item of items" (click)="itemTapped($event, item)">
-      <ion-icon [name]="item.icon" item-start></ion-icon>
-      {{item.title}}
-      <div class="item-note" item-end>
-        {{item.note}}
-      </div>
-    </button>
-  </ion-list>
-  <div *ngIf="selectedItem" padding>
-    You navigated here from <b>{{selectedItem.title}}</b>
-  </div>
-</ion-content>
--->
-<ion-content>
-  <!-- <ion-content class="card-background-page"> -->
   <p class="YcenterMessageBox messageBox" *ngIf="isThereNoData">
     {{ message }}
   </p>
 
-
-  <ion-card *ngFor="let item of businessMissions">
-    <ion-row>
-      <ion-col col-4 offset-4>
-        <img src="http://findeur2017.findeur.fr/images/{{item.Image}}t.jpg" style="max-width: 100%;
+  <div [ngSwitch]="filter">
+    <div *ngSwitchCase="'all'">
+      <ion-card *ngFor="let item of businessMissions">
+        <ion-card-header color="findeur" *ngIf="item.custom_27 | application: userName">
+          Déjà postulé
+        </ion-card-header>
+        <ion-row>
+          <ion-col col-4 offset-4>
+            <!-- <img src="http://findeur2017.findeur.fr/images/{{item.Image}}t.jpg" style="max-width: 100%;
+    height: auto;" /> -->
+            <img src="{{ item.Image | pipelinkimg }}" style="max-width: 100%;
     height: auto;" />
-      </ion-col>
-    </ion-row>
-    <ion-card-content>
-      <ion-card-title>
-        {{ item.Title }}
-      </ion-card-title>
-      <p>
-        {{ item.Body }}
-      </p>
-    </ion-card-content>
+          </ion-col>
+        </ion-row>
+        <ion-card-content>
+          <ion-card-title>
+            {{ item.Title }}
+          </ion-card-title>
+          <p>
+            {{ item.Body }}
+          </p>
+        </ion-card-content>
 
-    <ion-row no-padding>
-      <ion-col col-4>
-        <button ion-button clear small color="danger" icon-start (click)="presentAlertBox()">
-          <ion-icon name='star'></ion-icon>
-          Favories
-        </button>
-      </ion-col>
-      <ion-col col-4>
-        <!-- <ion-col text-center> -->
-        <button ion-button clear small color="danger" icon-start (click)="coolSS(item)">
-          <ion-icon name='arrow-dropright-circle'></ion-icon>
-          Postuler
-        </button>
-      </ion-col>
-      <ion-col col-4>
-        <!-- <ion-col text-right> -->
-        <button ion-button clear small color="danger" icon-start>
-          <ion-icon name='share-alt'></ion-icon>
-          Partager
-        </button>
-      </ion-col>
-    </ion-row>
-    <!--     <ion-item>
-      <ion-icon name='musical-notes' item-start style="color: #d03e84"></ion-icon>
-      Albums
-      <ion-badge item-end>9</ion-badge>
-    </ion-item>
+        <ion-row no-padding>
+          <ion-col col-4>
+            <button ion-button clear small color="danger" icon-start>
+              <ion-icon name='star'></ion-icon>
+              Favoris
+            </button>
+          </ion-col>
+          <ion-col col-4>
+            <!-- <ion-col text-center> -->
+            <!-- <button ion-button clear small color="danger" icon-start (click)="coolSS(item)"> -->
+            <button ion-button clear small color="danger" icon-start (click)="handlerApplyToMissionButton(item)">
+              <ion-icon name='arrow-dropright-circle'></ion-icon>
+              Postuler
+            </button>
+          </ion-col>
+          <ion-col col-4>
+            <!-- <ion-col text-right> -->
+            <button ion-button clear small color="danger" icon-start>
+              <ion-icon name='share-alt'></ion-icon>
+              Partager
+            </button>
+          </ion-col>
+        </ion-row>
+      </ion-card>
+    </div>
 
-    <ion-item>
-      <ion-icon name='logo-twitter' item-start style="color: #55acee"></ion-icon>
-      Followers
-      <ion-badge item-end>260k</ion-badge>
-    </ion-item>
- -->
-  </ion-card>
-
-  <!--   <ion-card *ngFor="let item of businessMissions" (click)="coolSS()">
-    <img src="http://findeur2017.findeur.fr/images/{{item.Image}}t.jpg" />
-    <div class="card-title">{{ item.Title }}</div>
-    <div class="card-subtitle">{{item.Body}}</div>
-  </ion-card>
- -->
-  <!--   <ion-card (click)="coolSS()">
-    <img src="./assets/img/card-saopaolo.jpg" />
-    <div class="card-title">Findeur</div>
-    <div class="card-subtitle">41 Listings</div>
-  </ion-card>
-
-  <ion-card>
-    <img src="./assets/img/card-amsterdam.jpg" />
-    <div class="card-title">Engie</div>
-    <div class="card-subtitle">64 Listings</div>
-  </ion-card>
-
-  <ion-card>
-    <img src="./assets/img/card-sf.jpg" />
-    <div class="card-title">SNCF</div>
-    <div class="card-subtitle">72 Listings</div>
-  </ion-card>
-
-  <ion-card>
-    <img src="./assets/img/card-madison.jpg" />
-    <div class="card-title">RATP</div>
-    <div class="card-subtitle">28 Listings</div>
-  </ion-card>
- -->
+  </div>
 </ion-content>

@@ -83,7 +83,7 @@ export class FreelanceProvider {
   }
 
   applyToMission(postData:any) {
-    var url = 'http://localhost:8000/ar/add';
+    var url = Config.URL + '/ar/add';
     return new Promise(
       (resolve, reject) => {
         this.http.post(url, postData).subscribe(

@@ -1,40 +1,17 @@
-<!--
-  <ion-navbar>
-    
-    <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
-    <ion-title>Accueil</ion-title>
-  </ion-navbar>
--->
-<!-- <ion-header>
-     <ion-title>Accueil</ion-title>      
-</ion-header>
- -->
-<ion-content padding class="backgrd">
-<!--   <h1 class="AccTitleTop">Trouvez le meilleur freelance 
-    pour votre besoin en externalisation</h1>
- -->
-  <!-- <div class="parent" style="border:1px rgb(223, 210, 210) solid"> -->
+<ion-content class="backgrd">
     <div class="Ycenter">
-      <button ion-button color="danger" outline full large icon-right (click)="doClick($event, 0)">
-        FREELANCE  
+      <button ion-button class="btnBackground2" color="findeur" outline full large icon-right (click)="doClick($event, 0)">
+          <span style="color:#fff">Vous êtes un <b>indépendant</b> ? <br>Trouvez des clients </span>
         <!-- Advanced: explicity set the icon for each platform -->
-        <ion-icon ios="ios-arrow-dropright" md="md-arrow-dropright"></ion-icon>      
+        <ion-icon style="color:#fff" ios="ios-arrow-dropright" md="md-arrow-dropright"></ion-icon>      
       </button>      
   
-    <button ion-button color="light" outline full large icon-right (click)="doClick($event, 1)">
-        ENTREPRISE
+    <button ion-button class="btnBackground" color="findeur" outline full large icon-right (click)="doClick($event, 1)">
+        <span style="color:#fff">Vous êtes une <b>entreprise</b> ? <br>Trouvez des freelances</span>
         <!-- Advanced: explicity set the icon for each platform -->
-        <ion-icon ios="ios-arrow-dropright" md="md-arrow-dropright"></ion-icon>
+        <ion-icon style="color:#fff" ios="ios-arrow-dropright" md="md-arrow-dropright"></ion-icon>
     </button>  
   </div>    
-  <!--</div>-->
-<!--
-  <h2 lass="AccTitleBottom">Flexibilité, adaptabilité et performance 
-    pour renforcer vos équipes.
-    </h2>
-  -->
 </ion-content>
 
 <ion-footer class="Xcenter">

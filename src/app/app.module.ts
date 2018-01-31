@@ -1,3 +1,5 @@
+import { PipeLinkImg } from './../pipescustom/pipeLinkImg';
+import { Application } from './../pipescustom/application';
 // Native ionic Libraries
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
@@ -27,15 +29,18 @@ import { MyTabsPage } from '../pages/my-tabs/my-tabs';
 import { FindFreelancersByAvailabilityPage } from '../pages/find-freelancers-by-availability/find-freelancers-by-availability';
 import { FindFreelancersBySkillPage } from '../pages/find-freelancers-by-skill/find-freelancers-by-skill';
 import { FindFreelancersByLocationPage } from '../pages/find-freelancers-by-location/find-freelancers-by-location';
+import { FreelanceDetailPage } from './../pages/freelance-detail/freelance-detail';
 import { LoginPage } from '../pages/login/login';
 import { ProfilPage } from './../pages/profil/profil';
 import { RegisterPage } from '../pages/register/register';
 
+import { InAppBrowser } from '@ionic-native/in-app-browser';
+
 // import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 //Définition de la configuration globale de l'application
 export const Config = {
-  // URL: 'http://yemeialways.alwaysdata.net/slimSRV/public'
-  URL: 'http://localhost:8000'
+   URL: 'http://yemeialways.alwaysdata.net/slimSRV/public'
+  //URL: 'http://localhost:8000'
 };
 
 @NgModule({
@@ -48,9 +53,12 @@ export const Config = {
     FindFreelancersBySkillPage,
     FindFreelancersByAvailabilityPage,
     FindFreelancersByLocationPage,
+    FreelanceDetailPage,
     LoginPage,
     ProfilPage,
-    RegisterPage
+    RegisterPage,
+    Application,
+    PipeLinkImg
   ],
   imports: [
     BrowserModule,
@@ -58,7 +66,7 @@ export const Config = {
     IonicModule.forRoot(MyApp),
     IonicStorageModule.forRoot({
       name: '__findeurdb',
-         driverOrder: ['sqlite', 'indexeddb', 'websql']
+      driverOrder: ['sqlite', 'indexeddb', 'websql']
     }),
     HttpModule
   ],
@@ -72,6 +80,7 @@ export const Config = {
     FindFreelancersBySkillPage,
     FindFreelancersByAvailabilityPage,
     FindFreelancersByLocationPage,
+    FreelanceDetailPage,
     LoginPage,
     ProfilPage,
     RegisterPage
@@ -79,11 +88,12 @@ export const Config = {
   providers: [
     StatusBar,
     SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    { provide: ErrorHandler, useClass: IonicErrorHandler },
     DataClassProvider,
     UserProvider,
     FreelanceProvider,
-    UserStorageInfosProvider
+    UserStorageInfosProvider,
+    InAppBrowser
   ]
 })
-export class AppModule {}
+export class AppModule { }

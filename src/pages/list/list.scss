@@ -1,6 +1,18 @@
 page-list {
-
+  ion-card-header.card-header {
+    padding: 0;
+    background-color: darkslategrey;
+    margin-bottom: 3px;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.5);  
+  }
 }
+.alertClass {
+  .alert-wrapper {
+    background-color: rgba(0,0,0, 0.6);
+  }
+}
+
 .card-background-page {
     
       ion-card {

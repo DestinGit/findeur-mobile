@@ -7,8 +7,8 @@ ion-content {
 }
 */
 .backgrd {
-    // background-image: url('../assets/img/back_img_1.jpg');
-    background-image: url('../assets/img/back_img.png');
+    background-image: url('../assets/img/back_img_1.jpg');
+    // background-image: url('../assets/img/back_img.png');
     
     background-repeat: no-repeat;
     background-size: cover;
@@ -27,7 +27,7 @@ h1.AccTitleTop, h2.AccTitleBottom {
 }
 
 .Ycenter {
-    margin-top: 82vh; /* poussé de la moitié de hauteur de viewport */
+    margin-top: 80vh; /* poussé de la moitié de hauteur de viewport */
     transform: translateY(-60%); /* tiré de la moitié de sa propre hauteur */
   }
 
@@ -36,7 +36,12 @@ h1.AccTitleTop, h2.AccTitleBottom {
     transform: translateX(-50%); /* tiré de la moitié de sa propre hauteur */
   }
 
-
+  .btnBackground {
+      background-color: rgb(242, 124, 54);
+  }
+  .btnBackground2 {
+    background-color: rgb(243, 147, 91);
+}
 
 
 
@@ -44,8 +49,8 @@ h1.AccTitleTop, h2.AccTitleBottom {
     position: absolute;
     top: 50%;
     left: 30%;
-
 }
+
 .placeButton {
     top: 50%;
 }

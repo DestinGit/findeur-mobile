@@ -1,3 +1,4 @@
+import { FreelanceDetailPage } from './../freelance-detail/freelance-detail';
 import { Component } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { IonicPage, NavController, NavParams, Platform, 
@@ -61,12 +62,19 @@ export class FindFreelancersBySkillPage {
     this.presentLoadingDefault();    
   }
 
+  goToDetailPage() {
+  }
+
   whatClassIsIt() {
     return (this.userProvider.isAuthenticated()) ? 'userColor-idendifer' : 'userColor-noconnect';
   }
 
   itemSelected(item: any) {
-    console.log(item);
+    // console.log(item);
+    let params = {
+      parData: item
+    };
+    this.navCtrl.push(FreelanceDetailPage, params);
   }
 
   

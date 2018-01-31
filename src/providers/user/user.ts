@@ -30,6 +30,7 @@ export class UserProvider {
 
   signIn(credentials) {
     var url = Config.URL + '/user/find';
+    // console.log(url);
     //Promesse retournée à loginPage
     return new Promise(
       (resolve, reject)=> {
@@ -39,6 +40,7 @@ export class UserProvider {
           (response)=> {
             //tranformation de la réponse texte en objet json
             var data = response.json();
+            console.log(data);
             //hydratation de UserProvider en fonction des données de la requête
              if('success' in data) {
               this.authenticated = data.success;
@@ -51,8 +53,7 @@ export class UserProvider {
           //callback d'erreur http
           (error)=>{
             reject({
-              err: error,
-              link: url
+              err: error
             });
           }
         );
@@ -72,8 +73,22 @@ export class UserProvider {
     );
   }
 
-  register() {
-
+  register(credentials:any) {
+    var url = Config.URL + '/user/add';
+console.log(url);
+    return new Promise((resolve, reject) => {
+      // Appel Asynchrone au Backend
+      this.http.post(url, credentials).subscribe(
+        // callback de la requête http (succès)
+        (response) => {
+          var data = response.json();
+          resolve(data);
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    });
   }
 
 

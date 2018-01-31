@@ -38,7 +38,8 @@ export class LoginPage {
 
   signIn() {
     this.presentLoadingDefault();
-
+// console.log('qqqq');
+// console.log(this.credentials);
     this.userProvider.signIn(this.credentials)
       .then((res: any) => {
         this.message = res.message;
@@ -51,6 +52,8 @@ export class LoginPage {
         }
       })
       .catch((err) => {
+        console.log(err);
+        
         this.loading.dismiss();
         this.messageClassName = 'errorColor';
         this.message = `Erreur : le système empêche l'authentification.
