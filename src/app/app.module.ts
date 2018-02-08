@@ -33,13 +33,14 @@ import { FreelanceDetailPage } from './../pages/freelance-detail/freelance-detai
 import { LoginPage } from '../pages/login/login';
 import { ProfilPage } from './../pages/profil/profil';
 import { RegisterPage } from '../pages/register/register';
+import { NewArticlePage } from '../pages/new-article/new-article';
 
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 
 // import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 //Définition de la configuration globale de l'application
 export const Config = {
-   URL: 'http://yemeialways.alwaysdata.net/slimSRV/public'
+   URL: 'https://yemeialways.alwaysdata.net/slimSRV/public'
   //URL: 'http://localhost:8000'
 };
 
@@ -57,6 +58,7 @@ export const Config = {
     LoginPage,
     ProfilPage,
     RegisterPage,
+    NewArticlePage,
     Application,
     PipeLinkImg
   ],
@@ -83,7 +85,8 @@ export const Config = {
     FreelanceDetailPage,
     LoginPage,
     ProfilPage,
-    RegisterPage
+    RegisterPage,
+    NewArticlePage
   ],
   providers: [
     StatusBar,

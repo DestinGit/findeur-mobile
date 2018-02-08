@@ -1,11 +1,15 @@
 import { UserProvider } from './../../providers/user/user';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Platform, Modal, 
-  ModalOptions, ModalController, LoadingController, Loading } from 'ionic-angular';
+import {
+  IonicPage, NavController, NavParams, Platform, Modal,
+  ModalOptions, ModalController, LoadingController, Loading
+} from 'ionic-angular';
 import { FreelanceProvider } from '../../providers/freelance/freelance';
 import { Events } from 'ionic-angular/util/events';
 import { LoginPage } from '../login/login';
 import { ProfilPage } from '../profil/profil';
+import { NewArticlePage } from '../new-article/new-article';
+import { FreelanceDetailPage } from '../freelance-detail/freelance-detail';
 
 /**
  * Generated class for the FindFreelancersByLocationPage page.
@@ -32,6 +36,8 @@ export class FindFreelancersByLocationPage {
   searchQuery: string = '';
   items: string[];
 
+  public requestParams = {results:400, mobility:false};
+
   constructor(public navCtrl: NavController, public navParams: NavParams, platform: Platform,
     public loadingCtrl: LoadingController,
     public modalCtrl: ModalController,
@@ -47,12 +53,19 @@ export class FindFreelancersByLocationPage {
   }
 
   itemSelected(item: any) {
-    console.log(item);
+    let params = {
+      parData: item
+    };
+    this.navCtrl.push(FreelanceDetailPage, params);
   }
-  
+
   whatClassIsIt(msg: any) {
-    console.log(msg + this.userProvider.isAuthenticated());
+    // console.log(msg + this.userProvider.isAuthenticated());
     return (this.userProvider.isAuthenticated()) ? 'userColor-idendifer' : 'userColor-noconnect';
+  }
+
+  goToNewArticlePage() {
+    this.navCtrl.push(NewArticlePage).then(() => { });
   }
 
   /**
@@ -83,7 +96,7 @@ export class FindFreelancersByLocationPage {
     this.freelanceProvider.getFreelances().then(
       (data) => {
         this.freelances = data;
-        console.log(data);
+        // console.log(data);
       }
     );
   }
@@ -108,21 +121,6 @@ export class FindFreelancersByLocationPage {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
-  ionViewDidLoad() {
-    let nb = this.entierAleatoire(0, 250);
-    // this.presentLoadingDefault();
-    // Récupération des données
-    this.freelanceProvider.getPersonalBusiness(nb).then((data) => {
-      this.freelancesData = data;
-      this.isThereNoData = !this.freelancesData.length;
-      this.message = 'Désolé, aucun résultat ne correspond à vos critères de recherche.';
-      this.loading.dismiss();
-    }).catch((err) => {
-      this.isThereNoData = true;
-      this.message = 'Échec de la connexion. Vérifier vos paramètres de réseau';
-      this.loading.dismiss();
-    });
-  }
 
   presentLoadingDefault() {
     this.loading = this.loadingCtrl.create({
@@ -131,6 +129,53 @@ export class FindFreelancersByLocationPage {
     });
 
     this.loading.present();
+  }
+
+
+  ionViewDidLoad() {
+    this.loadDatas();
+  }
+
+  loadDatas() {
+    // Récupération des données
+    this.freelanceProvider.getPersonalBusiness(this.requestParams)
+      .then((data) => {
+        this.freelancesData = data;
+        this.isThereNoData = !this.freelancesData.length;
+        this.message = 'Désolé, aucun résultat ne correspond à vos critères de recherche.';
+
+        this.loading.dismiss();
+      })
+      .catch((err) => {
+        this.isThereNoData = true;
+        this.message = 'Échec de la connexion. Vérifier vos paramètres de réseau';
+
+        this.loading.dismiss();
+      });
+  }
+
+  loadMoreDatas(evt) {
+    // Récupération des données
+    this.freelanceProvider.getPersonalBusiness(this.requestParams)
+      .then((data) => {
+        let tmp:any = data;
+        this.isThereNoData = !tmp.length;
+        this.freelancesData = this.freelancesData.concat(data);
+        evt.complete();
+      })
+      .catch((err) => { evt.complete(); });
+  }
+
+  doRefresh(evt) {
+    // Récupération des données
+    this.freelanceProvider.getPersonalBusiness(this.requestParams)
+      .then((data) => {
+        let tmp:any = data;
+        this.isThereNoData = !tmp.length;
+        this.freelancesData = tmp.concat(this.freelancesData);
+        evt.complete();
+      })
+      .catch((err) => { evt.complete(); });
   }
 
 }

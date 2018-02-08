@@ -20,7 +20,7 @@ freeDetail = {
   Image:'',
   Title:'',
   Body:'',
-  Posted:''
+  Posted:'',
 };
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     this.freeDetail = navParams.get('parData');

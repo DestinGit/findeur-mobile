@@ -29,7 +29,7 @@ export class UserProvider {
   }
 
   signIn(credentials) {
-    var url = Config.URL + '/user/find';
+    var url = Config.URL + '/get/user';
     // console.log(url);
     //Promesse retournée à loginPage
     return new Promise(
@@ -74,8 +74,8 @@ export class UserProvider {
   }
 
   register(credentials:any) {
-    var url = Config.URL + '/user/add';
-console.log(url);
+    var url = Config.URL + '/get/adduser';
+
     return new Promise((resolve, reject) => {
       // Appel Asynchrone au Backend
       this.http.post(url, credentials).subscribe(

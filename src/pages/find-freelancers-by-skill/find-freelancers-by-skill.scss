@@ -1,2 +1,10 @@
 page-find-freelancers-by-skill {
+    ion-header.header {
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    }
+    
+    ion-select.article {
+        overflow: auto !important;
+        max-width: 80% !important;
+    }
 }

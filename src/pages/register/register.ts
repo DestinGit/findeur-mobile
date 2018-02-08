@@ -54,7 +54,7 @@ export class RegisterPage {
     } else {
       this.userProvider.register(this.userAccount)
       .then((res)=>{
-        if('error'in res) {
+        if('error' in res) {
           let errMsg = res['message'].join();
           this.showAlert('Echec Inscription !', errMsg, ()=>{});
           

@@ -4,7 +4,7 @@
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
 -->
-<ion-header>
+<ion-header class="header">
 
   <ion-navbar>
     <ion-buttons start>
@@ -13,7 +13,7 @@
       </button>
     </ion-buttons>
 
-    <ion-title>Par compétence</ion-title>
+    <ion-title>Trouver des freelances</ion-title>
 
     <ion-buttons end>
       <button ion-button icon-only (click)="openLogOrProfilPage()">
@@ -26,18 +26,18 @@
 
   <ion-list>
     <ion-item>
-      <ion-label>Compétences :</ion-label>
-      <ion-select [(ngModel)]="toppings" multiple="true" cancelText="Annuler" okText="Valider">
-        <ion-option value="bacon" selected="true">Développeur PHP</ion-option>
-        <ion-option value="olives">Plombier</ion-option>
-        <ion-option value="xcheese" selected="true">Chauffeur</ion-option>
-        <ion-option value="peppers">Développeur JS</ion-option>
-        <ion-option value="mushrooms">Graphiste</ion-option>
-        <ion-option value="onions">Fleuriste</ion-option>
-        <ion-option value="pepperoni">Cuisinier</ion-option>
-        <ion-option value="pineapple">Organisateur(rice) de mariage</ion-option>
-        <ion-option value="sausage">horticulteur(rice)</ion-option>
-        <ion-option value="Spinach">Livreur(euse)</ion-option>
+      <ion-label>
+        <ion-icon name="people"></ion-icon>
+        <ion-icon name="folder-open"></ion-icon>
+      </ion-label>
+      <ion-select [(ngModel)]="requestParams.Keywords" multiple="true" placeholder="Filter par métiers" class="article" cancelText="Annuler"
+        okText="Valider">
+        <ion-option>Dépannage Informatique</ion-option>
+        <ion-option>Securite-Gardiennage-Telesurveillance</ion-option>
+        <ion-option>Entretien parc automobile</ion-option>
+        <ion-option>Travaux bâtiment</ion-option>
+        <ion-option>Organsation d'évènements</ion-option>
+        <ion-option>Professionnels de l'audivisuel</ion-option>
       </ion-select>
     </ion-item>
   </ion-list>
@@ -72,11 +72,22 @@
         <!-- <img src="http://findeur2017.findeur.fr/images/{{item.Image}}t.jpg"> -->
         <img src="{{ item.Image | pipelinkimg }}">
       </ion-thumbnail>
-        <h2>{{item.Title}}</h2>
-        <p>{{item.Excerpt}}</p>
+      <h2>{{item.Title}}</h2>
+      <p>{{item.Body}}</p>
     </button>
   </ion-list>
+
+  <ion-infinite-scroll (ionInfinite)="loadMoreDatas($event)">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles" refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+  
 </ion-content>
 <ion-footer>
-  <button ion-button color="grey2" full outline (click)="goToDetailPage()">Nouvelle annonce</button>
+  <button ion-button color="findeur" full outline (click)="goToNewArticlePage()">Nouvelle annonce</button>
 </ion-footer>

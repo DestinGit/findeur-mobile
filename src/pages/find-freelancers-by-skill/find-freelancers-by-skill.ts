@@ -1,3 +1,4 @@
+import { NewArticlePage } from './../new-article/new-article';
 import { FreelanceDetailPage } from './../freelance-detail/freelance-detail';
 import { Component } from '@angular/core';
 import { Storage } from '@ionic/storage';
@@ -28,41 +29,44 @@ export class FindFreelancersBySkillPage {
   public isThereNoData = false;
   public message: string;
   private loading: Loading;
-  /*   public freelancesData = [{
-      Image: '',
-      Section: '',
-      Title: '',
-      Excerpt: ''
-    }];
-   */
-
+  
   freelances: any;
-  // freelances: Array<object> = [];
   dataUser: any;
 
   isAndroid: boolean = false;
-  toppings: any;
-  /*  notifications: any;
-    gaming: any;
-    musicAlertOpts: any;
-   */
+  // business: any;
+  // params: { results: number, Keywords: any };
+  public requestParams = {results:400, Keywords:false};
+
   constructor(public navCtrl: NavController, public navParams: NavParams, platform: Platform,
     public storage: Storage,
-    public loadingCtrl: LoadingController,
-    public modalCtrl: ModalController,
-    public toastCtrl: ToastController,
-    public freelanceProvider: FreelanceProvider,
-    public userProvider: UserProvider,
+    public loadingCtrl: LoadingController, public modalCtrl: ModalController, public toastCtrl: ToastController,
+    public freelanceProvider: FreelanceProvider, public userProvider: UserProvider,
     public events: Events) {
     //this.isAndroid = platform.is('android');
     this.initializeItems();
+
+    // this.params = {results:400, Keywords:false};
 
     events.subscribe('user.connection', () => this.whatClassIsIt());
 
     this.presentLoadingDefault();    
   }
 
-  goToDetailPage() {
+  goToNewArticlePage() {
+    const myModalOptions: ModalOptions = {
+      enableBackdropDismiss: false
+    };
+
+        
+    if (!this.userProvider.isAuthenticated()) {
+      // Lancement de la fenêtre modal
+      let myModal: Modal = this.modalCtrl.create(LoginPage, {}, myModalOptions);
+      myModal.present();
+
+    } else {
+      this.navCtrl.push(NewArticlePage).then(() => {});      
+    }
   }
 
   whatClassIsIt() {
@@ -125,12 +129,43 @@ export class FindFreelancersBySkillPage {
   }
 
 
-  ionViewDidLoad() {
-    let nb = this.entierAleatoire(0, 250);
-    // this.presentLoadingDefault();
+  // ionViewDidLoad() {
+  //   let nb = this.entierAleatoire(0, 250);
 
+  //   // Récupération des données
+  //   this.freelanceProvider.getPersonalBusiness(nb)
+  //   .then((data) => {
+  //     this.freelancesData = data;
+  //     this.isThereNoData = !this.freelancesData.length;
+  //     this.message = 'Désolé, aucun résultat ne correspond à vos critères de recherche.';
+
+  //     this.loading.dismiss();
+  //   })
+  //   .catch((err) => {
+  //     this.isThereNoData = true;
+  //     this.message = 'Échec de la connexion. Vérifier vos paramètres de réseau';
+
+  //     this.loading.dismiss();
+  //   });
+  // }
+
+  presentLoadingDefault() {
+    this.loading = this.loadingCtrl.create({
+      spinner: 'bubbles',
+      content: 'Patientez svp ...'
+    });
+
+    this.loading.present();
+  }
+
+
+  ionViewDidLoad() {
+    this.loadDatas();
+  }
+
+  loadDatas() {
     // Récupération des données
-    this.freelanceProvider.getPersonalBusiness(nb)
+    this.freelanceProvider.getPersonalBusiness(this.requestParams)
     .then((data) => {
       this.freelancesData = data;
       this.isThereNoData = !this.freelancesData.length;
@@ -143,16 +178,33 @@ export class FindFreelancersBySkillPage {
       this.message = 'Échec de la connexion. Vérifier vos paramètres de réseau';
 
       this.loading.dismiss();
-    });
+    });   
   }
 
-  presentLoadingDefault() {
-    this.loading = this.loadingCtrl.create({
-      spinner: 'bubbles',
-      content: 'Patientez svp ...'
-    });
-
-    this.loading.present();
+  loadMoreDatas(evt) {
+    // Récupération des données
+    this.freelanceProvider.getPersonalBusiness(this.requestParams)
+    .then((data) => {
+      let tmp:any = data;
+      this.isThereNoData = !tmp.length;
+      this.freelancesData = this.freelancesData.concat(data);
+      evt.complete();
+    })
+    .catch((err) => { 
+      evt.complete();
+    });   
   }
 
+  doRefresh(evt){
+    // Récupération des données
+    this.freelanceProvider.getPersonalBusiness(this.requestParams)
+    .then((data) => {
+      let tmp:any = data;
+      this.isThereNoData = !tmp.length;
+      this.freelancesData = tmp.concat(this.freelancesData);
+      evt.complete();
+    })
+    .catch((err) => { evt.complete();});   
+  }
+  
 }

@@ -2,4 +2,14 @@ page-my-tabs {
     .hideBloc {
         display: none;
         }
+
+        .tabs-ios .tab-button[aria-selected="true"] .tab-button-icon,
+        .tabs-md .tab-button[aria-selected="true"] .tab-button-icon {
+            color: #f27c36;
+        }   
+        
+        .tabs-ios .tab-button:hover:not(.disable-hover), .tabs-ios .tab-button[aria-selected="true"],
+        .tabs-md .tab-button:hover:not(.disable-hover), .tabs-md .tab-button[aria-selected="true"] {
+            color: #f27c36;
+        }
 }
