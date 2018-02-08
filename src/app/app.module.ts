@@ -1,3 +1,4 @@
+import { MysplashscreenPage } from './../pages/mysplashscreen/mysplashscreen';
 import { PipeLinkImg } from './../pipescustom/pipeLinkImg';
 import { Application } from './../pipescustom/application';
 // Native ionic Libraries
@@ -47,6 +48,7 @@ export const Config = {
 @NgModule({
   declarations: [
     MyApp,
+    MysplashscreenPage,
     HomePage,
     ListPage,
     SearchCompagnyPage,
@@ -75,6 +77,7 @@ export const Config = {
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
+    MysplashscreenPage,
     HomePage,
     ListPage,
     SearchCompagnyPage,
