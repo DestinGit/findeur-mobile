@@ -29,8 +29,8 @@
           <ion-icon ios="ios-clock" md="md-clock" start></ion-icon>
           <ion-icon name="people"></ion-icon>          
       </ion-label>
-      <ion-select [(ngModel)]="requestParams.availability" interface="action-sheet" cancelText="Annuler" okText="Ok"
-      class="article" placeholder="Filtrez par Disponibilité" multiple="true">
+      <ion-select [(ngModel)]="availability" interface="action-sheet" cancelText="Annuler" okText="Ok"
+      (ionChange)="availabilitiesSelected(availability)" class="article" placeholder="Filtrez par Disponibilité" multiple="true">
         <ion-option value="bacon">Immédiate</ion-option>
         <ion-option value="olives"> entre 1 mois et 3 mois</ion-option>
         <ion-option value="xcheese">> 3 mois</ion-option>

@@ -43,23 +43,37 @@ export class FreelanceProvider {
   }
 
 
+/**
+ * 
+ * @param {object} params 
+ * @returns {string} parametersString
+ */
+  private getStringParameters(params:{}) {
+    var parametersString = '', i = 0;
+    for (const key in params) {
+      if (params.hasOwnProperty(key) && params[key].length != 0) {
+        parametersString = (i == 0) ? `?${key}=${params[key]}` : `${parametersString}&${key}=${params[key]}`;
+        i = 1;
+      }
+    }
+    return parametersString;
+  }
 
-
-  getPersonalBusiness(args = {}) {
-    // let numberOfResults = (isNaN(numberParams)) ? 15 : numberParams;
-    // var url = Config.URL + '/freelance-list?results=' + numberOfResults;
-    var url = Config.URL + '/get/freelance-list';
+  getPersonalBusiness(args: any) {
+    // var url = 'http://localhost:8000' + '/get/freelance-list?' + 
+    // `results=${args.results}&Keywords=${args.Keywords}`;
+    let strParams = this.getStringParameters(args);
+    var url = Config.URL + `/get/freelance-list${strParams}`;
+    // var url = `http://localhost:8000/get/freelance-list${strParams}`;
 
     return new Promise(
       (resolve, reject) => {
         // Appel Asynchrone à l'API Slim
         this.http.get(url, args).subscribe(
           (response) => {
-            //var data = response.json();
-            //console.log(response.toString());
             resolve(response.json());
           },
-          (error) => reject(error)
+          (error) => reject(error.json())
         );
       }
     );
@@ -90,7 +104,7 @@ export class FreelanceProvider {
     var headers = new Headers();
     headers.append('Authorization', `Bearer ${this.userProvider.getToken()}`);
     var options = new RequestOptions({ headers: headers });
-    
+
     return new Promise(
       (resolve, reject) => {
         this.http.post(url, postData, options).subscribe(
@@ -112,7 +126,7 @@ export class FreelanceProvider {
     var headers = new Headers();
     headers.append('Authorization', `Bearer ${this.userProvider.getToken()}`);
     var options = new RequestOptions({ headers: headers });
-    
+
     return new Promise(
       (resolve, reject) => {
         this.http.post(url, data, options).subscribe(

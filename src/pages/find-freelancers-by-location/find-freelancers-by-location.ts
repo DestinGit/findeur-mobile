@@ -36,7 +36,8 @@ export class FindFreelancersByLocationPage {
   searchQuery: string = '';
   items: string[];
 
-  public requestParams = {results:400, mobility:false};
+  public mobility = [];
+  public requestParams = {results:400, mobility:''};
 
   constructor(public navCtrl: NavController, public navParams: NavParams, platform: Platform,
     public loadingCtrl: LoadingController,
@@ -131,6 +132,12 @@ export class FindFreelancersByLocationPage {
     this.loading.present();
   }
 
+  mobilitiesSelected() {
+    this.requestParams.mobility = this.mobility.join(',');
+    this.loadDatas(); 
+    console.log(this.mobility);
+    
+  }
 
   ionViewDidLoad() {
     this.loadDatas();

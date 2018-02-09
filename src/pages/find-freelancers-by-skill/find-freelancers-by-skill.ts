@@ -2,9 +2,11 @@ import { NewArticlePage } from './../new-article/new-article';
 import { FreelanceDetailPage } from './../freelance-detail/freelance-detail';
 import { Component } from '@angular/core';
 import { Storage } from '@ionic/storage';
-import { IonicPage, NavController, NavParams, Platform, 
+import {
+  IonicPage, NavController, NavParams, Platform,
   Modal, ModalOptions, Events, ModalController, ToastController,
-   Loading, LoadingController } from 'ionic-angular';
+  Loading, LoadingController
+} from 'ionic-angular';
 import { FreelanceProvider } from '../../providers/freelance/freelance';
 import { UserProvider } from '../../providers/user/user';
 // import { UserStorageInfosProvider } from '../../providers/user-storage-infos/user-storage-infos';
@@ -29,14 +31,15 @@ export class FindFreelancersBySkillPage {
   public isThereNoData = false;
   public message: string;
   private loading: Loading;
-  
+
   freelances: any;
   dataUser: any;
 
   isAndroid: boolean = false;
   // business: any;
   // params: { results: number, Keywords: any };
-  public requestParams = {results:400, Keywords:false};
+  public kills = [];
+  public requestParams = { results: 400, Keywords: '' };
 
   constructor(public navCtrl: NavController, public navParams: NavParams, platform: Platform,
     public storage: Storage,
@@ -50,7 +53,7 @@ export class FindFreelancersBySkillPage {
 
     events.subscribe('user.connection', () => this.whatClassIsIt());
 
-    this.presentLoadingDefault();    
+    this.presentLoadingDefault();
   }
 
   goToNewArticlePage() {
@@ -58,14 +61,14 @@ export class FindFreelancersBySkillPage {
       enableBackdropDismiss: false
     };
 
-        
+
     if (!this.userProvider.isAuthenticated()) {
       // Lancement de la fenêtre modal
       let myModal: Modal = this.modalCtrl.create(LoginPage, {}, myModalOptions);
       myModal.present();
 
     } else {
-      this.navCtrl.push(NewArticlePage).then(() => {});      
+      this.navCtrl.push(NewArticlePage).then(() => { });
     }
   }
 
@@ -81,7 +84,7 @@ export class FindFreelancersBySkillPage {
     this.navCtrl.push(FreelanceDetailPage, params);
   }
 
-  
+
   initializeItems() { }
 
   /**
@@ -128,27 +131,6 @@ export class FindFreelancersBySkillPage {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
-
-  // ionViewDidLoad() {
-  //   let nb = this.entierAleatoire(0, 250);
-
-  //   // Récupération des données
-  //   this.freelanceProvider.getPersonalBusiness(nb)
-  //   .then((data) => {
-  //     this.freelancesData = data;
-  //     this.isThereNoData = !this.freelancesData.length;
-  //     this.message = 'Désolé, aucun résultat ne correspond à vos critères de recherche.';
-
-  //     this.loading.dismiss();
-  //   })
-  //   .catch((err) => {
-  //     this.isThereNoData = true;
-  //     this.message = 'Échec de la connexion. Vérifier vos paramètres de réseau';
-
-  //     this.loading.dismiss();
-  //   });
-  // }
-
   presentLoadingDefault() {
     this.loading = this.loadingCtrl.create({
       spinner: 'bubbles',
@@ -158,6 +140,12 @@ export class FindFreelancersBySkillPage {
     this.loading.present();
   }
 
+  killsSelected() {
+    // console.log(this.kills);
+
+    this.requestParams.Keywords = this.kills.join(',');
+    this.loadDatas(); 
+  }
 
   ionViewDidLoad() {
     this.loadDatas();
@@ -166,45 +154,48 @@ export class FindFreelancersBySkillPage {
   loadDatas() {
     // Récupération des données
     this.freelanceProvider.getPersonalBusiness(this.requestParams)
-    .then((data) => {
-      this.freelancesData = data;
-      this.isThereNoData = !this.freelancesData.length;
-      this.message = 'Désolé, aucun résultat ne correspond à vos critères de recherche.';
+      .then((data) => {
+        this.freelancesData = data;
+        this.isThereNoData = !this.freelancesData.length;
+        this.message = 'Désolé, aucun résultat ne correspond à vos critères de recherche.';
+console.log(this.freelancesData);
 
-      this.loading.dismiss();
-    })
-    .catch((err) => {
-      this.isThereNoData = true;
-      this.message = 'Échec de la connexion. Vérifier vos paramètres de réseau';
+        this.loading.dismiss();
+      })
+      .catch((err) => {
+        this.isThereNoData = true;
+        this.message = 'Échec de la connexion. Vérifier vos paramètres de réseau';
 
-      this.loading.dismiss();
-    });   
+        this.loading.dismiss();
+      });
   }
 
   loadMoreDatas(evt) {
+    console.log(this.requestParams);
     // Récupération des données
     this.freelanceProvider.getPersonalBusiness(this.requestParams)
-    .then((data) => {
-      let tmp:any = data;
-      this.isThereNoData = !tmp.length;
-      this.freelancesData = this.freelancesData.concat(data);
-      evt.complete();
-    })
-    .catch((err) => { 
-      evt.complete();
-    });   
+      .then((data) => {
+        let tmp: any = data;
+        this.isThereNoData = !tmp.length;
+        this.freelancesData = this.freelancesData.concat(data);
+        evt.complete();
+      })
+      .catch((err) => {
+        evt.complete();
+      });
   }
 
-  doRefresh(evt){
+  doRefresh(evt) {
+    console.log(this.requestParams);
     // Récupération des données
     this.freelanceProvider.getPersonalBusiness(this.requestParams)
-    .then((data) => {
-      let tmp:any = data;
-      this.isThereNoData = !tmp.length;
-      this.freelancesData = tmp.concat(this.freelancesData);
-      evt.complete();
-    })
-    .catch((err) => { evt.complete();});   
+      .then((data) => {
+        let tmp: any = data;
+        this.isThereNoData = !tmp.length;
+        this.freelancesData = tmp.concat(this.freelancesData);
+        evt.complete();
+      })
+      .catch((err) => { evt.complete(); });
   }
-  
+
 }

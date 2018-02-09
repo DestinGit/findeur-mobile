@@ -30,14 +30,14 @@
         <ion-icon name="people"></ion-icon>
         <ion-icon name="folder-open"></ion-icon>
       </ion-label>
-      <ion-select [(ngModel)]="requestParams.Keywords" multiple="true" placeholder="Filter par métiers" class="article" cancelText="Annuler"
-        okText="Valider">
-        <ion-option>Dépannage Informatique</ion-option>
-        <ion-option>Securite-Gardiennage-Telesurveillance</ion-option>
-        <ion-option>Entretien parc automobile</ion-option>
-        <ion-option>Travaux bâtiment</ion-option>
-        <ion-option>Organsation d'évènements</ion-option>
-        <ion-option>Professionnels de l'audivisuel</ion-option>
+      <ion-select [(ngModel)]="kills" multiple="true" placeholder="Filter par métiers" class="article" cancelText="Annuler"
+        okText="Valider" (ionChange)="killsSelected(kills)">
+        <ion-option value="Depannage-Informatique">Dépannage Informatique</ion-option>
+        <ion-option value="Securite-Gardiennage-Telesurveillance">Securite-Gardiennage-Telesurveillance</ion-option>
+        <ion-option value="Entretien-parc-automobile">Entretien parc automobile</ion-option>
+        <ion-option value="Travaux-batiment">Travaux bâtiment</ion-option>
+        <ion-option value="Organsation-d-evenements">Organsation d'évènements</ion-option>
+        <ion-option value="Professionnels-de-l-audivisuel">Professionnels de l'audivisuel</ion-option>
       </ion-select>
     </ion-item>
   </ion-list>
@@ -51,25 +51,9 @@
     {{ message }}
   </p>
 
-  <!--   <ion-card *ngFor="let item of freelancesData">
-    <img src="http://findeur2017.findeur.fr/images/{{item.Image}}t.jpg">
-    <ion-card-content>
-      <ion-card-title>
-        {{item.Title}}
-      </ion-card-title>
-      <p>
-        {{item.Excerpt}}
-      </p>
-    </ion-card-content>
-  </ion-card>
- -->
-
-
-
   <ion-list no-lines>
     <button ion-item *ngFor="let item of freelancesData" (click)="itemSelected(item)">
       <ion-thumbnail item-start>
-        <!-- <img src="http://findeur2017.findeur.fr/images/{{item.Image}}t.jpg"> -->
         <img src="{{ item.Image | pipelinkimg }}">
       </ion-thumbnail>
       <h2>{{item.Title}}</h2>

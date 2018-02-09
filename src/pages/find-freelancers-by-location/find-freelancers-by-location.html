@@ -28,8 +28,8 @@
         <ion-icon ios="ios-walk" md="md-walk" start></ion-icon>
         <ion-icon name="car"></ion-icon>
       </ion-label>
-      <ion-select class="article" placeholder="Filtrez par Mobilité" 
-      [(ngModel)] = "requestParams.mobility"  multiple="true" submitText="Ok" cancelText="Annuler">
+      <ion-select class="article" placeholder="Filtrez par Mobilité" (ionChange)="mobilitiesSelected(mobility)"
+      [(ngModel)] = "mobility"  multiple="true" submitText="Ok" cancelText="Annuler">
         <ion-option value="recoit-uniquement">Reçoit uniquement</ion-option>
         <ion-option value="se-deplace-et-reçoit">Se déplace et reçoit</ion-option>
         <ion-option value="se-deplace-uniquement">Se déplace uniquement</ion-option>

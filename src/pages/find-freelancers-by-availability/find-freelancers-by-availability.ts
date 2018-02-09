@@ -30,8 +30,8 @@ export class FindFreelancersByAvailabilityPage {
   freelances: any;
 
   isAndroid: boolean = false;
-
-  public requestParams = {results:400, availability:false};
+  public availability = [];
+  public requestParams = {results:400, availability:''};
 
   constructor(public navCtrl: NavController, public navParams: NavParams, platform: Platform,
     public loadingCtrl: LoadingController,
@@ -108,7 +108,11 @@ export class FindFreelancersByAvailabilityPage {
 
     this.loading.present();
   }
-
+  availabilitiesSelected() {
+    this.requestParams.availability = this.availability.join(',');
+    this.loadDatas();
+    console.log(this.availability);
+  }
   ionViewDidLoad() {
     this.loadDatas();
   }
