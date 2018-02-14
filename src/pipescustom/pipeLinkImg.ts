@@ -1,9 +1,9 @@
-import { Pipe } from '@angular/core';
+import { Pipe , PipeTransform} from '@angular/core';
 
 @Pipe({
   name: 'pipelinkimg'
 })
-export class PipeLinkImg {
+export class PipeLinkImg implements PipeTransform {
   transform(value, args) {
     let image = ['architect.jpg', 'office62.jpg', 'card-sf.jpg', 'card-saopaolo.jpg'];
     let localLink = './assets/img/';

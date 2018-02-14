@@ -5,7 +5,7 @@ import { Storage } from '@ionic/storage';
 import {
   IonicPage, NavController, NavParams, Platform,
   Modal, ModalOptions, Events, ModalController, ToastController,
-  Loading, LoadingController
+  Loading, LoadingController, AlertController
 } from 'ionic-angular';
 import { FreelanceProvider } from '../../providers/freelance/freelance';
 import { UserProvider } from '../../providers/user/user';
@@ -39,17 +39,15 @@ export class FindFreelancersBySkillPage {
   // business: any;
   // params: { results: number, Keywords: any };
   public kills = [];
-  public requestParams = { results: 400, Keywords: '' };
+  public requestParams = { results: 40, Keywords: '' };
 
   constructor(public navCtrl: NavController, public navParams: NavParams, platform: Platform,
-    public storage: Storage,
+    public storage: Storage, private alertCtrl: AlertController,
     public loadingCtrl: LoadingController, public modalCtrl: ModalController, public toastCtrl: ToastController,
     public freelanceProvider: FreelanceProvider, public userProvider: UserProvider,
     public events: Events) {
     //this.isAndroid = platform.is('android');
     this.initializeItems();
-
-    // this.params = {results:400, Keywords:false};
 
     events.subscribe('user.connection', () => this.whatClassIsIt());
 
@@ -61,14 +59,14 @@ export class FindFreelancersBySkillPage {
       enableBackdropDismiss: false
     };
 
-
     if (!this.userProvider.isAuthenticated()) {
       // Lancement de la fenêtre modal
       let myModal: Modal = this.modalCtrl.create(LoginPage, {}, myModalOptions);
       myModal.present();
-
+    } else if(this.userProvider.getUser().privs !== "4") {
+      this.showAlert('Nouvelle annonce !', 'Droits insuffisants pour accéder à cette fonctionnalité.', () => { });
     } else {
-      this.navCtrl.push(NewArticlePage).then(() => { });
+      this.navCtrl.push(NewArticlePage).then(() => { });      
     }
   }
 
@@ -118,14 +116,11 @@ export class FindFreelancersBySkillPage {
     toast.present();
   }
 
-  stpSelect() {
-  }
-  backToHomeButton() {
-  }
+  stpSelect() {}
 
-  notificationSelect() {
+  backToHomeButton() {}
 
-  }
+  notificationSelect() {}
 
   entierAleatoire(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -141,8 +136,6 @@ export class FindFreelancersBySkillPage {
   }
 
   killsSelected() {
-    // console.log(this.kills);
-
     this.requestParams.Keywords = this.kills.join(',');
     this.loadDatas(); 
   }
@@ -158,8 +151,6 @@ export class FindFreelancersBySkillPage {
         this.freelancesData = data;
         this.isThereNoData = !this.freelancesData.length;
         this.message = 'Désolé, aucun résultat ne correspond à vos critères de recherche.';
-console.log(this.freelancesData);
-
         this.loading.dismiss();
       })
       .catch((err) => {
@@ -186,7 +177,6 @@ console.log(this.freelancesData);
   }
 
   doRefresh(evt) {
-    console.log(this.requestParams);
     // Récupération des données
     this.freelanceProvider.getPersonalBusiness(this.requestParams)
       .then((data) => {
@@ -196,6 +186,16 @@ console.log(this.freelancesData);
         evt.complete();
       })
       .catch((err) => { evt.complete(); });
+  }
+
+
+  showAlert(title: string, subTitle: string, callback) {
+    let alert = this.alertCtrl.create({
+      title: title,
+      subTitle: subTitle,
+      buttons: [{ text: 'OK', handler: (data) => { callback(); } }]
+    });
+    alert.present();
   }
 
 }

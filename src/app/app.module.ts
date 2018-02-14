@@ -31,17 +31,19 @@ import { FindFreelancersByAvailabilityPage } from '../pages/find-freelancers-by-
 import { FindFreelancersBySkillPage } from '../pages/find-freelancers-by-skill/find-freelancers-by-skill';
 import { FindFreelancersByLocationPage } from '../pages/find-freelancers-by-location/find-freelancers-by-location';
 import { FreelanceDetailPage } from './../pages/freelance-detail/freelance-detail';
+import { MissionDetailsPage } from './../pages/mission-details/mission-details';
 import { LoginPage } from '../pages/login/login';
 import { ProfilPage } from './../pages/profil/profil';
 import { RegisterPage } from '../pages/register/register';
 import { NewArticlePage } from '../pages/new-article/new-article';
 
 import { InAppBrowser } from '@ionic-native/in-app-browser';
+import { LocalDataProvider } from '../providers/local-data/local-data';
 
 // import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 //Définition de la configuration globale de l'application
 export const Config = {
-   URL: 'https://yemeialways.alwaysdata.net/slimSRV/public'
+   URL: 'https://yemeialways.alwaysdata.net/api'
   //URL: 'http://localhost:8000'
 };
 
@@ -57,6 +59,7 @@ export const Config = {
     FindFreelancersByAvailabilityPage,
     FindFreelancersByLocationPage,
     FreelanceDetailPage,
+    MissionDetailsPage,
     LoginPage,
     ProfilPage,
     RegisterPage,
@@ -86,6 +89,7 @@ export const Config = {
     FindFreelancersByAvailabilityPage,
     FindFreelancersByLocationPage,
     FreelanceDetailPage,
+    MissionDetailsPage,
     LoginPage,
     ProfilPage,
     RegisterPage,
@@ -99,7 +103,8 @@ export const Config = {
     UserProvider,
     FreelanceProvider,
     UserStorageInfosProvider,
-    InAppBrowser
+    InAppBrowser,
+    LocalDataProvider
   ]
 })
 export class AppModule { }

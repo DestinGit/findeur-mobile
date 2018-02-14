@@ -48,7 +48,13 @@
                 <ion-list-header>
                     Compagny's Informations
                 </ion-list-header>
-
+                <ion-item class="item-select-list">
+                        <ion-select [(ngModel)]="userAccount.privs" placeholder="Quel est votre statut ?" 
+                        interface="action-sheet" class="article">
+                          <ion-option selected="selected" value="6">Je suis un indépendant</ion-option>
+                          <ion-option value="4">Je suis une entreprise</ion-option>
+                        </ion-select>
+                      </ion-item>
                 <ion-item>
                     <ion-input type="text" placeholder="My Compagny's name" [(ngModel)]="userAccount.entreprise"></ion-input>
                 </ion-item>

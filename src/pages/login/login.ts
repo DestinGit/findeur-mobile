@@ -38,8 +38,6 @@ export class LoginPage {
 
   signIn() {
     this.presentLoadingDefault();
-// console.log('qqqq');
-// console.log(this.credentials);
     this.userProvider.signIn(this.credentials)
       .then((res: any) => {
         this.message = res.message;

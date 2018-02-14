@@ -19,21 +19,22 @@ export class RegisterPage {
   private emailRegExPattern = /^[^\W][a-zA-Z0-9_]+(\.[a-zA-Z0-9_]+)*\@[a-zA-Z0-9_]+(\.[a-zA-Z0-9_]+)*\.[a-zA-Z]{2,4}$/;
 
   public userAccount = {
-    'name':'',
-    'first_name':'',
-    'last_name':'',
-    'email':'',
-    'phone':'',
-    'entreprise':'',
-    'web':'',
-    'detail':'',
+    'name': '',
+    'first_name': '',
+    'last_name': '',
+    'email': '',
+    'phone': '',
+    privs: '',
+    'entreprise': '',
+    'web': '',
+    'detail': '',
   };
   constructor(public navCtrl: NavController, private viewCtrl: ViewController,
     public navParams: NavParams, private userProvider: UserProvider,
     private alertCtrl: AlertController) {
-      // this.userProvider.register()
-      // .then((res) => console.log(res))
-      // .catch((err) => console.info(err));
+    // this.userProvider.register()
+    // .then((res) => console.log(res))
+    // .catch((err) => console.info(err));
   }
 
   dismiss() {
@@ -50,29 +51,31 @@ export class RegisterPage {
     let msg2 = 'Consultez cette adresse <b> ' + this.userAccount.email + '</b> pour récupérer vos informations de connexion';
 
     if (!this.checkAllFieldsAreCorrectlyFilled()) {
-      this.showAlert('Echec Inscription !', msg, ()=>{});
+      this.showAlert('Echec Inscription !', msg, () => { });
     } else {
       this.userProvider.register(this.userAccount)
-      .then((res)=>{
-        if('error' in res) {
-          let errMsg = res['message'].join();
-          this.showAlert('Echec Inscription !', errMsg, ()=>{});
-          
-        } else {
-          this.showAlert('Inscription OK !', msg2,()=>{this.dismiss();});
-        }
-      })
-      .catch((err)=>{
-        this.showAlert('Echec Inscription !', 'Connexion failed', ()=>{});
-      });
+        .then((res) => {
+          if ('error' in res) {
+            let errMsg = res['message'].join();
+            this.showAlert('Echec Inscription !', errMsg, () => { });
+
+          } else {
+            this.showAlert('Inscription OK !', msg2, () => { this.dismiss(); });
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+
+          this.showAlert('Echec Inscription !', 'Connexion failed', () => { });
+        });
     }
   }
 
-  showAlert(title:string,subTitle:string, callback) {
+  showAlert(title: string, subTitle: string, callback) {
     let alert = this.alertCtrl.create({
       title: title,
       subTitle: subTitle,
-      buttons: [{text:'OK', handler:(data)=>{callback();}}]
+      buttons: [{ text: 'OK', handler: (data) => { callback(); } }]
     });
     alert.present();
   }
@@ -84,19 +87,19 @@ export class RegisterPage {
       isOk = false;
     }
 
-    if(this.userAccount.first_name.length < 1) {
+    if (this.userAccount.first_name.length < 1) {
       isOk = false;
     }
 
-    if(this.userAccount.detail.length < 1) {
+    if (this.userAccount.detail.length < 1) {
       isOk = false;
     }
 
-    if(this.userAccount.name.indexOf(' ') != -1 || this.userAccount.name.length < 1) {
+    if (this.userAccount.name.indexOf(' ') != -1 || this.userAccount.name.length < 1) {
       isOk = false;
     }
 
-    if(!this.checkPhoneField()) {
+    if (!this.checkPhoneField()) {
       isOk = false;
     }
 

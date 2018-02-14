@@ -74,7 +74,7 @@ export class UserProvider {
   }
 
   register(credentials:any) {
-    var url = Config.URL + '/get/adduser';
+    var url = `${Config.URL}/get/add-user`;
 
     return new Promise((resolve, reject) => {
       // Appel Asynchrone au Backend

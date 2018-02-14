@@ -1,14 +1,16 @@
+import { MissionDetailsPage } from './../mission-details/mission-details';
 // import { Component, ViewChild, ElementRef } from '@angular/core';
 import { Component } from '@angular/core';
 import {
   NavController, NavParams, ModalController, Modal,
-  ModalOptions, Events, AlertController, Loading, LoadingController, Toast, ToastController
+  ModalOptions, Events, Loading, LoadingController, Toast, ToastController
 } from 'ionic-angular';
 import { LoginPage } from '../login/login';
 import { ProfilPage } from './../profil/profil';
 import { UserProvider } from '../../providers/user/user';
 import { FreelanceProvider } from '../../providers/freelance/freelance';
-import { InAppBrowser, InAppBrowserOptions } from '@ionic-native/in-app-browser';
+// import { Storage } from '@ionic/storage';
+// import { InAppBrowser, InAppBrowserOptions } from '@ionic-native/in-app-browser';
 
 
 
@@ -17,55 +19,195 @@ import { InAppBrowser, InAppBrowserOptions } from '@ionic-native/in-app-browser'
   templateUrl: 'list.html',
 })
 export class ListPage {
-  businessMissions: any;
-  isThereNoData = false;
-  message: string;
-  userName: string = null;
-  public filter = 'all';
+  private requestParams = { results: 4, me: false, Keywords: '' };
   private loading: Loading;
   private toast: Toast;
 
+  businessMissions: any;
+  myCandidatures: any;
+  isThereNoData = false;
+  message: string;
+  userName: string = null;
+  filter = 'all';
+  missions: any;
+  kills = [];
+  myFavorites = [];
+  isenabledFavorites: boolean = true;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public modalCtrl: ModalController, public userProvider: UserProvider,
-    private alertCtrl: AlertController, public events: Events,
-    private freelanceProvider: FreelanceProvider, public loadingCtrl: LoadingController,
-    public toastCtrl: ToastController, private iab: InAppBrowser) {
+    public events: Events, private freelanceProvider: FreelanceProvider,
+    public loadingCtrl: LoadingController, public toastCtrl: ToastController) {
 
     // Show loading
     this.presentLoadingDefault();
 
     // register for the event 'user.connection'
     events.subscribe('user.connection', () => this.whatClassIsIt());
+
+    this.myCandidatures = this.businessMissions = [];
   }
 
+  goToMissionDetails(item: any) {
+    let params = {
+      parData: item
+    };
+    this.navCtrl.push(MissionDetailsPage, params);
+  }
+
+  /** 
+   * When View did load, load first datas
+  */
   ionViewDidLoad() {
     this.loadDatas();
   }
 
+  /** 
+   * Handler for segment selection
+  */
+  getFilteredMissions() {
+    switch (this.filter) {
+      case 'all':
+        this.requestParams.results = 4;
+        this.requestParams.me = false;
+        if (!this.businessMissions.length) {
+          this.loadDatas();
+        } else {
+          this.missions = this.businessMissions;
+        }
+        break;
+      case 'done':
+        this.requestParams.results = 400;
+        this.requestParams.me = true;
+        if (!this.myCandidatures.length) {
+          this.loadCandidatures();
+        } else {
+          this.missions = this.myCandidatures;
+        }
+        break;
+      case 'favorites': this.missions = (!this.kills.length) ?
+        this.myFavorites : this.getFilteredFavorites(this.kills);
+        break;
 
-
-  coolSS(item: any) {
-    // console.log(item);
-    if (!this.userProvider.isAuthenticated()) {
-      this.presentPrompt(item);
-    } else {
-      this.presentToast('Votre candidature pour la mission ' + item.Title + ' a bien été enregistrée');
-      this.applyToMission(item);
     }
   }
 
-  filterTodo() {
-    // let filtered = [];
+  /**
+ * Recovering data from the database
+ */
+  loadDatas() {
+    this.freelanceProvider.getMissionsList(this.requestParams)
+      .then((data) => {
+        this.businessMissions = data;
+        this.missions = data;
 
-    // switch (this.filter) {
-    //   case 'all': filtered = this.todos; break;
-    //   case 'done': filtered = this.todos.filter((item) => item.done); break;
-    //   case 'not done': filtered = this.todos.filter((item) => !item.done); break;
-    // }
+        this.isThereNoData = !this.businessMissions.length;
+        this.message = 'Désolé, aucun résultat ne correspond à vos critères de recherche.';
 
-    // return filtered;
+        this.loading.dismiss();
+      })
+      .catch(() => {
+        this.isThereNoData = true;
+        this.message = 'Échec de la connexion. Vérifier vos paramètres de réseau';
+
+        this.loading.dismiss();
+      });
   }
+
+  /**
+   * Load Candidatures datas
+   */
+  loadCandidatures() {
+    // If user not connected
+    if (this.filter === 'done' && !this.userProvider.isAuthenticated()) {
+      this.myCandidatures = this.missions = [];
+      return;
+    }
+    // Otherwise, we perform request
+    this.requestParams.me = true;
+    this.freelanceProvider.getMissionsList(this.requestParams)
+      .then((data) => {
+        this.myCandidatures = data;
+        this.missions = data;
+
+        this.isThereNoData = !this.myCandidatures.length;
+        this.message = 'Désolé, DIPANDA.';
+      })
+      .catch((err) => {
+        this.myCandidatures = this.missions = [];
+      });
+  }
+
+  /**
+   * Load more datas (pull up)
+   * @param evt 
+   */
+  loadMoreDatas(evt) {
+    if (this.filter === 'favorites') {
+      evt.complete();
+      return;
+    }
+    // If user not connected
+    if (this.filter === 'done' && !this.userProvider.isAuthenticated()) {
+      this.myCandidatures = this.missions = [];
+      evt.complete();
+      return;
+    }
+    // Otherwise, we perform request
+    this.freelanceProvider.getMissionsList(this.requestParams)
+      .then((data) => {
+        let tmp: any = data;
+        this.isThereNoData = !tmp.length;
+        switch (this.filter) {
+          case 'all': this.missions = this.businessMissions = this.businessMissions.concat(data); break;
+          case 'done': this.missions = this.myCandidatures = data; break;
+        }
+        evt.complete();
+      })
+      .catch(() => evt.complete());
+  }
+
+  /**
+   * Load more datas (refresh)
+   * @param evt 
+   */
+  doRefresh(evt) {
+    if (this.filter === 'favorites') {
+      evt.complete();
+      return;
+    }
+    // If user not connected
+    if (this.filter === 'done' && !this.userProvider.isAuthenticated()) {
+      this.myCandidatures = this.missions = [];
+      evt.complete();
+      return;
+    }
+    // Otherwise, we perform request
+    this.freelanceProvider.getMissionsList(this.requestParams)
+      .then((data) => {
+        let tmp: any = data;
+        this.isThereNoData = !tmp.length;
+        switch (this.filter) {
+          case 'all': this.missions = this.businessMissions = tmp.concat(this.businessMissions); break;
+          case 'done': this.missions = this.myCandidatures = tmp; break;
+        }
+        evt.complete();
+      })
+      .catch(() => evt.complete());
+  }
+
+
+  // coolSS(item: any) {
+  //   // console.log(item);
+  //   if (!this.userProvider.isAuthenticated()) {
+  //     this.presentPrompt(item);
+  //   } else {
+  //     this.presentToast('Votre candidature pour la mission ' + item.Title + ' a bien été enregistrée');
+  //     this.applyToMission(item);
+  //   }
+  // }
+
+
   /**
    * Handle apply to mission by the user or open a connexion modal if user is not connected
    * @param item 
@@ -82,11 +224,37 @@ export class ListPage {
       // Handler de l'évènement fermeture de la modal
       // myModal.onDidDismiss((data) => { });
     } else {
-      this.presentToast('Votre candidature pour la mission ' + item.Title + ' a bien été enregistrée');
       this.applyToMission(item);
     }
   }
 
+  /**
+   * Handler for the favorites button
+   * @param item 
+   */
+  handlerAddToMyFavoritesButton(item: any) {
+    let check = this.myFavorites.findIndex((element) => item.ID === element.ID);
+    let message: string;
+
+    if (check === -1) {
+      message = 'Selection de la mission : OK';
+      this.myFavorites.push(item);
+    } else {
+      message = 'Vous avez déjà selectionné cette mission';
+    }
+
+    this.presentToast(message);
+    // Disable favorites button by its Id attribute
+    this.disableElmtById(`favorites_${item.ID}`);
+  }
+
+  /**
+   * Disable DOM Element by its Id attribute
+   * @param idElmt 
+   */
+  private disableElmtById(idElmt: string) {
+    (<HTMLInputElement>document.getElementById(idElmt)).disabled = true;
+  }
 
   /**
    * Returns the name of the class for the ion-icon tag in order to assign the correct color 
@@ -96,6 +264,37 @@ export class ListPage {
   whatClassIsIt() {
     this.userName = (this.userProvider.isAuthenticated()) ? this.userProvider.getUser().name : null;
     return (this.userProvider.isAuthenticated()) ? 'userColor-idendifer' : 'userColor-noconnect';
+  }
+
+  /** 
+   * Select Option filter
+  */
+  selectOptionItemSelected() {
+    this.requestParams.Keywords = this.kills.join(',');
+    console.log(this.missions);
+
+    switch (this.filter) {
+      case 'all': this.loadDatas(); break;
+      case 'done': this.loadCandidatures(); break;
+      case 'favorites': this.missions = (!this.kills.length) ?
+        this.myFavorites : this.getFilteredFavorites(this.kills);
+        break;
+    }
+  }
+
+  /**
+   * Filterd Favorites
+   * @param tmpKeywords 
+   */
+  private getFilteredFavorites(tmpKeywords: any[]) {
+    return this.myFavorites.filter((element) => {
+      let ret = tmpKeywords.some((item) => {
+        return element.Keywords.search(item) > -1;
+      });
+      if (ret) {
+        return element;
+      }
+    });
   }
 
   /**
@@ -118,14 +317,14 @@ export class ListPage {
   }
 
 
-  openRegisterWebpage() {
-    const options: InAppBrowserOptions = {
-      location: 'no',
-      zoom: 'no'
-    };
-    this.iab.create('https://ionicframework.com/', 'self', options);
+  // openRegisterWebpage() {
+  //   const options: InAppBrowserOptions = {
+  //     location: 'no',
+  //     zoom: 'no'
+  //   };
+  //   this.iab.create('https://ionicframework.com/', 'self', options);
 
-  }
+  // }
 
   /**
    * Show a Toast notification
@@ -140,95 +339,25 @@ export class ListPage {
     this.toast.present();
   }
 
-
-  presentAlertBox(messageData: object, buttonsArray: any, inputsArray: any) {
-
-    let myTitle = (typeof messageData != 'undefined' && messageData !== null && messageData.hasOwnProperty('title'))
-      ? messageData['title'] : null;
-
-    let alert = this.alertCtrl.create({
-      title: myTitle,
-      message: (typeof messageData != 'undefined' && messageData !== null && messageData.hasOwnProperty('message'))
-        ? messageData['message'] : null,
-
-      enableBackdropDismiss: false,
-      inputs: (typeof inputsArray != 'undefined' && inputsArray !== null)
-        ? inputsArray : null,
-      buttons: (typeof buttonsArray != 'undefined' && buttonsArray !== null)
-        ? buttonsArray : [{ text: 'Ok' }]
-    });
-    alert.present();
-
-  }
-
   /**
-   * Show Alert dialog box
-   * An Alert is a dialog that presents users with information or 
-   * collects information from the user using inputs.
-   * @param item 
+   * Perform the application to a mission
+   * @param item
    */
-  presentPrompt(item: any) {
-    let alert = this.alertCtrl.create({
-      title: '<h2>Connexion</h2>',
-      // cssClass:'alertClass',
-      // message: 'Veuillez vous identifier pour pouvoir postuler à la mission : <h5>' + item.Title + '</h5>',
-      enableBackdropDismiss: false,
-      inputs: [
-        {
-          name: 'username',
-          placeholder: 'Votre identifiant findeur'
-        },
-        {
-          name: 'password',
-          placeholder: 'Votre mot de passe',
-          type: 'password'
-        }
-      ],
-      buttons: [
-        {
-          text: 'Annuler',
-          role: 'cancel',
-          handler: data => {
-            console.log('Cancel clicked');
-          }
-        },
-        {
-          text: 'Valider',
-          handler: (data) => {
-            this.validateButtonHandler(data, item);
-          }
-        }
-      ]
-    });
-
-    alert.present();
-  }
-
-  validateButtonHandler(data: any, item: any) {
-    this.userProvider.signIn(data)
-      .then((res: any) => {
-        console.log(res);
-        if (res.success) {
-          this.events.publish('user.connection', res.success);
-          this.applyToMission(item);
-        } else {
-          this.coolSS(item);
+  applyToMission(item: any) {
+    this.freelanceProvider.applyToMission(item)
+      .then((res) => {
+        if ('status' in res && res['status']) {
+          this.presentToast(`Votre candidature pour la mission ${item.Title} a bien été enregistrée`);
+          // Disable application button by its Id attribute
+          this.disableElmtById(`apply_${item.ID}`);
         }
       })
       .catch((err) => {
-        return false;
+        this.presentToast(`Désolé ! Votre candidature pour la mission :
+                            ${item.Title} n'a pas été prise en compte.`);
       });
   }
 
-  applyToMission(item: any) {
-    item['user'] = this.userProvider.getUser()['name'];
-    this.freelanceProvider.applyToMission(item)
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => console.log(err));
-  }
-  // this.whatClassIsIt()
   /**
    * Return a random number
    * @param {number} min
@@ -239,63 +368,6 @@ export class ListPage {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
-  /**
-   * Recovering data from the database
-   */
-  loadDatas() {
-    this.freelanceProvider.getListOfMissionsToApply(this.entierAleatoire(50, 70))
-      .then((data) => {
-        this.businessMissions = data;
-        console.log(data);
-        
-        this.isThereNoData = !this.businessMissions.length;
-        this.message = 'Désolé, aucun résultat ne correspond à vos critères de recherche.';
-
-        this.loading.dismiss();
-      })
-      .catch(() => {
-        this.isThereNoData = true;
-        this.message = 'Échec de la connexion. Vérifier vos paramètres de réseau';
-
-        this.loading.dismiss();
-      });
-  }
-
-  filterData() {
-    let filtered = [];
-
-    switch (this.filter) {
-      case 'all': filtered = this.businessMissions; break;
-      // case 'done': filtered = this.todos.filter((item) => item.done); break;
-      // case 'not done': filtered = this.todos.filter((item) => !item.done); break;
-    }
-
-    return filtered;    
-  }
-  loadDatas2() {
-    this.freelanceProvider.getListOfMissionsToApply(this.entierAleatoire(50, 70))
-      .then((data) => {
-        this.businessMissions = data;
-        console.log(data);
-        
-        this.isThereNoData = !this.businessMissions.length;
-        this.message = 'Désolé, aucun résultat ne correspond à vos critères de recherche.';
-
-        this.loading.dismiss();
-
-        return data;        
-      })
-      .catch(() => {
-        this.isThereNoData = true;
-        this.message = 'Échec de la connexion. Vérifier vos paramètres de réseau';
-
-        this.loading.dismiss();
-      });
-  }
-
-getDatasFromDB(select: string) {
-
-}
   /**
    * Show Loading
    * An overlay that can be used to indicate activity while blocking user interaction. 
@@ -310,3 +382,103 @@ getDatasFromDB(select: string) {
   }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// presentAlertBox(messageData: object, buttonsArray: any, inputsArray: any) {
+
+//   let myTitle = (typeof messageData != 'undefined' && messageData !== null && messageData.hasOwnProperty('title'))
+//     ? messageData['title'] : null;
+
+//   let alert = this.alertCtrl.create({
+//     title: myTitle,
+//     message: (typeof messageData != 'undefined' && messageData !== null && messageData.hasOwnProperty('message'))
+//       ? messageData['message'] : null,
+
+//     enableBackdropDismiss: false,
+//     inputs: (typeof inputsArray != 'undefined' && inputsArray !== null)
+//       ? inputsArray : null,
+//     buttons: (typeof buttonsArray != 'undefined' && buttonsArray !== null)
+//       ? buttonsArray : [{ text: 'Ok' }]
+//   });
+//   alert.present();
+
+// }
+
+// /**
+//  * Show Alert dialog box
+//  * An Alert is a dialog that presents users with information or 
+//  * collects information from the user using inputs.
+//  * @param item 
+//  */
+// presentPrompt(item: any) {
+//   let alert = this.alertCtrl.create({
+//     title: '<h2>Connexion</h2>',
+//     // cssClass:'alertClass',
+//     // message: 'Veuillez vous identifier pour pouvoir postuler à la mission : <h5>' + item.Title + '</h5>',
+//     enableBackdropDismiss: false,
+//     inputs: [
+//       {
+//         name: 'username',
+//         placeholder: 'Votre identifiant findeur'
+//       },
+//       {
+//         name: 'password',
+//         placeholder: 'Votre mot de passe',
+//         type: 'password'
+//       }
+//     ],
+//     buttons: [
+//       {
+//         text: 'Annuler',
+//         role: 'cancel',
+//         handler: data => {
+//           console.log('Cancel clicked');
+//         }
+//       },
+//       {
+//         text: 'Valider',
+//         handler: (data) => {
+//           this.validateButtonHandler(data, item);
+//         }
+//       }
+//     ]
+//   });
+
+//   alert.present();
+// }
+
+// validateButtonHandler(data: any, item: any) {
+//   this.userProvider.signIn(data)
+//     .then((res: any) => {
+//       console.log(res);
+//       if (res.success) {
+//         this.events.publish('user.connection', res.success);
+//         this.applyToMission(item);
+//       } else {
+//         this.coolSS(item);
+//       }
+//     })
+//     .catch((err) => {
+//       return false;
+//     });
+// }

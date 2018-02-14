@@ -4,10 +4,10 @@ import { FindFreelancersBySkillPage } from './find-freelancers-by-skill';
 
 @NgModule({
   declarations: [
-    FindFreelancersBySkillPage,
+    FindFreelancersBySkillPage
   ],
   imports: [
     IonicPageModule.forChild(FindFreelancersBySkillPage),
   ],
 })
-export class FindFreelancersBySkillPageModule {}
+export class FindFreelancersBySkillPageModule { }

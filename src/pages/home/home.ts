@@ -32,7 +32,6 @@ export class HomePage {
   }
 
   doClick(evt, goToPage) {
-    console.log(evt); 
     if(goToPage == 0) {
       this.navCtrl.push(ListPage);
     } else {

@@ -89,4 +89,12 @@ page-register {
         padding-right: 10px;
     }
 
+    ion-select.article {
+        overflow: auto !important;
+        min-width: 100% !important;
+    }
+    .item.item-select-list{
+        // font-size: 1.3rem;
+        color: #f27c36;
+      } 
 }

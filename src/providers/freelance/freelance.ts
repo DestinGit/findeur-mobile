@@ -60,11 +60,8 @@ export class FreelanceProvider {
   }
 
   getPersonalBusiness(args: any) {
-    // var url = 'http://localhost:8000' + '/get/freelance-list?' + 
-    // `results=${args.results}&Keywords=${args.Keywords}`;
     let strParams = this.getStringParameters(args);
-    var url = Config.URL + `/get/freelance-list${strParams}`;
-    // var url = `http://localhost:8000/get/freelance-list${strParams}`;
+    var url = `${Config.URL}/get/freelance-list${strParams}`;
 
     return new Promise(
       (resolve, reject) => {
@@ -79,13 +76,39 @@ export class FreelanceProvider {
     );
   }
 
-  /**
-   * 
-   * @param numberParams 
-   */
-  getListOfMissionsToApply(numberParams) {
-    let numberOfResults = (isNaN(numberParams)) ? 5 : numberParams;
-    var url = Config.URL + '/get/missions-list?results=' + numberOfResults;
+  getMissionsList(params: any) {
+    let strParams = this.getStringParameters(params);
+    var url = ('me' in params && params.me) ? 
+    `${Config.URL}/secure/mycandidatures-list${strParams}` : `${Config.URL}/get/missions-list${strParams}`;
+
+    var headers = new Headers();
+    headers.append('Authorization', `Bearer ${this.userProvider.getToken()}`);
+
+    var options = ('me' in params && params.me) ? 
+    new RequestOptions({ headers: headers }) : {};
+
+    return new Promise(
+      (resolve, reject) => {
+        // Appel Asynchrone à l'API Slim
+        this.http.get(url, options).subscribe(
+          (response) => {
+            resolve(response.json());
+          },
+          (error) => {
+            console.log('error');
+            
+            reject(error);
+          }
+        );
+      }
+    );
+    
+  }
+
+  getListOfMissionsToApply(args: any) {
+    let strParams = this.getStringParameters(args);
+    var url = `${Config.URL}/get/missions-list${strParams}`;
+
     return new Promise(
       (resolve, reject) => {
         // Appel Asynchrone à l'API Slim

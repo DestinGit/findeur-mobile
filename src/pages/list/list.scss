@@ -27,6 +27,15 @@ page-list {
   // .bar-button-default-ios{
   //   color: #f27c36;
   // }
+  ion-select.article {
+    overflow: auto !important;
+    max-width: 80% !important;
+}
+.item.item-select-list{
+  font-size: 1.3rem;
+  color: #e3b9b9;
+}
+
 }
 
 
