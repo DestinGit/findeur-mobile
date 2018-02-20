@@ -1,0 +1,64 @@
+<ion-content class="background">
+
+  <form [formGroup]="form" (ngSubmit)="sendMessage()">
+
+    <ion-list>
+      <ion-list-header>
+        <ion-row>
+          <ion-col></ion-col>
+          <ion-col center>Email</ion-col>
+          <ion-col color="primary">
+            <span (click)="closeModal()">Annuler</span>
+          </ion-col>
+        </ion-row>
+
+      </ion-list-header>
+
+      <ion-item>
+        <ion-label floating>To:</ion-label>
+        <ion-input type="email" formControlName="to"></ion-input>
+      </ion-item>
+
+
+      <!-- <ion-item margin-bottom>
+             <ion-label>Cc:</ion-label>
+             <ion-input   
+                type="email"
+                formControlName="cc"></ion-input>
+          </ion-item>
+ 
+ 
+          <ion-item margin-bottom>
+             <ion-label>Bcc:</ion-label>
+             <ion-input
+                type="email"
+                formControlName="bcc"></ion-input>
+          </ion-item> -->
+
+
+      <ion-item>
+        <span ion-button color="grey2" text-center block>
+          joindre
+        </span>
+      </ion-item>
+
+
+      <ion-item>
+        <ion-label floating>Subject:</ion-label>
+        <ion-input type="string" formControlName="subject"></ion-input>
+      </ion-item>
+
+
+      <ion-item class="textareabloc">
+        <ion-label floating>Message:</ion-label>
+        <ion-textarea rows="13" formControlName="message"></ion-textarea>
+      </ion-item>
+
+    </ion-list>
+    <button ion-button color="grey2" text-center block [disabled]="!form.valid" icon-left
+    margin-bottom>
+        <ion-icon name="send"></ion-icon>
+        Envoyer
+    </button>
+</form>
+</ion-content>

@@ -76,6 +76,23 @@ export class FreelanceProvider {
     );
   }
 
+  getOnePersonalBusiness(args: any) {
+    let strParams = this.getStringParameters(args);
+    var url = `${Config.URL}/get/freelance${strParams}`;
+
+    return new Promise(
+      (resolve, reject) => {
+        // Appel Asynchrone à l'API Slim
+        this.http.get(url, args).subscribe(
+          (response) => {
+            resolve(response.json());
+          },
+          (error) => reject(error.json())
+        );
+      }
+    );
+  }
+
   getMissionsList(params: any) {
     let strParams = this.getStringParameters(params);
     var url = ('me' in params && params.me) ? 
@@ -101,8 +118,34 @@ export class FreelanceProvider {
           }
         );
       }
-    );
-    
+    );   
+  }
+
+  getMyProjectsList(params:any) {
+    let strParams = this.getStringParameters(params);
+    var url = `${Config.URL}/secure/myprojects-list${strParams}`;
+
+    var headers = new Headers();
+    headers.append('Authorization', `Bearer ${this.userProvider.getToken()}`);
+
+    var options = new RequestOptions({ headers: headers });
+
+    return new Promise(
+      (resolve, reject) => {
+        // Appel Asynchrone à l'API Slim
+        this.http.get(url, options).subscribe(
+          (response) => {
+            resolve(response.json());
+          },
+          (error) => {
+            console.log('error');
+            
+            reject(error);
+          }
+        );
+      }
+    );   
+
   }
 
   getListOfMissionsToApply(args: any) {
@@ -145,7 +188,7 @@ export class FreelanceProvider {
 
 
   addNewMission(data: any) {
-    var url = Config.URL + '/secure/newmission';
+    var url = Config.URL + '/secure/registermission';
     var headers = new Headers();
     headers.append('Authorization', `Bearer ${this.userProvider.getToken()}`);
     var options = new RequestOptions({ headers: headers });

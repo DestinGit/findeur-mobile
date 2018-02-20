@@ -1,8 +1,8 @@
-import { FreelanceProvider } from './../../providers/freelance/freelance';
-import { UserProvider } from './../../providers/user/user';
+// import { FreelanceProvider } from './../../providers/freelance/freelance';
+// import { UserProvider } from './../../providers/user/user';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, Modal, ModalOptions, ModalController, ViewController } from 'ionic-angular';
-import { LoginPage } from '../login/login';
+import { IonicPage, NavController, NavParams, AlertController, ModalController, ViewController, Events } from 'ionic-angular';
+// import { LoginPage } from '../login/login';
 
 /**
  * Generated class for the NewArticlePage page.
@@ -21,6 +21,8 @@ export class NewArticlePage {
   public categorie: string;
   public county: string;
 
+  public index: Number = -1;
+
   public articleData: {
     // Posted: Date,
     Title: string,
@@ -36,8 +38,7 @@ export class NewArticlePage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private alertCtrl: AlertController, public modalCtrl: ModalController,
-    private viewCtrl: ViewController,
-    private userProvider: UserProvider, private freelanceProvider: FreelanceProvider) {
+    private viewCtrl: ViewController, public events: Events ) {
     // init some vars
     this.initializeVars();
   }
@@ -55,47 +56,34 @@ export class NewArticlePage {
     this.countyAlertOpts = { title: 'Département de chalendise', subTitle: 'Sélectionnez le département' }
     this.mobilityAlertOpts = { title: 'Mobilité', subTitle: 'Sélectionnez la mobilité' };
 
-    this.articleData = {
-      Title: '',
-      Category1: '', // departement
-      Keywords: '',  // metiers
-      Body: '',     // texte
-      custom_3: '', // mobilité    
-    }
+    this.articleData = this.navParams.get('article');
+    this.index = this.navParams.get('index');
 
+    console.log('this.articleData');
+    console.log(this.articleData);
+    
   }
 
   stpSelect() {
     // console.log(`STP selected : ${this.categorie}`);
   }
 
-  addNewMission() {
-    const myModalOptions: ModalOptions = {
-      enableBackdropDismiss: false
+  saveArticle() {
+    let params = {
+      article: this.articleData,
+      index: this.index
     };
-        
-    if (!this.userProvider.isAuthenticated()) {
-      this.showAlert('envoi des datas', 'fait', () => { });
-      // console.log(this.article);
-      // Lancement de la fenêtre modal
-      let myModal: Modal = this.modalCtrl.create(LoginPage, {}, myModalOptions);
-      myModal.present();
+
+    if (this.index >= 0) {
+      // publier un event update si index existe
+      this.events.publish('project.update', JSON.stringify(params));
     } else {
-      this.articleData['Posted'] = this.getDate();
-      this.articleData['AuthorID'] = this.userProvider.getUser()['name'];
-      // console.log(this.articleData);
-      this.freelanceProvider.addNewMission(this.articleData).then((res) => {
-        if('error' in res) {
-          let errMsg = res['message'].join();
-          this.showAlert('<h5 class="error">Echec Nouvelle Annonce</h5>', errMsg, () => {});
-        } else {
-          this.showAlert('<h5 class="success">Nouvelle Annonce OK !</h5>', 'Votre annonce a bien été enregistrée',
-           () => { this.dismiss(); });
-        }
-        console.log(res)
-      })
-      .catch((err) => console.log(err));
+      // publier un event créer si index n'existe pas
+      this.events.publish('project.create', JSON.stringify(params));
     }
+
+    // Retour à la page précédente
+    this.navCtrl.pop();
   }
 
   getDate() {

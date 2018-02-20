@@ -1,0 +1,29 @@
+<ion-content class="background">
+    <ion-card>
+        <ion-card-header>
+            <ion-row>
+                <ion-col></ion-col>
+                <ion-col center>Projet associé à ce freelance</ion-col>
+                <ion-col (click)="closeModal();">
+                    <ion-icon ios="ios-close" md="md-close"></ion-icon>
+                </ion-col>
+            </ion-row>
+        </ion-card-header>
+        <ion-card-content>
+            <ion-scroll scrollY="true">
+                <ion-list>
+                    <ion-item *ngFor="let item of projectsData; let pos = index"
+                    (click)="projectSelected(item);">
+                        <ion-thumbnail item-start>
+                            <!-- <img src="img/avatar-finn.png"> -->
+                            <img src="{{ item.Image | pipelinkimg }}">
+                        </ion-thumbnail>
+                        <h2>{{ item.Title }}</h2>
+                        <h3>Don't Know What To Do!</h3>
+                        <p>{{ item.Body }}</p>
+                    </ion-item>
+                </ion-list>
+            </ion-scroll>
+        </ion-card-content>
+    </ion-card>
+</ion-content>

@@ -15,36 +15,31 @@
 
 <ion-content>
   <ion-card style="min-height:100%;">
-    <!-- <ion-card-header>
-      Header
-    </ion-card-header> -->
     <img src="{{ freeDetail.Image | pipelinkimg }}" />
     <ion-card-content>
       <ion-card-title>{{ freeDetail.Title }}</ion-card-title>
-      <p style="font-style: italic;">annonce publiée le : {{ freeDetail.Posted | date:'d/MM/y' }}</p>
+      <!-- <p style="font-style: italic;">annonce publiée le : {{ freeDetail.Posted | date:'d/MM/y' }}</p> -->
       <p>{{ freeDetail.Body }}</p>
     </ion-card-content>
-
-    <!-- <ion-row no-padding>
-      <ion-col>
-        <button ion-button clear small color="danger" icon-start>
-          <ion-icon name='star'></ion-icon>
-          Favorite
-        </button>
-      </ion-col>
-      <ion-col text-center>
-        <button ion-button clear small color="danger" icon-start>
-          <ion-icon name='musical-notes'></ion-icon>
-          Listen
-        </button>
-      </ion-col>
-      <ion-col text-right>
-        <button ion-button clear small color="danger" icon-start>
-          <ion-icon name='share-alt'></ion-icon>
-          Share
-        </button>
-      </ion-col>
-    </ion-row> -->
-
   </ion-card>
 </ion-content>
+<ion-footer>
+    <ion-row>
+        <ion-col>
+            <button ion-button icon-left clear small (click)="contactFreelanceByPhone()">
+              {{ phone }}
+            </button>
+        </ion-col>
+        <ion-col>
+            <button ion-button icon-left clear small full (click)="goToModalProjectsList();">
+                <div>{{ projectAssociated }}</div>
+              </button>            
+        </ion-col>
+        <ion-col>
+            <button ion-button icon-left clear small (click)="contactFreelanceByMail()">
+              {{ email }}
+            </button>
+        </ion-col>
+      </ion-row>
+  
+</ion-footer>

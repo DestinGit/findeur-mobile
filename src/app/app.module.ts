@@ -1,3 +1,6 @@
+import { EmailPage } from './../pages/email/email';
+import { CompagnyModalProjectsListPage } from './../pages/compagny-modal-projects-list/compagny-modal-projects-list';
+import { UserProfilPage } from './../pages/user-profil/user-profil';
 import { MysplashscreenPage } from './../pages/mysplashscreen/mysplashscreen';
 import { PipeLinkImg } from './../pipescustom/pipeLinkImg';
 import { Application } from './../pipescustom/application';
@@ -7,6 +10,8 @@ import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { HttpModule } from '@angular/http';
 // import {Http, HttpModule} from '@angular/http';
+import { CallNumber } from '@ionic-native/call-number';
+import { EmailComposer } from '@ionic-native/email-composer';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -28,6 +33,7 @@ import { SearchCompagnyPage } from './../pages/search-compagny/search-compagny';
 
 import { MyTabsPage } from '../pages/my-tabs/my-tabs';
 import { FindFreelancersByAvailabilityPage } from '../pages/find-freelancers-by-availability/find-freelancers-by-availability';
+import { CompagnyProjectsPage } from './../pages/compagny-projects/compagny-projects';
 import { FindFreelancersBySkillPage } from '../pages/find-freelancers-by-skill/find-freelancers-by-skill';
 import { FindFreelancersByLocationPage } from '../pages/find-freelancers-by-location/find-freelancers-by-location';
 import { FreelanceDetailPage } from './../pages/freelance-detail/freelance-detail';
@@ -40,6 +46,8 @@ import { NewArticlePage } from '../pages/new-article/new-article';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { LocalDataProvider } from '../providers/local-data/local-data';
 
+import { NgArrayPipesModule, NgStringPipesModule } from 'angular-pipes';
+import { EmailProvider } from '../providers/email/email';
 // import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 //Définition de la configuration globale de l'application
 export const Config = {
@@ -56,6 +64,8 @@ export const Config = {
     SearchCompagnyPage,
     MyTabsPage,
     FindFreelancersBySkillPage,
+    CompagnyModalProjectsListPage,
+    CompagnyProjectsPage,
     FindFreelancersByAvailabilityPage,
     FindFreelancersByLocationPage,
     FreelanceDetailPage,
@@ -65,7 +75,9 @@ export const Config = {
     RegisterPage,
     NewArticlePage,
     Application,
-    PipeLinkImg
+    PipeLinkImg,
+    UserProfilPage,
+    EmailPage
   ],
   imports: [
     BrowserModule,
@@ -75,7 +87,9 @@ export const Config = {
       name: '__findeurdb',
       driverOrder: ['sqlite', 'indexeddb', 'websql']
     }),
-    HttpModule
+    HttpModule,
+    NgArrayPipesModule,
+    NgStringPipesModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -86,6 +100,8 @@ export const Config = {
     SearchCompagnyPage,
     MyTabsPage,
     FindFreelancersBySkillPage,
+    CompagnyModalProjectsListPage,
+    CompagnyProjectsPage,
     FindFreelancersByAvailabilityPage,
     FindFreelancersByLocationPage,
     FreelanceDetailPage,
@@ -93,7 +109,9 @@ export const Config = {
     LoginPage,
     ProfilPage,
     RegisterPage,
-    NewArticlePage
+    NewArticlePage,
+    UserProfilPage,
+    EmailPage
   ],
   providers: [
     StatusBar,
@@ -104,7 +122,11 @@ export const Config = {
     FreelanceProvider,
     UserStorageInfosProvider,
     InAppBrowser,
-    LocalDataProvider
+    LocalDataProvider,
+
+    CallNumber,
+    EmailComposer,
+    EmailProvider
   ]
 })
 export class AppModule { }

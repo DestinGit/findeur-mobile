@@ -3,12 +3,7 @@ import { Config } from './../../app/app.module';
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { ToastController } from 'ionic-angular';
-/*
-  Generated class for the UserProvider provider.
 
-  See https://angular.io/guide/dependency-injection for more info on providers
-  and Angular DI.
-*/
 @Injectable()
 export class UserProvider {
 

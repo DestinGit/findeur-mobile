@@ -1,0 +1,56 @@
+page-compagny-modal-projects-list {
+    * {
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    }
+    .background {
+        // width: 50%;
+        // height: 50%;
+        // background-color: rgba(255, 255, 255, 0.3); 
+        background-color: rgba(242, 124, 54, 0.2);
+    }
+    ion-scroll {
+        height: 35rem;
+    }
+    .scroll-content {
+        text-align: center;
+        align-content: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    ion-card.card {
+//        background-color: rgba(242, 124, 54, 1);
+        border-radius: 5px;
+        box-shadow: none;
+        background-color: rgba(242, 124, 54, 0.2);
+        //background-color: #fff;
+    }
+
+    ion-card-content.card-content {
+        padding: 0;
+    }
+    ion-list.list {
+        margin: 2px !important;
+    }
+    a,
+    p,
+    ion-card-header.card-header {
+        color: rgb(216, 185, 185);
+        padding: 6px;
+    }
+    // ion-scroll {
+    //     width: 100%;
+    // }
+    // ion-card-header.card-header {
+    //     background: rgb(119, 50, 9);
+    // }
+    .item {
+        margin-bottom: 1px;
+        // margin-bottom: 10px;
+        // background-color: rgba(242, 124, 54, 0.8);
+        // border: medium none;
+        // color: #fff;
+        color: #a39b9b;
+        font-size: 1.2rem;
+    }
+}

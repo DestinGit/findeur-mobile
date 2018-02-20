@@ -21,7 +21,6 @@
 
     <ion-item>
       <ion-label>
-
         <ion-icon ios="ios-walk" md="md-walk" start></ion-icon>
         <ion-icon name="car"></ion-icon>
       </ion-label>
@@ -31,12 +30,6 @@
         <ion-option value="dans-mes-locauxt">Dans mes locaux</ion-option>
         <ion-option value="en-teletravail">En télétravail</ion-option>
         <ion-option value="indifferent">Indéfférent</ion-option>
-        <!-- <ion-option value="recoit-uniquement">Reçoit uniquement</ion-option>
-        <ion-option value="se-deplace-et-reçoit">Se déplace et reçoit</ion-option>
-        <ion-option value="se-deplace-uniquement">Se déplace uniquement</ion-option>
-        <ion-option value="teletravail">Télétravail</ion-option>
-        <ion-option value="indifferent1">Indéfférent</ion-option>
-        <ion-option value="mixte">Mixte</ion-option> -->
       </ion-select>
     </ion-item>
 
@@ -47,13 +40,13 @@
       </ion-label>
       <ion-select (ionChange)="stpSelect()" class="article" [(ngModel)]="articleData.Keywords" submitText="Ok" cancelText="Annuler"
         multiple="true" [selectOptions]="catAlertOpts" placeholder="Selectionnez métiers">
-        <ion-option>Dépannage Informatique</ion-option>
-        <ion-option>Securite-Gardiennage-Telesurveillance</ion-option>
-        <ion-option>Entretien parc automobile</ion-option>
-        <ion-option>Travaux bâtiment</ion-option>
-        <ion-option>Organsation d'évènements</ion-option>
-        <ion-option>Professionnels de l'audivisuel</ion-option>
-      </ion-select>
+        <ion-option value="depannage-informatique">Dépannage Informatique</ion-option>
+        <ion-option value="securite-gardiennage-telesurveillance">Securite-Gardiennage-Telesurveillance</ion-option>
+        <ion-option value="Entretien-parc-automobile">Entretien parc automobile</ion-option>
+        <ion-option value="Travaux-batiment">Travaux bâtiment</ion-option>
+        <ion-option value="Organsation-d-evenements">Organsation d'évènements</ion-option>
+        <ion-option value="Professionnels-de-l-audivisuel">Professionnels de l'audivisuel</ion-option>
+    </ion-select>
     </ion-item>
 
     <ion-item>
@@ -90,7 +83,7 @@
 
   </ion-list>
 
-  <button class="" ion-button outline block color="light" (click)="addNewMission()">
+  <button class="" ion-button outline block color="light" (click)="saveArticle()">
     Create
   </button>
 

@@ -1,55 +1,3 @@
-<!--
-  Generated template for the LoginPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
-<!-- <ion-header>
-  <ion-toolbar>
-    <ion-title>
-      Login
-    </ion-title>
-    <ion-buttons start>
-      <button ion-button (click)="dismiss()">
-        <span ion-text color="primary" showWhen="ios">Cancel</span>
-        <ion-icon name="md-close" showWhen="android, windows"></ion-icon>
-      </button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
- -->
-
-<!-- <ion-content>
-    <ion-buttons start>
-        <button ion-button (click)="dismiss()">
-          <span ion-text color="" showWhen="ios">Cancel</span>
-          <ion-icon name="md-close" showWhen="android, windows"></ion-icon>
-        </button>
-      </ion-buttons>
-
-<p class="messageBox" [ngClass]="messageClassName" style="position:absolute">{{ message }}</p>
-
-<div class="Ycenter">
-  
-  <ion-list>
-    <ion-item>
-      <ion-label>login</ion-label>
-      <ion-input type="text" [(ngModel)]="credentials.username"></ion-input>
-    </ion-item>
-  
-    <ion-item>
-      <ion-label>Mot de passe</ion-label>
-      <ion-input type="password" [(ngModel)]="credentials.password"></ion-input>
-    </ion-item>
-  </ion-list>
-  
-  <div padding>
-    <button ion-button color="primary" block (click)="signIn();">Connexion</button>
-    <button ion-button color="secondary" block (click)="openRegisterPage();">Inscription</button>
-  </div>
-</div>  
-</ion-content>
- -->
 <ion-content class="background">
   <h1>FINDEUR'S TEAM</h1>
   <ion-card>
@@ -57,20 +5,12 @@
     <ion-card-content>
       <ion-list no-lines>
         <ion-item>
-          <!-- <ion-label floating>Username</ion-label> -->
           <ion-input type="text"  placeholder="Username" [(ngModel)]="credentials.username"></ion-input>
         </ion-item>
 
         <ion-item>
-          <!-- <ion-label floating>Password</ion-label> -->
           <ion-input type="password" placeholder="Password" [(ngModel)]="credentials.password"></ion-input>
         </ion-item>
-
-        <!-- <ion-item>
-          <p>Forgot your login detail ?
-            <a>Get help</a>
-          </p>
-        </ion-item> -->
       </ion-list>
       <a>Mot de passe oublié ?
           <b>Cliquez ici</b>

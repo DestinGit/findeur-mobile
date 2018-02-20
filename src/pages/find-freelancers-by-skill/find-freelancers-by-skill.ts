@@ -75,9 +75,8 @@ export class FindFreelancersBySkillPage {
   }
 
   itemSelected(item: any) {
-    // console.log(item);
     let params = {
-      parData: item
+      freelance: item
     };
     this.navCtrl.push(FreelanceDetailPage, params);
   }

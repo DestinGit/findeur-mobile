@@ -1,0 +1,66 @@
+<!--
+  Generated template for the CompagnyProjectsPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<!-- USEFUL PIPES
+https://github.com/fknop/angular-pipes -->
+<ion-header>
+
+  <ion-navbar>
+    <ion-buttons start>
+      <button ion-button icon-only menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+    </ion-buttons>
+
+    <ion-title>Projets</ion-title>
+
+    <ion-buttons end>
+      <button ion-button icon-only (click)="openLogOrProfilPage()">
+        <ion-icon name="contact" [ngClass]="whatClassIsIt()"></ion-icon>
+      </button>
+    </ion-buttons>
+
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <ion-card *ngFor="let item of projectsData; let pos = index">
+    <ion-item (click)="goToArticlePage(item, pos)">
+      <ion-avatar item-start>
+        <img src="{{ item.Image | pipelinkimg }}">
+      </ion-avatar>
+      <h2>{{ item.Title }}</h2>
+      <p>{{ item.Posted }}</p>
+    </ion-item>
+
+    <ion-card-header (click)="goToArticlePage(item, pos)">
+      Card Header
+    </ion-card-header>
+
+    <ion-card-content (click)="goToArticlePage(item, pos)">
+      <p>{{ item.Body }}</p>
+    </ion-card-content>
+    <ion-row>
+      <ion-col>
+        <button ion-button icon-left clear small full>
+          <div>{{ item.custom_27 | trim | split: ',' | count}} postulants</div>
+        </button>
+      </ion-col>
+    </ion-row>
+
+  </ion-card>
+
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles" refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+
+</ion-content>
+<ion-footer>
+  <button ion-button color="findeur" full outline (click)="goToArticlePage(null, -1)">Nouveau projet</button>
+</ion-footer>

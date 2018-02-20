@@ -60,11 +60,7 @@ export class LoginPage {
   }
 
   dismiss() {
-    const data = {
-      login: 'Login',
-      pass: 'toto'
-    };
-
+    const data = {};
     this.viewCtrl.dismiss(data);
   }
 

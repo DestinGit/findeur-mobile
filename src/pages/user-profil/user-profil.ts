@@ -1,0 +1,55 @@
+import { Component } from '@angular/core';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { FreelanceProvider } from '../../providers/freelance/freelance';
+
+/**
+ * Generated class for the UserProfilPage page.
+ *
+ * See https://ionicframework.com/docs/components/#navigation for more info on
+ * Ionic pages and navigation.
+ */
+
+@IonicPage()
+@Component({
+  selector: 'page-user-profil',
+  templateUrl: 'user-profil.html',
+})
+export class UserProfilPage {
+  private image = ['architect.jpg', 'office62.jpg','card-sf.jpg','card-saopaolo.jpg'];
+affImg: string;
+  freeDetail = {
+    Image:'',
+    Title:'',
+    Body:'',
+    Posted:'',
+  };
+   
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+    public freelanceProvider: FreelanceProvider) {
+    let freelanceName = navParams.get('param');
+      freelanceProvider.getOnePersonalBusiness({name: freelanceName})
+      .then((data) => {
+        console.log(data);
+        let tmp: any = data;
+        this.freeDetail = tmp;
+      })
+      .catch((err) => console.log('error c'));
+
+      this.affImg = this.image[this.entierAleatoire(0,3)];
+  }
+
+   /**
+   * Return a random number
+   * @param {number} min
+   * @param {number} max 
+   * @returns {number}
+   */
+  entierAleatoire(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad UserProfilPage');
+  }
+
+}

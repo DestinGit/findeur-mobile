@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { HomePage } from '../home/home';
-import { FindFreelancersByLocationPage } from '../find-freelancers-by-location/find-freelancers-by-location';
+import { CompagnyProjectsPage } from './../compagny-projects/compagny-projects';
 import { FindFreelancersBySkillPage } from '../find-freelancers-by-skill/find-freelancers-by-skill';
 import { FindFreelancersByAvailabilityPage } from './../find-freelancers-by-availability/find-freelancers-by-availability';
 
@@ -20,7 +20,7 @@ import { FindFreelancersByAvailabilityPage } from './../find-freelancers-by-avai
 export class MyTabsPage {
   tabsHome: any;
   tabsAvailable: any;
-  tabsLocation: any;
+  tabsProjects: any;
   tabsSkill: any;
 
   className = false;
@@ -28,8 +28,8 @@ export class MyTabsPage {
   constructor(public navCtrl: NavController, public navParams: NavParams) {
       this.tabsHome = HomePage;
       this.tabsSkill = FindFreelancersBySkillPage;
+      this.tabsProjects = CompagnyProjectsPage;
       this.tabsAvailable = FindFreelancersByAvailabilityPage;
-      this.tabsLocation = FindFreelancersByLocationPage;
 
       //this.className = navParams.get('val') ? true:false;
   }
