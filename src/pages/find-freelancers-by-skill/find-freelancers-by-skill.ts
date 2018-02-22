@@ -13,6 +13,7 @@ import { UserProvider } from '../../providers/user/user';
 
 import { LoginPage } from '../login/login';
 import { ProfilPage } from './../profil/profil';
+import { CategoryProvider } from '../../providers/category/category';
 /**
  * Generated class for the FindFreelancersBySkillPage page.
  *
@@ -38,11 +39,12 @@ export class FindFreelancersBySkillPage {
   isAndroid: boolean = false;
   // business: any;
   // params: { results: number, Keywords: any };
+  ionSelectSkills: any = [{ name: '', title: '' }];
   public kills = [];
   public requestParams = { results: 40, Keywords: '' };
 
   constructor(public navCtrl: NavController, public navParams: NavParams, platform: Platform,
-    public storage: Storage, private alertCtrl: AlertController,
+    public storage: Storage, private alertCtrl: AlertController, private category: CategoryProvider,
     public loadingCtrl: LoadingController, public modalCtrl: ModalController, public toastCtrl: ToastController,
     public freelanceProvider: FreelanceProvider, public userProvider: UserProvider,
     public events: Events) {
@@ -52,6 +54,8 @@ export class FindFreelancersBySkillPage {
     events.subscribe('user.connection', () => this.whatClassIsIt());
 
     this.presentLoadingDefault();
+
+    this.loadSkills();
   }
 
   goToNewArticlePage() {
@@ -63,10 +67,10 @@ export class FindFreelancersBySkillPage {
       // Lancement de la fenêtre modal
       let myModal: Modal = this.modalCtrl.create(LoginPage, {}, myModalOptions);
       myModal.present();
-    } else if(this.userProvider.getUser().privs !== "4") {
+    } else if (this.userProvider.getUser().privs !== "4") {
       this.showAlert('Nouvelle annonce !', 'Droits insuffisants pour accéder à cette fonctionnalité.', () => { });
     } else {
-      this.navCtrl.push(NewArticlePage).then(() => { });      
+      this.navCtrl.push(NewArticlePage).then(() => { });
     }
   }
 
@@ -115,11 +119,11 @@ export class FindFreelancersBySkillPage {
     toast.present();
   }
 
-  stpSelect() {}
+  stpSelect() { }
 
-  backToHomeButton() {}
+  backToHomeButton() { }
 
-  notificationSelect() {}
+  notificationSelect() { }
 
   entierAleatoire(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -136,11 +140,19 @@ export class FindFreelancersBySkillPage {
 
   killsSelected() {
     this.requestParams.Keywords = this.kills.join(',');
-    this.loadDatas(); 
+    console.log(this.kills);
+    
+    this.loadDatas();
   }
 
   ionViewDidLoad() {
     this.loadDatas();
+  }
+
+  loadSkills() {
+    this.category.getAllSkills()
+      .then((data) => this.ionSelectSkills = data)
+      .catch((error) => console.error());
   }
 
   loadDatas() {

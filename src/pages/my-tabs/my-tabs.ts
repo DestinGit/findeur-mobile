@@ -3,7 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { HomePage } from '../home/home';
 import { CompagnyProjectsPage } from './../compagny-projects/compagny-projects';
 import { FindFreelancersBySkillPage } from '../find-freelancers-by-skill/find-freelancers-by-skill';
-import { FindFreelancersByAvailabilityPage } from './../find-freelancers-by-availability/find-freelancers-by-availability';
+// import { FindFreelancersByAvailabilityPage } from './../find-freelancers-by-availability/find-freelancers-by-availability';
 
 /**
  * Generated class for the MyTabsPage page.
@@ -19,7 +19,7 @@ import { FindFreelancersByAvailabilityPage } from './../find-freelancers-by-avai
 })
 export class MyTabsPage {
   tabsHome: any;
-  tabsAvailable: any;
+  // tabsAvailable: any;
   tabsProjects: any;
   tabsSkill: any;
 
@@ -29,7 +29,7 @@ export class MyTabsPage {
       this.tabsHome = HomePage;
       this.tabsSkill = FindFreelancersBySkillPage;
       this.tabsProjects = CompagnyProjectsPage;
-      this.tabsAvailable = FindFreelancersByAvailabilityPage;
+      // this.tabsAvailable = FindFreelancersByAvailabilityPage;
 
       //this.className = navParams.get('val') ? true:false;
   }

@@ -1,2 +1,10 @@
 page-compagny-projects {
+    .background {
+        background-image: url('../assets/img/office62.jpg');
+        // background-color: rgba(48, 44, 44, 0.2);
+    }
+
+    div.scroll-content {
+        background-color: unset !important;
+    }
 }

@@ -1,16 +1,17 @@
 page-compagny-modal-projects-list {
-    * {
+    *:not(ion-icon) {
         font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     }
-    .background {
-        // width: 50%;
-        // height: 50%;
-        // background-color: rgba(255, 255, 255, 0.3); 
-        background-color: rgba(242, 124, 54, 0.2);
+
+    .background {        
+        background-color: rgba(0, 0, 0, 0.1);
+        // background-color: rgba(242, 124, 54, 0);
     }
+
     ion-scroll {
         height: 35rem;
     }
+
     .scroll-content {
         text-align: center;
         align-content: center;
@@ -18,17 +19,17 @@ page-compagny-modal-projects-list {
         flex-direction: column;
         justify-content: center;
     }
+
     ion-card.card {
-//        background-color: rgba(242, 124, 54, 1);
         border-radius: 5px;
         box-shadow: none;
-        background-color: rgba(242, 124, 54, 0.2);
-        //background-color: #fff;
+        background-color: rgba(6, 6, 6, 0.71);
     }
 
     ion-card-content.card-content {
         padding: 0;
     }
+
     ion-list.list {
         margin: 2px !important;
     }
@@ -38,12 +39,6 @@ page-compagny-modal-projects-list {
         color: rgb(216, 185, 185);
         padding: 6px;
     }
-    // ion-scroll {
-    //     width: 100%;
-    // }
-    // ion-card-header.card-header {
-    //     background: rgb(119, 50, 9);
-    // }
     .item {
         margin-bottom: 1px;
         // margin-bottom: 10px;

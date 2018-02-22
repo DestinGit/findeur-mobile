@@ -1,74 +1,61 @@
 page-list {
-  ion-card-header.card-header {
-    padding: 0;
-    background-color: darkslategrey;
-    margin-bottom: 3px;
-    text-align: center;
-    color: rgba(255, 255, 255, 0.5);  
-  }
-
-  // .segment-md .segment-button.segment-activated,
-  // .segment-ios .segment-button.segment-activated {
-  //   // background-color: #F53D3D;
-  //   background-color: #f27c36;
-  // }
-
-  // .segment-md .segment-button,
-  // .segment-ios .segment-button {
-  //   border-color: #f27c36;
-  //   height: 2.2rem;
-  //   font-size: 1rem;
-  //   line-height: 2rem;
-  //   color: #f27c36;
-  //   border-width: 0px;
-  // }
-
-  // .bar-button-default-md,
-  // .bar-button-default-ios{
-  //   color: #f27c36;
-  // }
-  ion-select.article {
-    overflow: auto !important;
-    max-width: 80% !important;
-}
-.item.item-select-list{
-  font-size: 1.3rem;
-  color: #e3b9b9;
-}
-
-}
-
-
-
-
-.alertClass {
-  .alert-wrapper {
-    background-color: rgba(0,0,0, 0.6);
-  }
-}
-
-.card-background-page {
-    
-      ion-card {
-        position: relative;
-        text-align: center;
-      }
-    
-      .card-title {
-        position: absolute;
-        top: 36%;
-        font-size: 2.0em;
-        width: 100%;
-        font-weight: bold;
-        color: #fff;
-      }
-    
-      .card-subtitle {
-        font-size: 1.0em;
-        position: absolute;
-        top: 52%;
-        width: 100%;
-        color: #fff;
-      }
-    
+    .background {
+        background-image: url('../assets/img/office62.jpg');
     }
+
+    div.scroll-content {
+        background-color: unset !important;
+        // background-image: url('../assets/img/office62.jpg');
+    }
+    ion-card-header.card-header {
+        padding: 0;
+        background-color: darkslategrey;
+        margin-bottom: 3px;
+        text-align: center;
+        color: rgba(255, 255, 255, 0.5);
+    }
+    ion-select.article {
+        overflow: auto !important;
+        max-width: 80% !important;
+    }
+    .item.item-select-list {
+        font-size: 1.3rem;
+        color: #e3b9b9;
+    }
+    .item {
+      //background-color: rgba(48, 44, 44, 0.2);
+      background-color: rgba(255, 255, 255, 0.8);
+      margin-bottom: 3px;
+  }
+  ion-header {
+    background-color: rgba(255, 255, 255, 0.8);
+  }
+}
+
+// .alertClass {
+//   .alert-wrapper {
+//     background-color: rgba(0,0,0, 0.6);
+//   }
+// }
+// metiers-du-web,assistance-et-secretariat,fonction-commerciale,ressources-humaines,evenementiel-communication,services-generaux
+// .card-background-page {
+//       ion-card {
+//         position: relative;
+//         text-align: center;
+//       }
+//       .card-title {
+//         position: absolute;
+//         top: 36%;
+//         font-size: 2.0em;
+//         width: 100%;
+//         font-weight: bold;
+//         color: #fff;
+//       }
+//       .card-subtitle {
+//         font-size: 1.0em;
+//         position: absolute;
+//         top: 52%;
+//         width: 100%;
+//         color: #fff;
+//       }
+//     }

@@ -48,10 +48,12 @@ import { LocalDataProvider } from '../providers/local-data/local-data';
 
 import { NgArrayPipesModule, NgStringPipesModule } from 'angular-pipes';
 import { EmailProvider } from '../providers/email/email';
+import { CategoryProvider } from '../providers/category/category';
 // import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 //Définition de la configuration globale de l'application
 export const Config = {
-   URL: 'https://yemeialways.alwaysdata.net/api'
+  URL: 'https://findtest.alwaysdata.net/api'
+  //  URL: 'https://yemeialways.alwaysdata.net/api'
   //URL: 'http://localhost:8000'
 };
 
@@ -126,7 +128,8 @@ export const Config = {
 
     CallNumber,
     EmailComposer,
-    EmailProvider
+    EmailProvider,
+    CategoryProvider
   ]
 })
 export class AppModule { }

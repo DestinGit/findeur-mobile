@@ -7,7 +7,9 @@ export class PipeLinkImg implements PipeTransform {
   transform(value, args) {
     let image = ['architect.jpg', 'office62.jpg', 'card-sf.jpg', 'card-saopaolo.jpg'];
     let localLink = './assets/img/';
-    let findeurLink = 'http://findeur2017.findeur.fr/images/';
+    // let findeurLink = 'http://findeur2017.findeur.fr/images/';
+    let findeurLink = 'http://findtest.findeur.fr/images/';
+
 
     return (value.length > 0) ?
       `${findeurLink}${value}t.jpg` :

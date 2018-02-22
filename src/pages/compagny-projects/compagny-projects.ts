@@ -132,6 +132,7 @@ export class CompagnyProjectsPage {
       .then((data) => {
         let tmpData: any = data;
         this.projectsData = tmpData;
+        console.log(tmpData);
       })
       .catch((err) => { });
   }
@@ -162,6 +163,7 @@ export class CompagnyProjectsPage {
   }
 
   whatClassIsIt() {
+    // (this.userProvider.isAuthenticated()) ? this.loadDatas():this.projectsData=[];
     return (this.userProvider.isAuthenticated()) ? 'userColor-idendifer' : 'userColor-noconnect';
   }
 
@@ -190,7 +192,6 @@ export class CompagnyProjectsPage {
   goToProfilPage(candidate: any) {
     // let sendReq = this.requestParams;
     // sendReq['name'] = candidate;
-    console.log(candidate);
     if (candidate.length && candidate != 'postule_ae' && candidate != '-') {
       this.navCtrl.push(UserProfilPage, { param: candidate });
     }

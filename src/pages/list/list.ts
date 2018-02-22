@@ -1,9 +1,10 @@
+import { CategoryProvider } from './../../providers/category/category';
 import { MissionDetailsPage } from './../mission-details/mission-details';
 // import { Component, ViewChild, ElementRef } from '@angular/core';
 import { Component } from '@angular/core';
 import {
   NavController, NavParams, ModalController, Modal,
-  ModalOptions, Events, Loading, LoadingController, Toast, ToastController
+  ModalOptions, Events, Loading, LoadingController, Toast, ToastController, AlertController
 } from 'ionic-angular';
 import { LoginPage } from '../login/login';
 import { ProfilPage } from './../profil/profil';
@@ -34,13 +35,20 @@ export class ListPage {
   myFavorites = [];
   isenabledFavorites: boolean = true;
 
+  ionSelectSkills: any = [{name:'', title:''}];
+
   constructor(public navCtrl: NavController, public navParams: NavParams,
-    public modalCtrl: ModalController, public userProvider: UserProvider,
-    public events: Events, private freelanceProvider: FreelanceProvider,
+    private alertCtrl: AlertController,
+    public modalCtrl: ModalController, public userProvider: UserProvider, public events: Events, 
+    private freelanceProvider: FreelanceProvider, private category:CategoryProvider,
     public loadingCtrl: LoadingController, public toastCtrl: ToastController) {
 
     // Show loading
     this.presentLoadingDefault();
+
+    this.loadSkills();
+
+console.log(userProvider.getUser());
 
     // register for the event 'user.connection'
     events.subscribe('user.connection', () => this.whatClassIsIt());
@@ -90,6 +98,12 @@ export class ListPage {
         break;
 
     }
+  }
+
+  loadSkills() {
+    this.category.getAllSkills()
+    .then((data) => this.ionSelectSkills = data)
+    .catch((error) => console.error());
   }
 
   /**
@@ -197,17 +211,6 @@ export class ListPage {
   }
 
 
-  // coolSS(item: any) {
-  //   // console.log(item);
-  //   if (!this.userProvider.isAuthenticated()) {
-  //     this.presentPrompt(item);
-  //   } else {
-  //     this.presentToast('Votre candidature pour la mission ' + item.Title + ' a bien été enregistrée');
-  //     this.applyToMission(item);
-  //   }
-  // }
-
-
   /**
    * Handle apply to mission by the user or open a connexion modal if user is not connected
    * @param item 
@@ -222,7 +225,8 @@ export class ListPage {
       let myModal: Modal = this.modalCtrl.create(LoginPage, {}, myModalOptions);
       myModal.present();
       // Handler de l'évènement fermeture de la modal
-      // myModal.onDidDismiss((data) => { });
+    } else if(this.userProvider.getUser().privs === "4") {
+      this.showAlert('Postuler Echec!', 'Vous êtes une entreprise', () => { });
     } else {
       this.applyToMission(item);
     }
@@ -316,16 +320,6 @@ export class ListPage {
     myModal.onDidDismiss((data) => { });
   }
 
-
-  // openRegisterWebpage() {
-  //   const options: InAppBrowserOptions = {
-  //     location: 'no',
-  //     zoom: 'no'
-  //   };
-  //   this.iab.create('https://ionicframework.com/', 'self', options);
-
-  // }
-
   /**
    * Show a Toast notification
    * A Toast is a subtle notification commonly used in modern applications. 
@@ -381,8 +375,22 @@ export class ListPage {
     this.loading.present();
   }
 
-}
+  /**
+   * 
+   * @param title 
+   * @param subTitle 
+   * @param callback 
+   */
+  showAlert(title: string, subTitle: string, callback) {
+    let alert = this.alertCtrl.create({
+      title: title,
+      subTitle: subTitle,
+      buttons: [{ text: 'OK', handler: (data) => { callback(); } }]
+    });
+    alert.present();
+  }
 
+}
 
 
 

@@ -21,30 +21,33 @@
   </ion-segment>
 
   <ion-list no-line>
-      <ion-item class="item-select-list">
-        <ion-label>
-          <ion-icon name="people"></ion-icon>
-          <ion-icon name="folder-open"></ion-icon>
-        </ion-label>
-        <ion-select [(ngModel)]="kills" multiple="true" placeholder="Filter par métiers" class="article" cancelText="Annuler"
-          okText="Valider" (ionChange)="selectOptionItemSelected()" class="article">
-          <ion-option value="depannage-informatique">Dépannage Informatique</ion-option>
-          <ion-option value="securite-gardiennage-telesurveillance">Securite-Gardiennage-Telesurveillance</ion-option>
-          <ion-option value="Entretien-parc-automobile">Entretien parc automobile</ion-option>
-          <ion-option value="Travaux-batiment">Travaux bâtiment</ion-option>
-          <ion-option value="Organsation-d-evenements">Organsation d'évènements</ion-option>
-          <ion-option value="Professionnels-de-l-audivisuel">Professionnels de l'audivisuel</ion-option>
-        </ion-select>
-      </ion-item>
-    </ion-list>
-  
+    <ion-item class="item-select-list">
+      <ion-label>
+        <ion-icon name="people"></ion-icon>
+        <ion-icon name="folder-open"></ion-icon>
+      </ion-label>
+      <ion-select [(ngModel)]="kills" multiple="true" placeholder="Filter par métiers" class="article" cancelText="Annuler" okText="Valider"
+        (ionChange)="selectOptionItemSelected()" class="article">
+        <ion-option value="{{skills.name}}" *ngFor="let skills of ionSelectSkills">
+          {{skills.title}}
+        </ion-option>
+        <!-- <ion-option value="depannage-informatique">Dépannage Informatique</ion-option>
+        <ion-option value="securite-gardiennage-telesurveillance">Securite-Gardiennage-Telesurveillance</ion-option>
+        <ion-option value="Entretien-parc-automobile">Entretien parc automobile</ion-option>
+        <ion-option value="Travaux-batiment">Travaux bâtiment</ion-option>
+        <ion-option value="Organsation-d-evenements">Organsation d'évènements</ion-option>
+        <ion-option value="Professionnels-de-l-audivisuel">Professionnels de l'audivisuel</ion-option> -->
+      </ion-select>
+    </ion-item>
+  </ion-list>
+
 
 </ion-header>
 
-<ion-content>
-  <p class="YcenterMessageBox messageBox" *ngIf="isThereNoData">
+<ion-content class="background">
+  <!-- <p class="YcenterMessageBox messageBox" *ngIf="isThereNoData">
     {{ message }}
-  </p>
+  </p> -->
 
   <ion-card *ngFor="let item of missions">
     <ion-card-header color="findeur" *ngIf="item.custom_27 | application: userName">
@@ -66,15 +69,14 @@
 
     <ion-row no-padding>
       <ion-col col-4>
-        <button ion-button clear small color="findeur" icon-start id="favorites_{{ item.ID }}"
-         (click)="handlerAddToMyFavoritesButton(item)">
+        <button ion-button clear small color="findeur" icon-start id="favorites_{{ item.ID }}" (click)="handlerAddToMyFavoritesButton(item)">
           <ion-icon name='star'></ion-icon>
           Favoris
         </button>
       </ion-col>
       <ion-col col-4>
-        <button ion-button clear small color="findeur" icon-start id="apply_{{ item.ID }}"
-        (click)="handlerApplyToMissionButton(item)" [disabled]="item.custom_27 | application: userName">
+        <button ion-button clear small color="findeur" icon-start id="apply_{{ item.ID }}" (click)="handlerApplyToMissionButton(item)"
+          [disabled]="item.custom_27 | application: userName">
           <ion-icon name='arrow-dropright-circle'></ion-icon>
           Postuler
         </button>

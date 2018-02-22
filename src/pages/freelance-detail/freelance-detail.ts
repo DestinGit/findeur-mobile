@@ -37,7 +37,8 @@ export class FreelanceDetailPage {
     private callNumber: CallNumber, ) {
     this.freeDetail = navParams.get('freelance');
     this.affImg = this.image[this.entierAleatoire(0, 3)];
-    console.log(this.freeDetail);
+    // console.log(this.affImg);   
+    // console.log(this.freeDetail);
 
   }
 
@@ -52,7 +53,7 @@ export class FreelanceDetailPage {
 
     myModal.onDidDismiss((data) => {
       if (data) {
-        console.log(data);
+        // console.log(data);
         
         this.projectAssociated = data['Title'];
         this.phone = this.freeDetail['custom_4'];
@@ -91,7 +92,7 @@ export class FreelanceDetailPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad FreelanceDetailPage');
+    // console.log('ionViewDidLoad FreelanceDetailPage');
   }
 
 }
