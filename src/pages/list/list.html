@@ -31,12 +31,6 @@
         <ion-option value="{{skills.name}}" *ngFor="let skills of ionSelectSkills">
           {{skills.title}}
         </ion-option>
-        <!-- <ion-option value="depannage-informatique">Dépannage Informatique</ion-option>
-        <ion-option value="securite-gardiennage-telesurveillance">Securite-Gardiennage-Telesurveillance</ion-option>
-        <ion-option value="Entretien-parc-automobile">Entretien parc automobile</ion-option>
-        <ion-option value="Travaux-batiment">Travaux bâtiment</ion-option>
-        <ion-option value="Organsation-d-evenements">Organsation d'évènements</ion-option>
-        <ion-option value="Professionnels-de-l-audivisuel">Professionnels de l'audivisuel</ion-option> -->
       </ion-select>
     </ion-item>
   </ion-list>
@@ -189,7 +183,7 @@
     </ion-infinite-scroll-content>
   </ion-infinite-scroll>
 
-  <ion-refresher (ionRefresh)="doRefresh($event)">
+  <ion-refresher (ionRefresh)="refreshScreen($event)">
     <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles" refreshingText="Refreshing...">
     </ion-refresher-content>
   </ion-refresher>

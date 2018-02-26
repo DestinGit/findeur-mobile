@@ -35,13 +35,13 @@
     <ion-item>
       <ion-icon name='body' item-start></ion-icon>
       <ion-label floating>Prenom</ion-label>
-      <ion-input type="text" value="{{ monUser.first_name }}"></ion-input>
+      <ion-input type="text" value="{{ monUser.last_name }}"></ion-input>
     </ion-item>
 
     <ion-item>
       <ion-icon name='body' item-start></ion-icon>
       <ion-label floating>Nom</ion-label>
-      <ion-input type="text" [(ngModel)]=monUser.name></ion-input>
+      <ion-input type="text" [(ngModel)]=monUser.first_name></ion-input>
     </ion-item>
   </ion-list>
 
@@ -75,17 +75,19 @@
       </ion-avatar>
 
       <h2>{{ monUser.RealName }}</h2>
-      <h3>I'm a big deal Développer</h3>
-      <p>Freelancer pendant ses heures perdues</p>
+      <h3>Vous êtes <strong>{{ activity }}</strong></h3>
+      <p>{{ monUser.detail }}</p>
     </ion-item>
 
   </ion-list>
 
-  <button ion-button color="light" outline>
+  <!-- <button ion-button color="light" outline>
     <span style="color:rgb(70, 85, 85)">Modifier profil</span>
-  </button>
-  <button ion-button color="light" outline (click)="disconnect();">
-    <span style="color:rgb(70, 85, 85)">Déconnexion</span>
+  </button> -->
+  <button ion-button color="findeur" block outline (click)="disconnect();">
+    <span >Déconnexion</span>
+    <!-- <span style="color:rgb(70, 85, 85)">Déconnexion</span> -->
   </button>
 
 </ion-content>
+<!-- dimitry.hennart@gmail.com -->

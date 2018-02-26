@@ -38,7 +38,7 @@ export class FreelanceDetailPage {
     this.freeDetail = navParams.get('freelance');
     this.affImg = this.image[this.entierAleatoire(0, 3)];
     // console.log(this.affImg);   
-    // console.log(this.freeDetail);
+    console.log(this.freeDetail);
 
   }
 

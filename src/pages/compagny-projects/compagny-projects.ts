@@ -27,7 +27,8 @@ export class CompagnyProjectsPage {
   // };
   public projectsData: any = [];
 
-  private requestParams = { results: 40, Keywords: '' };
+  private requestParams = { results: 40, Keywords: '', fromCrDat: '' };
+  // private lastFromCrDateValue: string = '';
 
   constructor(public navCtrl: NavController, public modalCtrl: ModalController,
     public navParams: NavParams, public events: Events, private alertCtrl: AlertController,
@@ -130,20 +131,23 @@ export class CompagnyProjectsPage {
   loadDatas() {
     this.freelanceProvider.getMyProjectsList(this.requestParams)
       .then((data) => {
-        let tmpData: any = data;
-        this.projectsData = tmpData;
-        console.log(tmpData);
+        this.projectsData = data;
+        // let sizeOfData = this.projectsData.length;
+        // if (sizeOfData) {
+        //   this.lastFromCrDateValue = data[sizeOfData - 1]['Posted'];
+        // }        
       })
       .catch((err) => { });
   }
 
   loadMoreDatas(evt) {
-    console.log(this.requestParams);
+    // let requestParameters = this.requestParams;
+    // requestParameters['fromCrDat'] = this.lastFromCrDateValue;
+
     // Récupération des données
     this.freelanceProvider.getMyProjectsList(this.requestParams)
       .then((data) => {
-        let tmpData: any = data;
-        this.projectsData = tmpData;
+        this.projectsData = data;
         evt.complete();
       })
       .catch((err) => {
@@ -155,11 +159,10 @@ export class CompagnyProjectsPage {
     // Récupération des données
     this.freelanceProvider.getMyProjectsList(this.requestParams)
       .then((data) => {
-        let tmpData: any = data;
-        this.projectsData = tmpData;
+        this.projectsData = data;
         evt.complete();
       })
-      .catch((err) => { evt.complete(); });
+      .catch((err) => evt.complete());
   }
 
   whatClassIsIt() {

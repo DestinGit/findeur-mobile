@@ -20,33 +20,26 @@ export class CompagnyModalProjectsListPage {
 
   constructor(private view: ViewController, public navParams: NavParams,
     public freelanceProvider: FreelanceProvider) {
-      this.loadDatas();
-      console.log('load');
-      
+      this.loadDatas();      
   }
 
   loadDatas() {
     this.freelanceProvider.getMyProjectsList(this.requestParams)
       .then((data) => {
-        let tmpData: any = data;
-        this.projectsData = tmpData;
-        console.log('load2');
+        this.projectsData = data;
       })
       .catch((err) => { console.log(err);});
   }
 
   projectSelected(item:any) {
-    //console.log(item);
     this.closeModal(item);
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad CompagnyModalProjectsListPage');
-  }
+  ionViewDidLoad() {  }
 
   closeModal(item?:any) {
     const projectSelected = item;
-
     this.view.dismiss(projectSelected);
   }
+
 }

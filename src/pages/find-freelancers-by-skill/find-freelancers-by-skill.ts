@@ -41,7 +41,8 @@ export class FindFreelancersBySkillPage {
   // params: { results: number, Keywords: any };
   ionSelectSkills: any = [{ name: '', title: '' }];
   public kills = [];
-  public requestParams = { results: 40, Keywords: '' };
+  // private requestParams = { results: 40, Keywords: '', fromCrDat: ''};
+  private lastFromCrDateValue: string = '';
 
   constructor(public navCtrl: NavController, public navParams: NavParams, platform: Platform,
     public storage: Storage, private alertCtrl: AlertController, private category: CategoryProvider,
@@ -139,9 +140,7 @@ export class FindFreelancersBySkillPage {
   }
 
   killsSelected() {
-    this.requestParams.Keywords = this.kills.join(',');
-    console.log(this.kills);
-    
+    // this.requestParams.Keywords = this.kills.join(',');    
     this.loadDatas();
   }
 
@@ -156,48 +155,79 @@ export class FindFreelancersBySkillPage {
   }
 
   loadDatas() {
+    // private requestParams = { results: 40, Keywords: '', fromCrDat: ''};
+    let params: any = {
+      Keywords: this.kills.join(',')
+    };
+    
     // Récupération des données
-    this.freelanceProvider.getPersonalBusiness(this.requestParams)
+    this.freelanceProvider.getPersonalBusiness(params)
       .then((data) => {
         this.freelancesData = data;
-        this.isThereNoData = !this.freelancesData.length;
-        this.message = 'Désolé, aucun résultat ne correspond à vos critères de recherche.';
+        let sizeOfData = this.freelancesData.length;
+        // S'il y a des datas, je sauvegarde la dernière date de création
+        if (sizeOfData) {
+          this.lastFromCrDateValue = data[sizeOfData - 1]['Posted'];
+        }
+        
         this.loading.dismiss();
       })
-      .catch((err) => {
-        this.isThereNoData = true;
-        this.message = 'Échec de la connexion. Vérifier vos paramètres de réseau';
-
-        this.loading.dismiss();
-      });
+      .catch((err) => this.loading.dismiss());
   }
 
   loadMoreDatas(evt) {
-    console.log(this.requestParams);
+    // let requestParameters = this.requestParams;
+    // requestParameters['fromCrDat'] = this.lastFromCrDateValue;
+    let params: any = {
+      results: 4,
+      Keywords: this.kills.join(','),
+      fromCrDat: this.lastFromCrDateValue
+    };
+
     // Récupération des données
-    this.freelanceProvider.getPersonalBusiness(this.requestParams)
+    this.freelanceProvider.getPersonalBusiness(params)
       .then((data) => {
         let tmp: any = data;
-        this.isThereNoData = !tmp.length;
+        let sizeOfData = tmp.length;
+        if(sizeOfData) {
+          this.lastFromCrDateValue = tmp[sizeOfData - 1]['Posted'];
+        }
         this.freelancesData = this.freelancesData.concat(data);
         evt.complete();
       })
-      .catch((err) => {
-        evt.complete();
-      });
+      .catch((err) => evt.complete());
   }
 
-  doRefresh(evt) {
+  refreshScreen(evt) {
+    let params: any = {
+      Keywords: this.kills.join(',')
+    };
+
     // Récupération des données
-    this.freelanceProvider.getPersonalBusiness(this.requestParams)
+    this.freelanceProvider.getPersonalBusiness(params)
       .then((data) => {
         let tmp: any = data;
-        this.isThereNoData = !tmp.length;
-        this.freelancesData = tmp.concat(this.freelancesData);
+        let sizeOfData = tmp.length;
+        if(sizeOfData) {
+          this.lastFromCrDateValue = tmp[sizeOfData - 1]['Posted'];
+        }
+        this.freelancesData = tmp;
         evt.complete();
       })
-      .catch((err) => { evt.complete(); });
+      .catch((err) => evt.complete());
   }
+
+  // doRefresh(evt) {
+  //   // Récupération des données
+  //   this.freelanceProvider.getPersonalBusiness(this.requestParams)
+  //     .then((data) => {
+  //       let tmp: any = data;
+  //       this.isThereNoData = !tmp.length;
+  //       this.freelancesData = tmp.concat(this.freelancesData);
+  //       evt.complete();
+  //     })
+  //     .catch((err) => { evt.complete(); });
+  // }
 
 
   showAlert(title: string, subTitle: string, callback) {

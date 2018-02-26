@@ -44,9 +44,9 @@
 
 <ion-content class="background">
 
-  <p class="YcenterMessageBox messageBox" *ngIf="isThereNoData">
+  <!-- <p class="YcenterMessageBox messageBox" *ngIf="isThereNoData">
     {{ message }}
-  </p>
+  </p> -->
 
   <ion-list no-lines>
     <button ion-item *ngFor="let item of freelancesData" (click)="itemSelected(item)">
@@ -63,7 +63,7 @@
     </ion-infinite-scroll-content>
   </ion-infinite-scroll>
 
-  <ion-refresher (ionRefresh)="doRefresh($event)">
+  <ion-refresher (ionRefresh)="refreshScreen($event)">
     <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles" refreshingText="Refreshing...">
     </ion-refresher-content>
   </ion-refresher>

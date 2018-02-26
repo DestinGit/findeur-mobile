@@ -97,6 +97,7 @@ export class FreelanceProvider {
     let strParams = this.getStringParameters(params);
     var url = ('me' in params && params.me) ? 
     `${Config.URL}/secure/mycandidatures-list${strParams}` : `${Config.URL}/get/missions-list${strParams}`;
+console.log(url);
 
     var headers = new Headers();
     headers.append('Authorization', `Bearer ${this.userProvider.getToken()}`);

@@ -1,3 +1,4 @@
+import { UserStorageInfosProvider } from './../../providers/user-storage-infos/user-storage-infos';
 import { Component } from '@angular/core';
 import {
   IonicPage, NavParams, ViewController, ModalController,
@@ -31,7 +32,7 @@ export class LoginPage {
   
   constructor(public navParams: NavParams, private viewCtrl: ViewController,
     public modalCtrl: ModalController, public loadingCtrl: LoadingController,
-    public userProvider: UserProvider,
+    public userProvider: UserProvider, private userStorageProvider: UserStorageInfosProvider,
     public events: Events) {
       this.message = 'Merci de renseigner vos identifiants de connexion.';
   }
@@ -47,6 +48,9 @@ export class LoginPage {
         if (res.success) {
           this.events.publish('user.connection', res.success);
           this.dismiss();
+
+          // save les identifiants de l'user
+          this.userStorageProvider.setUserStorageInfos(this.credentials);
         }
       })
       .catch((err) => {

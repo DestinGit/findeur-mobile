@@ -54,7 +54,7 @@ import { CategoryProvider } from '../providers/category/category';
 export const Config = {
   URL: 'https://findtest.alwaysdata.net/api'
   //  URL: 'https://yemeialways.alwaysdata.net/api'
-  //URL: 'http://localhost:8000'
+  // URL: 'http://localhost:8000'
 };
 
 @NgModule({

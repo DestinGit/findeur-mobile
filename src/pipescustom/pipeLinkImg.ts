@@ -9,10 +9,10 @@ export class PipeLinkImg implements PipeTransform {
     let localLink = './assets/img/';
     // let findeurLink = 'http://findeur2017.findeur.fr/images/';
     let findeurLink = 'http://findtest.findeur.fr/images/';
-
+    let value2 = value.replace(' ','');
 
     return (value.length > 0) ?
-      `${findeurLink}${value}t.jpg` :
+      `${findeurLink}${value2}t.jpg` :
       `${localLink}${image[this.entierAleatoire(0, 3)]}`;
   }
 

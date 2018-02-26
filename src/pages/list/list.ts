@@ -20,7 +20,9 @@ import { FreelanceProvider } from '../../providers/freelance/freelance';
   templateUrl: 'list.html',
 })
 export class ListPage {
-  private requestParams = { results: 4, me: false, Keywords: '' };
+  // private requestParams = { results: 4, me: false, Keywords: '', fromCrDat: '' };
+  private lastFromCrDateValue: string = '';
+  // private lastFrCrDateMyCandidature: string = '';
   private loading: Loading;
   private toast: Toast;
 
@@ -35,20 +37,18 @@ export class ListPage {
   myFavorites = [];
   isenabledFavorites: boolean = true;
 
-  ionSelectSkills: any = [{name:'', title:''}];
+  ionSelectSkills: any = [{ name: '', title: '' }];
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private alertCtrl: AlertController,
-    public modalCtrl: ModalController, public userProvider: UserProvider, public events: Events, 
-    private freelanceProvider: FreelanceProvider, private category:CategoryProvider,
+    public modalCtrl: ModalController, public userProvider: UserProvider, public events: Events,
+    private freelanceProvider: FreelanceProvider, private category: CategoryProvider,
     public loadingCtrl: LoadingController, public toastCtrl: ToastController) {
 
     // Show loading
     this.presentLoadingDefault();
 
     this.loadSkills();
-
-console.log(userProvider.getUser());
 
     // register for the event 'user.connection'
     events.subscribe('user.connection', () => this.whatClassIsIt());
@@ -76,8 +76,8 @@ console.log(userProvider.getUser());
   getFilteredMissions() {
     switch (this.filter) {
       case 'all':
-        this.requestParams.results = 4;
-        this.requestParams.me = false;
+        // this.requestParams.results = 4;
+        // this.requestParams.me = false;
         if (!this.businessMissions.length) {
           this.loadDatas();
         } else {
@@ -85,8 +85,8 @@ console.log(userProvider.getUser());
         }
         break;
       case 'done':
-        this.requestParams.results = 400;
-        this.requestParams.me = true;
+        // this.requestParams.results = 400;
+        // this.requestParams.me = true;
         if (!this.myCandidatures.length) {
           this.loadCandidatures();
         } else {
@@ -102,30 +102,30 @@ console.log(userProvider.getUser());
 
   loadSkills() {
     this.category.getAllSkills()
-    .then((data) => this.ionSelectSkills = data)
-    .catch((error) => console.error());
+      .then((data) => this.ionSelectSkills = data)
+      .catch((error) => console.error());
   }
 
   /**
  * Recovering data from the database
  */
   loadDatas() {
-    this.freelanceProvider.getMissionsList(this.requestParams)
+    let params: any = {
+      me: false,
+      Keywords: this.kills.join(',')
+    };
+
+    this.freelanceProvider.getMissionsList(params)
       .then((data) => {
-        this.businessMissions = data;
-        this.missions = data;
-
-        this.isThereNoData = !this.businessMissions.length;
-        this.message = 'Désolé, aucun résultat ne correspond à vos critères de recherche.';
-
+        this.missions = this.businessMissions = data;
+        let sizeOfData = this.businessMissions.length;
+        // S'il y a des datas, je sauvegarde la dernière date de création
+        if (sizeOfData) {
+          this.lastFromCrDateValue = data[sizeOfData - 1]['Posted'];
+        }
         this.loading.dismiss();
       })
-      .catch(() => {
-        this.isThereNoData = true;
-        this.message = 'Échec de la connexion. Vérifier vos paramètres de réseau';
-
-        this.loading.dismiss();
-      });
+      .catch(() => this.loading.dismiss());
   }
 
   /**
@@ -138,14 +138,14 @@ console.log(userProvider.getUser());
       return;
     }
     // Otherwise, we perform request
-    this.requestParams.me = true;
-    this.freelanceProvider.getMissionsList(this.requestParams)
+    // this.requestParams.me = true;
+    let params: any = {
+      me: true,
+      Keywords: this.kills.join(','),
+    };
+    this.freelanceProvider.getMissionsList(params)
       .then((data) => {
-        this.myCandidatures = data;
-        this.missions = data;
-
-        this.isThereNoData = !this.myCandidatures.length;
-        this.message = 'Désolé, DIPANDA.';
+        this.missions = this.myCandidatures = data;
       })
       .catch((err) => {
         this.myCandidatures = this.missions = [];
@@ -161,6 +161,7 @@ console.log(userProvider.getUser());
       evt.complete();
       return;
     }
+
     // If user not connected
     if (this.filter === 'done' && !this.userProvider.isAuthenticated()) {
       this.myCandidatures = this.missions = [];
@@ -168,24 +169,43 @@ console.log(userProvider.getUser());
       return;
     }
     // Otherwise, we perform request
-    this.freelanceProvider.getMissionsList(this.requestParams)
+    // Si je suis sur le segment list des missions
+    let params: any = {
+      results: 4,
+      Keywords: this.kills.join(','),
+      me: (this.filter === 'all') ? false : true,
+      fromCrDat: (this.filter === 'all') ? this.lastFromCrDateValue : ''
+    };
+
+    // if (this.filter === 'all') {
+    //   params['fromCrDat'] = this.lastFromCrDateValue;
+    // }
+
+    // Perform request
+    this.freelanceProvider.getMissionsList(params)
       .then((data) => {
         let tmp: any = data;
-        this.isThereNoData = !tmp.length;
+        let sizeOfData = tmp.length;
+        // S'il y a des datas et que je suis sur le segment liste des missions
+        // je sauvegarde la dernière date de création
+        if (sizeOfData && this.filter === 'all') {
+          this.lastFromCrDateValue = data[sizeOfData - 1]['Posted'];
+        }
+
         switch (this.filter) {
           case 'all': this.missions = this.businessMissions = this.businessMissions.concat(data); break;
           case 'done': this.missions = this.myCandidatures = data; break;
         }
+
         evt.complete();
       })
       .catch(() => evt.complete());
   }
 
   /**
-   * Load more datas (refresh)
-   * @param evt 
+   * Refresh datas on screen
    */
-  doRefresh(evt) {
+  refreshScreen(evt) {
     if (this.filter === 'favorites') {
       evt.complete();
       return;
@@ -196,20 +216,28 @@ console.log(userProvider.getUser());
       evt.complete();
       return;
     }
-    // Otherwise, we perform request
-    this.freelanceProvider.getMissionsList(this.requestParams)
+    let params: any = {
+      me: false,
+      Keywords: this.kills.join(',')
+    };
+
+    this.freelanceProvider.getMissionsList(params)
       .then((data) => {
         let tmp: any = data;
-        this.isThereNoData = !tmp.length;
+        let sizeOfData = tmp.length;
+        if (sizeOfData && this.filter === 'all') {
+          this.lastFromCrDateValue = tmp[sizeOfData - 1]['Posted'];
+        }
+
         switch (this.filter) {
-          case 'all': this.missions = this.businessMissions = tmp.concat(this.businessMissions); break;
+          case 'all': this.missions = this.businessMissions = tmp; break;
           case 'done': this.missions = this.myCandidatures = tmp; break;
         }
+
         evt.complete();
       })
       .catch(() => evt.complete());
   }
-
 
   /**
    * Handle apply to mission by the user or open a connexion modal if user is not connected
@@ -225,7 +253,7 @@ console.log(userProvider.getUser());
       let myModal: Modal = this.modalCtrl.create(LoginPage, {}, myModalOptions);
       myModal.present();
       // Handler de l'évènement fermeture de la modal
-    } else if(this.userProvider.getUser().privs === "4") {
+    } else if (this.userProvider.getUser().privs === "4") {
       this.showAlert('Postuler Echec!', 'Vous êtes une entreprise', () => { });
     } else {
       this.applyToMission(item);
@@ -274,8 +302,9 @@ console.log(userProvider.getUser());
    * Select Option filter
   */
   selectOptionItemSelected() {
-    this.requestParams.Keywords = this.kills.join(',');
-    console.log(this.missions);
+    console.log('selectOptionItemSelected');
+    console.log(this.filter);
+
 
     switch (this.filter) {
       case 'all': this.loadDatas(); break;

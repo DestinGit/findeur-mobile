@@ -2,6 +2,7 @@ import { UserProvider } from './../../providers/user/user';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
 import { Events } from 'ionic-angular/util/events';
+import { UserStorageInfosProvider } from '../../providers/user-storage-infos/user-storage-infos';
 
 /**
  * Generated class for the ProfilPage page.
@@ -18,25 +19,35 @@ import { Events } from 'ionic-angular/util/events';
 export class ProfilPage {
 
   monUser = {
-    first_name: 'Destin',
-    name: 'Gando',
+    first_name: '',
+    last_name: '',
+    name: '',
     RealName: '',
     phone: '',
-    email: ''
+    email: '',
+    privs: '',
+    detail: ''
   };
+  activity: string = 'Indépendant';
+
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private viewCtrl: ViewController,
-    public userInfos: UserProvider,
+    public userInfos: UserProvider, private userStorageProvider: UserStorageInfosProvider,
     public events: Events) {
 
     this.monUser = userInfos.getUser();
     // console.log(userInfos.getUser());
+    if (this.monUser.privs === '4') {
+      this.activity = 'Entreprise';
+    }
   }
 
   disconnect() {
     this.userInfos.signOut().then((status) => {
       this.events.publish('user.connection', false);
-      this.dismiss()
+      // reset the storage provider
+      this.userStorageProvider.initializeUserStorageInfos();
+      this.dismiss();
     });
   }
 
