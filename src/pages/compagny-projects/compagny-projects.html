@@ -43,22 +43,24 @@ https://github.com/fknop/angular-pipes -->
           <ion-avatar item-start>
             <img src="{{ item.Image | pipelinkimg }}">
           </ion-avatar>
+          <ion-icon class="status" name="send" color="findeur" *ngIf="item.Status == '4'" item-end></ion-icon>
+          <ion-icon class="status" name="alert" color="grey2" *ngIf="item.Status != '4'" item-end></ion-icon>
           <h2>{{ item.Title }}</h2>
           <p>{{ item.Posted }}</p>
         </ion-item>
         <ion-item-options side="left">
-          <button ion-button color="grey2">
+          <button ion-button color="grey2" (click)="modifyArticleStatus(item, pos, 3)">
             <ion-icon name="alert"></ion-icon>
             Désactiver
           </button>
-          <button ion-button color="findeur">
+          <button ion-button color="findeur" (click)="modifyArticleStatus(item, pos, 4)">
             <ion-icon name="send"></ion-icon>
             <!-- <ion-icon name="checkmark-circle"></ion-icon> -->
             Activer
           </button>
         </ion-item-options>
         <ion-item-options side="right">
-          <button ion-button color="danger">
+          <button ion-button color="danger" (click)="removeArticle(item, pos);">
             <ion-icon name="trash"></ion-icon>
             Supprimer
           </button>
@@ -75,9 +77,9 @@ https://github.com/fknop/angular-pipes -->
     </ion-card-content>
     <ion-row>
       <ion-col>
-        <button ion-button icon-left clear small full>
+        <button ion-button icon-left clear small full (click)="goToModalCandidatesList(item.candidates);">
           <!-- <div>{{ item.custom_27 | trim | split: ',' | count}} postulants</div> -->
-          <div>{{ item.candidates | count}} postulants</div>
+          <div>{{ item.candidates | count }} postulants</div>
         </button>
       </ion-col>
     </ion-row>

@@ -97,10 +97,10 @@ export class FreelanceProvider {
     let strParams = this.getStringParameters(params);
     var url = ('me' in params && params.me) ? 
     `${Config.URL}/secure/mycandidatures-list${strParams}` : `${Config.URL}/get/missions-list${strParams}`;
-console.log(url);
 
     var headers = new Headers();
     headers.append('Authorization', `Bearer ${this.userProvider.getToken()}`);
+console.log(url);
 
     var options = ('me' in params && params.me) ? 
     new RequestOptions({ headers: headers }) : {};
@@ -205,5 +205,14 @@ console.log(url);
     );
   }
 
+  deleteArticle(data: any) {
+    var url = `${Config.URL}/secure/remove`;
+
+    var headers = new Headers();
+    headers.append('Authorization', `Bearer ${this.userProvider.getToken()}`);
+    var options = new RequestOptions({ headers: headers });
+    
+    this.http.post(url, data, options).subscribe(()=>{}, ()=>{});
+  }
 
 }

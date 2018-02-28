@@ -5,6 +5,7 @@ import { Pipe } from '@angular/core';
 })
 export class Application {
   transform(value, args) {
+    value = (value) ? value:'';
       let ret = false;
       let result = value.split(',');
       // console.log(args);

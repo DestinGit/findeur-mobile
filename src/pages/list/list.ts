@@ -76,8 +76,6 @@ export class ListPage {
   getFilteredMissions() {
     switch (this.filter) {
       case 'all':
-        // this.requestParams.results = 4;
-        // this.requestParams.me = false;
         if (!this.businessMissions.length) {
           this.loadDatas();
         } else {
@@ -85,8 +83,6 @@ export class ListPage {
         }
         break;
       case 'done':
-        // this.requestParams.results = 400;
-        // this.requestParams.me = true;
         if (!this.myCandidatures.length) {
           this.loadCandidatures();
         } else {
@@ -217,7 +213,7 @@ export class ListPage {
       return;
     }
     let params: any = {
-      me: false,
+      me: this.filter === 'all' ? false:true,
       Keywords: this.kills.join(',')
     };
 

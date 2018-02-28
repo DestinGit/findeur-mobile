@@ -7,7 +7,7 @@
 <ion-header style="background: rgba(255, 255, 255, 0);" class="header">
 
   <ion-navbar>
-    <ion-title>Nouvelle Annonce</ion-title>
+    <ion-title>{{ title }}</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -27,9 +27,13 @@
       <!-- Advanced: explicity set the icon for each platform -->
       <ion-select class="article" [(ngModel)]="articleData.custom_3" interface="action-sheet" 
       [selectOptions]="mobilityAlertOpts" placeholder="Selectionnez mobilité">
-        <ion-option value="dans-mes-locauxt">Dans mes locaux</ion-option>
+      <ion-option value="{{mobility.name}}" *ngFor="let mobility of ionSelectMobility">
+        {{mobility.title}}
+      </ion-option>
+
+        <!-- <ion-option value="dans-mes-locauxt">Dans mes locaux</ion-option>
         <ion-option value="en-teletravail">En télétravail</ion-option>
-        <ion-option value="indifferent">Indéfférent</ion-option>
+        <ion-option value="indifferent">Indéfférent</ion-option> -->
       </ion-select>
     </ion-item>
 
@@ -40,12 +44,16 @@
       </ion-label>
       <ion-select (ionChange)="stpSelect()" class="article" [(ngModel)]="articleData.Keywords" submitText="Ok" cancelText="Annuler"
         multiple="true" [selectOptions]="catAlertOpts" placeholder="Selectionnez métiers">
-        <ion-option value="depannage-informatique">Dépannage Informatique</ion-option>
+        <!-- <ion-option value="depannage-informatique">Dépannage Informatique</ion-option>
         <ion-option value="securite-gardiennage-telesurveillance">Securite-Gardiennage-Telesurveillance</ion-option>
         <ion-option value="Entretien-parc-automobile">Entretien parc automobile</ion-option>
         <ion-option value="Travaux-batiment">Travaux bâtiment</ion-option>
         <ion-option value="Organsation-d-evenements">Organsation d'évènements</ion-option>
-        <ion-option value="Professionnels-de-l-audivisuel">Professionnels de l'audivisuel</ion-option>
+        <ion-option value="Professionnels-de-l-audivisuel">Professionnels de l'audivisuel</ion-option> -->
+
+        <ion-option value="{{skills.name}}" *ngFor="let skills of ionSelectSkills">
+          {{skills.title}}
+        </ion-option>
     </ion-select>
     </ion-item>
 
@@ -56,7 +64,11 @@
       </ion-label>
       <ion-select class="article" [(ngModel)]="articleData.Category1" interface="action-sheet" cancelText="Annuler" 
       [selectOptions]="countyAlertOpts" placeholder="Département de chalendise">
-        <ion-option>Paris</ion-option>
+      <ion-option value="{{area.name}}" *ngFor="let area of ionSelectArea">
+        {{area.title}}
+      </ion-option>
+
+        <!-- <ion-option>Paris</ion-option>
         <ion-option>Val de Marne</ion-option>
         <ion-option>Dordogne</ion-option>
         <ion-option>Landes</ion-option>
@@ -66,7 +78,7 @@
         <ion-option>Seine et Marne</ion-option>
         <ion-option>Gironde</ion-option>
         <ion-option>Haut-Rhin</ion-option>
-        <ion-option>Bas-Rhin</ion-option>
+        <ion-option>Bas-Rhin</ion-option> -->
       </ion-select>
     </ion-item>
 
@@ -84,7 +96,7 @@
   </ion-list>
 
   <button class="" ion-button outline block color="light" (click)="saveArticle()">
-    Create
+    Valider
   </button>
 
 </ion-content>

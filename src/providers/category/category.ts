@@ -36,5 +36,50 @@ export class CategoryProvider {
     );
   }
 
+  /** */
+  getAllArea() {
+    var url = Config.URL + '/get/area-list';
 
+    //Promesse retournée à la page
+    return new Promise(
+      (resolve, reject) => {
+        //Appel asynchrone au backend
+        this.http.get(url).subscribe(
+          // callback de la requête http (succès)
+          (response) => {
+            //tranformation de la réponse texte en objet json
+            let data = response.json();
+          // Envoi des données à la page qui a initié la promesse
+            resolve(data);
+          },
+          //callback d'erreur http
+          (error) => reject(error)
+        );
+      }
+    );
+  }
+
+    /** */
+    getAllMobilities() {
+      var url = Config.URL + '/get/mobility-list';
+  
+      //Promesse retournée à la page
+      return new Promise(
+        (resolve, reject) => {
+          //Appel asynchrone au backend
+          this.http.get(url).subscribe(
+            // callback de la requête http (succès)
+            (response) => {
+              //tranformation de la réponse texte en objet json
+              let data = response.json();
+            // Envoi des données à la page qui a initié la promesse
+              resolve(data);
+            },
+            //callback d'erreur http
+            (error) => reject(error)
+          );
+        }
+      );
+    }
+  
 }

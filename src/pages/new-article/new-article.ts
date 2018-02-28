@@ -2,6 +2,7 @@
 // import { UserProvider } from './../../providers/user/user';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, ModalController, ViewController, Events } from 'ionic-angular';
+import { CategoryProvider } from '../../providers/category/category';
 // import { LoginPage } from '../login/login';
 
 /**
@@ -17,6 +18,10 @@ import { IonicPage, NavController, NavParams, AlertController, ModalController, 
   templateUrl: 'new-article.html',
 })
 export class NewArticlePage {
+  ionSelectSkills: any = [{ name: '', title: '' }];
+  ionSelectArea: any = [{ name: '', title: '' }];
+  ionSelectMobility: any = [{ name: '', title: '' }];
+
   public mobility: string;
   public categorie: string;
   public county: string;
@@ -31,6 +36,8 @@ export class NewArticlePage {
     Body: string,     // texte
     custom_3: string, // mobilité
   };
+  title: string = 'Nouvelle Annonce';
+  // textButton: string = 'Valider';
 
   catAlertOpts: { title: string, subTitle: string };
   countyAlertOpts: { title: string, subTitle: string };
@@ -38,11 +45,32 @@ export class NewArticlePage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private alertCtrl: AlertController, public modalCtrl: ModalController,
-    private viewCtrl: ViewController, public events: Events ) {
+    private viewCtrl: ViewController, public events: Events,private category: CategoryProvider, ) {
     // init some vars
     this.initializeVars();
+
+    this.loadSkills();
+    this.loadArea();
+    this.loadMobilities();
   }
 
+  loadSkills() {
+    this.category.getAllSkills()
+      .then((data) => this.ionSelectSkills = data)
+      .catch((error) => console.error());
+  }
+
+  loadArea() {
+    this.category.getAllArea()
+      .then((data) => this.ionSelectArea = data)
+      .catch((error) => console.error());
+  }
+
+  loadMobilities() {
+    this.category.getAllMobilities()
+      .then((data) => this.ionSelectMobility = data)
+      .catch((error) => console.error());
+  }
   dismiss() {
     this.viewCtrl.dismiss();
   }
@@ -59,8 +87,12 @@ export class NewArticlePage {
     this.articleData = this.navParams.get('article');
     this.index = this.navParams.get('index');
 
-    console.log('this.articleData');
+    if(this.index !== -1) {
+      this.title = 'Modifier annonce';
+    }
+    console.log(this.index);
     console.log(this.articleData);
+    
     
   }
 

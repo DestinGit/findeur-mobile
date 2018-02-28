@@ -1,3 +1,4 @@
+import { CompagnyModalCandidatesListPage } from './../compagny-modal-candidates-list/compagny-modal-candidates-list';
 import { NewArticlePage } from './../new-article/new-article';
 import { UserProfilPage } from './../user-profil/user-profil';
 import { Component } from '@angular/core';
@@ -49,6 +50,8 @@ export class CompagnyProjectsPage {
     events.subscribe('project.create', (data) => {
       data = JSON.parse(data);
       data.article['Posted'] = this.getDate();
+      data.article['Status'] = 4;
+      data.article['candidates'] = [];
       // this.projectsData.push(data.article);  
       this.persistArticle(data.article, data.index);
     });
@@ -56,6 +59,11 @@ export class CompagnyProjectsPage {
     this.loadDatas();
   }
 
+  /**
+   * 
+   * @param item 
+   * @param pos 
+   */
   goToArticlePage(item: any, pos) {
     const myModalOptions: ModalOptions = {
       enableBackdropDismiss: false
@@ -81,10 +89,6 @@ export class CompagnyProjectsPage {
       index: pos,
       article: item
     };
-
-    console.log('params');
-    console.log(params);
-    
     if (!this.userProvider.isAuthenticated()) {
       // Lancement de la fenêtre modal
       let myModal: Modal = this.modalCtrl.create(LoginPage, {}, myModalOptions);
@@ -110,40 +114,68 @@ export class CompagnyProjectsPage {
     this.freelanceProvider.addNewMission(article).then((res) => {
       if ('error' in res) {
         let errMsg = res['message'].join();
-        this.showAlert('<h5 class="error">Echec Nouveau projet</h5>', errMsg, () => {
+        this.showAlert('<h5 class="error">Echec projet</h5>', errMsg, () => {
           this.goToArticlePage(article, pos);
         });
+      } else if (pos >= 0) {
+        this.projectsData[pos] = article;
+        this.showAlert(`<h5 class="success">mission : ${article.Title}</h5>`,'Modification enregistrée',()=>{});
       } else {
-        this.showAlert('<h5 class="success">Nouveau projet OK !</h5>', 'Votre projet a bien été enregistré',
-          () => {
-            if (pos >= 0) {
-              this.projectsData[pos] = article;
-            } else {
-              article['ID'] = res['ID'];
-              this.projectsData.push(article);
-            }
-          });
+        article['ID'] = res['ID'];
+        this.projectsData.push(article);
       }
     })
       .catch(() => { });
   }
 
+  // this.showAlert('<h5 class="success">Projet OK !</h5>', 'Votre projet a bien été enregistré',
+  //   () => {
+  //     if (pos >= 0) {
+  //       this.projectsData[pos] = article;
+  //     } else {
+  //       article['ID'] = res['ID'];
+  //       this.projectsData.push(article);
+  //     }
+  //   });
+
+  /**
+   * 
+   * @param item 
+   * @param pos 
+   * @param newStatus 
+   */
+  modifyArticleStatus(item, pos, newStatus) {
+    item['Category1'] = 'Dordogne';
+    item['Status'] = newStatus;
+    item['LastMod'] = this.getDate();
+
+    this.persistArticle(item, pos);
+  }
+
+  /**
+   * 
+   * @param item 
+   * @param pos 
+   */
+  removeArticle(item: any, pos: number) {
+    this.freelanceProvider.deleteArticle(item);
+    this.projectsData.splice(pos, 1);
+  }
+
+  /** */
   loadDatas() {
     this.freelanceProvider.getMyProjectsList(this.requestParams)
       .then((data) => {
         this.projectsData = data;
-        // let sizeOfData = this.projectsData.length;
-        // if (sizeOfData) {
-        //   this.lastFromCrDateValue = data[sizeOfData - 1]['Posted'];
-        // }        
       })
       .catch((err) => { });
   }
 
+  /**
+   * 
+   * @param evt 
+   */
   loadMoreDatas(evt) {
-    // let requestParameters = this.requestParams;
-    // requestParameters['fromCrDat'] = this.lastFromCrDateValue;
-
     // Récupération des données
     this.freelanceProvider.getMyProjectsList(this.requestParams)
       .then((data) => {
@@ -155,6 +187,10 @@ export class CompagnyProjectsPage {
       });
   }
 
+  /**
+   * 
+   * @param evt 
+   */
   doRefresh(evt) {
     // Récupération des données
     this.freelanceProvider.getMyProjectsList(this.requestParams)
@@ -165,8 +201,8 @@ export class CompagnyProjectsPage {
       .catch((err) => evt.complete());
   }
 
+  /** */
   whatClassIsIt() {
-    // (this.userProvider.isAuthenticated()) ? this.loadDatas():this.projectsData=[];
     return (this.userProvider.isAuthenticated()) ? 'userColor-idendifer' : 'userColor-noconnect';
   }
 
@@ -192,19 +228,44 @@ export class CompagnyProjectsPage {
 
   }
 
+  /**
+   * 
+   * @param candidate 
+   */
   goToProfilPage(candidate: any) {
-    // let sendReq = this.requestParams;
-    // sendReq['name'] = candidate;
     if (candidate.length && candidate != 'postule_ae' && candidate != '-') {
       this.navCtrl.push(UserProfilPage, { param: candidate });
     }
   }
 
+  /**
+   * 
+   * @param data 
+   */
+  goToModalCandidatesList(data?: any) {
+    const myModalOptions: ModalOptions = {
+      enableBackdropDismiss: true
+    };
+
+    let myModal: Modal = this.modalCtrl.create(CompagnyModalCandidatesListPage, { candidates: data },
+      myModalOptions);
+    myModal.present();
+
+    myModal.onDidDismiss((data) => console.log(data));
+  }
+
+  /** */
   getDate() {
     let date1 = new Date();
     return `${date1.getFullYear()}-${date1.getMonth() + 1}-${date1.getDate()} ${date1.getHours()}:${date1.getMinutes()}:${date1.getSeconds()}`;
   }
 
+  /**
+   * 
+   * @param title 
+   * @param subTitle 
+   * @param callback 
+   */
   showAlert(title: string, subTitle: string, callback) {
     let alert = this.alertCtrl.create({
       title: title,
@@ -214,12 +275,13 @@ export class CompagnyProjectsPage {
     alert.present();
   }
 
+  /** */
   dismiss() {
     this.viewCtrl.dismiss();
   }
 
+  /** */
   ionViewDidLoad() {
-    console.log('ionViewDidLoad CompagnyProjectsPage');
   }
 
 }

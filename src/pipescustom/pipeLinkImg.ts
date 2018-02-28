@@ -5,6 +5,7 @@ import { Pipe , PipeTransform} from '@angular/core';
 })
 export class PipeLinkImg implements PipeTransform {
   transform(value, args) {
+    value = (value) ? value:'';
     let image = ['architect.jpg', 'office62.jpg', 'card-sf.jpg', 'card-saopaolo.jpg'];
     let localLink = './assets/img/';
     // let findeurLink = 'http://findeur2017.findeur.fr/images/';

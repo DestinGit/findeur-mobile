@@ -1,5 +1,6 @@
 import { EmailPage } from './../pages/email/email';
 import { CompagnyModalProjectsListPage } from './../pages/compagny-modal-projects-list/compagny-modal-projects-list';
+import { CompagnyModalCandidatesListPage } from './../pages/compagny-modal-candidates-list/compagny-modal-candidates-list';
 import { UserProfilPage } from './../pages/user-profil/user-profil';
 import { MysplashscreenPage } from './../pages/mysplashscreen/mysplashscreen';
 import { PipeLinkImg } from './../pipescustom/pipeLinkImg';
@@ -67,6 +68,7 @@ export const Config = {
     MyTabsPage,
     FindFreelancersBySkillPage,
     CompagnyModalProjectsListPage,
+    CompagnyModalCandidatesListPage,
     CompagnyProjectsPage,
     FindFreelancersByAvailabilityPage,
     FindFreelancersByLocationPage,
@@ -103,6 +105,7 @@ export const Config = {
     MyTabsPage,
     FindFreelancersBySkillPage,
     CompagnyModalProjectsListPage,
+    CompagnyModalCandidatesListPage,
     CompagnyProjectsPage,
     FindFreelancersByAvailabilityPage,
     FindFreelancersByLocationPage,

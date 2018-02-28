@@ -9,17 +9,21 @@
                 </ion-col>
             </ion-row>
         </ion-card-header>
-        
-        <ion-list>
-            <ion-item *ngFor="let item of projectsData; let pos = index" (click)="projectSelected(item);">
-                <ion-thumbnail item-start>
-                    <img src="{{ item.Image | pipelinkimg }}">
-                </ion-thumbnail>
-                <h2>{{ item.Title }}</h2>
-                <h3>Don't Know What To Do!</h3>
-                <p>{{ item.Body }}</p>
-            </ion-item>
-        </ion-list>
+
+        <ion-card-content>
+            <ion-list>
+                <ion-scroll scrollY="true">
+                    <ion-item *ngFor="let item of projectsData; let pos = index" (click)="projectSelected(item);">
+                        <ion-thumbnail item-start>
+                            <img src="{{ item.Image | pipelinkimg }}">
+                        </ion-thumbnail>
+                        <h2>{{ item.Title }}</h2>
+                        <h3>Don't Know What To Do!</h3>
+                        <p>{{ item.Body }}</p>
+                    </ion-item>
+                </ion-scroll>
+            </ion-list>
+        </ion-card-content>
     </ion-card>
 </ion-content>
 

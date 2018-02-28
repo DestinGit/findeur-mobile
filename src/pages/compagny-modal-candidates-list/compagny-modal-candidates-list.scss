@@ -1,4 +1,4 @@
-page-compagny-modal-projects-list {
+page-compagny-modal-candidates-list {
     *:not(ion-icon) {
         font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     }
@@ -9,7 +9,7 @@ page-compagny-modal-projects-list {
     }
 
     ion-scroll {
-        height: 35rem;
+        height: 37rem;
     }
 
     .scroll-content {
@@ -42,11 +42,8 @@ page-compagny-modal-projects-list {
     }
     .item {
         margin-bottom: 1px;
-        // margin-bottom: 10px;
-        // background-color: rgba(242, 124, 54, 0.8);
-        // border: medium none;
-        // color: #fff;
         color: #a39b9b;
         font-size: 1.2rem;
     }
+
 }

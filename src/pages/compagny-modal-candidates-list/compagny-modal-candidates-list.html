@@ -1,0 +1,28 @@
+<ion-content class="background">
+    <ion-card>
+        <ion-card-header>
+            <ion-row>
+                <ion-col></ion-col>
+                <ion-col center>Postulants associé à ce projet</ion-col>
+                <ion-col (click)="closeModal();">
+                    <ion-icon ios="ios-close" md="md-close"></ion-icon>
+                </ion-col>
+            </ion-row>
+        </ion-card-header>
+        <ion-card-content>
+            <ion-list>
+                <ion-scroll scrollY="true">
+                    <ion-item *ngFor="let item of candidatesList; let pos = index" 
+                    (click)="goToUserAnnonce(item)">
+                        <ion-thumbnail item-start>
+                            <!-- <img src="{{ item.Image | pipelinkimg }}"> -->
+                        </ion-thumbnail>
+                        <h2>{{ item }}</h2>
+                        <h3>View details</h3>
+                        <!-- <p>{{ item.Body }}</p> -->
+                    </ion-item>
+                </ion-scroll>
+            </ion-list>
+        </ion-card-content>
+    </ion-card>
+</ion-content>

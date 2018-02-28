@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { FreelanceProvider } from '../../providers/freelance/freelance';
+import { CallNumber } from '@ionic-native/call-number';
 
 /**
  * Generated class for the UserProfilPage page.
@@ -22,11 +23,13 @@ affImg: string;
     Title:'',
     Body:'',
     Posted:'',
+    custom_4:''
   };
    
   constructor(public navCtrl: NavController, public navParams: NavParams,
+     private callNumber: CallNumber,
     public freelanceProvider: FreelanceProvider) {
-    let freelanceName = navParams.get('param');
+    let freelanceName = navParams.get('name');
       freelanceProvider.getOnePersonalBusiness({name: freelanceName})
       .then((data) => {
         console.log(data);
@@ -36,6 +39,14 @@ affImg: string;
       .catch((err) => console.log('error c'));
 
       this.affImg = this.image[this.entierAleatoire(0,3)];
+  }
+
+  contactFreelanceByPhone() {
+    if (this.freeDetail.custom_4) {
+      this.callNumber.callNumber(this.freeDetail.custom_4, true)
+        .then(() => console.log('Launched dialer!'))
+        .catch(() => console.log('Error launching dialer'));
+    }
   }
 
    /**
