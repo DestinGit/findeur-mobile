@@ -51,7 +51,7 @@
   <ion-list no-lines>
     <button ion-item *ngFor="let item of freelancesData" (click)="itemSelected(item)">
       <ion-thumbnail item-start>
-        <img src="{{ item.Image | pipelinkimg }}">
+        <img src="{{ item.Image | pipelinkimg:item.nameImg }}">
       </ion-thumbnail>
       <h2>{{item.Title}}</h2>
       <p>{{item.Body}}</p>

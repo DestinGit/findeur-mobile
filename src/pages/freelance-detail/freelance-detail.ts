@@ -26,7 +26,7 @@ export class FreelanceDetailPage {
     Posted: '',
   };
   phone: string = '';
-  email: string = 'bak1tino@gmail.com';
+  email: string = '';
   private id = '';
   private url_title = '';
 
@@ -57,6 +57,7 @@ export class FreelanceDetailPage {
         
         this.projectAssociated = data['Title'];
         this.phone = this.freeDetail['custom_4'];
+        this.email = this.freeDetail['email'];
 
         this.url_title = data['url_title'];
         this.id = data['ID'];

@@ -15,7 +15,7 @@
 
 <ion-content>
   <ion-card style="min-height:100%;">
-    <img src="{{ freeDetail.Image | pipelinkimg }}" />
+    <img src="{{ freeDetail.Image | pipelinkimg:freeDetail.nameImg }}" />
     <ion-card-content>
       <ion-card-title>{{ freeDetail.Title }}</ion-card-title>
       <!-- <p style="font-style: italic;">annonce publiée le : {{ freeDetail.Posted | date:'d/MM/y' }}</p> -->
@@ -35,11 +35,11 @@
                 <div>{{ projectAssociated }}</div>
               </button>            
         </ion-col>
-        <!-- <ion-col>
+        <ion-col>
             <button ion-button icon-left clear small (click)="contactFreelanceByMail()">
               {{ email }}
             </button>
-        </ion-col> -->
+        </ion-col>
       </ion-row>
   
 </ion-footer>

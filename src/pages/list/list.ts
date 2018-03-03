@@ -119,6 +119,8 @@ export class ListPage {
         if (sizeOfData) {
           this.lastFromCrDateValue = data[sizeOfData - 1]['Posted'];
         }
+        console.log(this.missions);
+        
         this.loading.dismiss();
       })
       .catch(() => this.loading.dismiss());

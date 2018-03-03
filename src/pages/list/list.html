@@ -3,11 +3,9 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <!-- <ion-title> Liste des offres de mission</ion-title> -->
 
     <ion-buttons end>
       <button ion-button icon-only (click)="openLogOrProfilPage()">
-        <!-- <button ion-button icon-only (click)="openRegisterWebpage()"> -->
         <ion-icon name="contact" [ngClass]="whatClassIsIt()"></ion-icon>
       </button>
     </ion-buttons>
@@ -34,22 +32,16 @@
       </ion-select>
     </ion-item>
   </ion-list>
-
-
 </ion-header>
 
 <ion-content class="background">
-  <!-- <p class="YcenterMessageBox messageBox" *ngIf="isThereNoData">
-    {{ message }}
-  </p> -->
-
   <ion-card *ngFor="let item of missions">
     <ion-card-header color="findeur" *ngIf="item.custom_27 | application: userName">
       Déjà postulé
     </ion-card-header>
     <ion-row (click)="goToMissionDetails(item);">
       <ion-col col-4 offset-4>
-        <img src="{{ item.Image | pipelinkimg }}" style="max-width: 100%;height: auto;" />
+        <img src="{{ item.Image | pipelinkimg:item.nameImg }}" style="max-width: 100%;height: auto;" />
       </ion-col>
     </ion-row>
     <ion-card-content (click)="goToMissionDetails(item);">
@@ -83,100 +75,6 @@
       </ion-col>
     </ion-row>
   </ion-card>
-
-  <!-- <div [ngSwitch]="filter">
-    <div *ngSwitchCase="'all'">
-      <ion-card *ngFor="let item of businessMissions">
-        <ion-card-header color="findeur" *ngIf="item.custom_27 | application: userName">
-          Déjà postulé
-        </ion-card-header>
-        <ion-row>
-          <ion-col col-4 offset-4>
-            <img src="{{ item.Image | pipelinkimg }}" style="max-width: 100%;height: auto;" />
-          </ion-col>
-        </ion-row>
-        <ion-card-content>
-          <ion-card-title>
-            {{ item.Title }}
-          </ion-card-title>
-          <p>
-            {{ item.Body }}
-          </p>
-        </ion-card-content>
-
-        <ion-row no-padding>
-          <ion-col col-4>
-            <button ion-button clear small color="findeur" icon-start>
-              <ion-icon name='star'></ion-icon>
-              Favoris
-            </button>
-          </ion-col>
-          <ion-col col-4>
-            <button ion-button clear small color="findeur" icon-start (click)="handlerApplyToMissionButton(item)">
-              <ion-icon name='arrow-dropright-circle'></ion-icon>
-              Postuler
-            </button>
-          </ion-col>
-          <ion-col col-4>
-            <button ion-button clear small color="findeur" icon-start>
-              <ion-icon name='share-alt'></ion-icon>
-              Partager
-            </button>
-          </ion-col>
-        </ion-row>
-      </ion-card>
-    </div>
-
-
-    <div *ngSwitchCase="'done'">
-        <ion-card *ngFor="let item of myCandidatures">
-          <ion-card-header color="findeur" *ngIf="item.custom_27 | application: userName">
-            Déjà postulé
-          </ion-card-header>
-          <ion-row>
-            <ion-col col-4 offset-4>
-              <img src="{{ item.Image | pipelinkimg }}" style="max-width: 100%;height: auto;" />
-            </ion-col>
-          </ion-row>
-          <ion-card-content>
-            <ion-card-title>
-              {{ item.Title }}
-            </ion-card-title>
-            <p>
-              {{ item.Body }}
-            </p>
-          </ion-card-content>
-  
-          <ion-row no-padding>
-            <ion-col col-4>
-              <button ion-button clear small color="findeur" icon-start>
-                <ion-icon name='star'></ion-icon>
-                Favoris
-              </button>
-            </ion-col>
-            <ion-col col-4>
-              <button ion-button clear small color="findeur" icon-start (click)="handlerApplyToMissionButton(item)">
-                <ion-icon name='arrow-dropright-circle'></ion-icon>
-                Postuler
-              </button>
-            </ion-col>
-            <ion-col col-4>
-              <button ion-button clear small color="findeur" icon-start>
-                <ion-icon name='share-alt'></ion-icon>
-                Partager
-              </button>
-            </ion-col>
-          </ion-row>
-        </ion-card>
-      </div> -->
-
-
-
-
-
-
-
-  <!-- </div> -->
 
   <ion-infinite-scroll (ionInfinite)="loadMoreDatas($event)">
     <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">

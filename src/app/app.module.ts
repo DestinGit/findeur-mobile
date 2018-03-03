@@ -33,10 +33,8 @@ import { ListPage } from '../pages/list/list';
 import { SearchCompagnyPage } from './../pages/search-compagny/search-compagny';
 
 import { MyTabsPage } from '../pages/my-tabs/my-tabs';
-import { FindFreelancersByAvailabilityPage } from '../pages/find-freelancers-by-availability/find-freelancers-by-availability';
 import { CompagnyProjectsPage } from './../pages/compagny-projects/compagny-projects';
 import { FindFreelancersBySkillPage } from '../pages/find-freelancers-by-skill/find-freelancers-by-skill';
-import { FindFreelancersByLocationPage } from '../pages/find-freelancers-by-location/find-freelancers-by-location';
 import { FreelanceDetailPage } from './../pages/freelance-detail/freelance-detail';
 import { MissionDetailsPage } from './../pages/mission-details/mission-details';
 import { LoginPage } from '../pages/login/login';
@@ -70,8 +68,6 @@ export const Config = {
     CompagnyModalProjectsListPage,
     CompagnyModalCandidatesListPage,
     CompagnyProjectsPage,
-    FindFreelancersByAvailabilityPage,
-    FindFreelancersByLocationPage,
     FreelanceDetailPage,
     MissionDetailsPage,
     LoginPage,
@@ -107,8 +103,6 @@ export const Config = {
     CompagnyModalProjectsListPage,
     CompagnyModalCandidatesListPage,
     CompagnyProjectsPage,
-    FindFreelancersByAvailabilityPage,
-    FindFreelancersByLocationPage,
     FreelanceDetailPage,
     MissionDetailsPage,
     LoginPage,

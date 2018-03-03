@@ -12,8 +12,14 @@ export class PipeLinkImg implements PipeTransform {
     let findeurLink = 'http://findtest.findeur.fr/images/';
     let value2 = value.replace(' ','');
 
+    let ext = 'jpg';
+    if(args) {
+      let splitNameOfImg = args.split('.');
+      ext = splitNameOfImg[1];
+    }
+
     return (value.length > 0) ?
-      `${findeurLink}${value2}t.jpg` :
+      `${findeurLink}${value2}.${ext}` :
       `${localLink}${image[this.entierAleatoire(0, 3)]}`;
   }
 

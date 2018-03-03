@@ -169,6 +169,7 @@ export class FindFreelancersBySkillPage {
         if (sizeOfData) {
           this.lastFromCrDateValue = data[sizeOfData - 1]['Posted'];
         }
+        console.log(this.freelancesData);
         
         this.loading.dismiss();
       })

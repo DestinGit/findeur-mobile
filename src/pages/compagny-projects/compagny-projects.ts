@@ -21,15 +21,9 @@ import { FreelanceProvider } from '../../providers/freelance/freelance';
   templateUrl: 'compagny-projects.html',
 })
 export class CompagnyProjectsPage {
-  // private aProject = {
-  //   name: '',
-  //   posted: '',
-  //   image: ''
-  // };
   public projectsData: any = [];
 
   private requestParams = { results: 40, Keywords: '', fromCrDat: '' };
-  // private lastFromCrDateValue: string = '';
 
   constructor(public navCtrl: NavController, public modalCtrl: ModalController,
     public navParams: NavParams, public events: Events, private alertCtrl: AlertController,
@@ -42,6 +36,7 @@ export class CompagnyProjectsPage {
     events.subscribe('project.update', (data) => {
       data = JSON.parse(data);
       data.article['LastMod'] = this.getDate();
+      // data.article['Image'] = userProvider.getUser()['Image'];
 
       this.persistArticle(data.article, data.index);
     });
@@ -52,6 +47,7 @@ export class CompagnyProjectsPage {
       data.article['Posted'] = this.getDate();
       data.article['Status'] = 4;
       data.article['candidates'] = [];
+      data.article['Image'] = userProvider.getUser()['Image'];
       // this.projectsData.push(data.article);  
       this.persistArticle(data.article, data.index);
     });
@@ -127,16 +123,6 @@ export class CompagnyProjectsPage {
     })
       .catch(() => { });
   }
-
-  // this.showAlert('<h5 class="success">Projet OK !</h5>', 'Votre projet a bien été enregistré',
-  //   () => {
-  //     if (pos >= 0) {
-  //       this.projectsData[pos] = article;
-  //     } else {
-  //       article['ID'] = res['ID'];
-  //       this.projectsData.push(article);
-  //     }
-  //   });
 
   /**
    * 
